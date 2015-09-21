@@ -1,0 +1,55 @@
+﻿@model Application.Models.Admin.AddFileViewModel
+@{
+    ViewBag.Title = "Add";
+}
+
+<p class="bg-success">@TempData["Success"]</p>
+<p class="bg-danger">@TempData["Erors"]</p>
+
+<blockquote>
+    @Html.ValidationSummary()
+    @using (Html.BeginForm("Add", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <div class="form-group">
+            <h4 class="text-muted">Загрузить файл</h4>
+            @Html.ValidationMessageFor(x => x.file)
+            @Html.TextBoxFor(x => x.file, null, new { type = "file", @class = "center-block", accept = "application/vnd.ms-excel" })
+            <br />
+            <input type="submit" value="Загрузить" class="btn btn-default" />
+        </div>
+    }
+</blockquote>
+
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script type="text/javascript">
+        jQuery.validator.unobtrusive.adapters.add(
+    'filesize', ['maxsize'], function (options) {
+        options.rules['filesize'] = options.params;
+        if (options.message) {
+            options.messages['filesize'] = options.message;
+        }
+    }
+    );
+
+        jQuery.validator.addMethod('filesize', function (value, element, params) {
+            if (element.files.length < 1) {
+                // No files selected
+                return true;
+            }
+
+            if (!element.files || !element.files[0].size) {
+                // This browser doesn't support the HTML5 API
+                return true;
+            }
+            var total = 0;
+            for (var i = 0; i < element.files.length; i++)
+                total += element.files[i].size;
+            return total < params.maxsize;
+        }, '');
+    </script>
+}
+

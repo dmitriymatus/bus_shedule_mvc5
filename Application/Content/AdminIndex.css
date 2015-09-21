@@ -1,0 +1,15 @@
+﻿.linkContainer
+{
+    text-align:left;
+}
+
+a:hover
+{
+    text-decoration:none;
+}
+
+a blockquote:hover
+{
+    font-weight:bold;
+    background-color:RGBA(22, 141, 226,0.1);
+}

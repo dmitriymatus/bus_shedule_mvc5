@@ -1,0 +1,106 @@
+﻿@model Application.Models.Admin.AdminAddViewModel
+@{
+    ViewBag.Title = "AddStop";
+}
+
+<p class="bg-success">@TempData["Success"]</p>
+<p class="bg-danger">@Html.ValidationSummary()</p>
+
+@using (Html.BeginForm())
+{
+    <div class="row">
+        <div class="col-sm-3">
+            <h4 class="text-muted">Номер</h4>
+            <div class="input-group">
+                @Html.TextBoxFor(x => x.Stop.busNumber, new { @class = " form-control" })
+                <div class="input-group-btn">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="caret"></span>
+                        <span class="sr-only">Toggle Dropdown</span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-right">
+                        @foreach (string number in Model.Numbers)
+                        {
+                            @Html.Hidden("Numbers", number);
+                            <li><button class="btn btn-default form-control" id="Numbers" name="Numbers" onclick="combo(event,'@number', 'Stop_busNumber')">@number</button></li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <h4 class="text-muted">Остановка</h4>
+            <div class="input-group">
+                @Html.TextBoxFor(x => x.Stop.stopName, new { @class = " form-control" })
+                <div class="input-group-btn">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="caret"></span>
+                        <span class="sr-only">Toggle Dropdown</span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-right">
+                        @foreach (string number in Model.StopNames)
+                        {
+                            @Html.Hidden("StopNames", number);
+                            <li><button class="btn btn-default form-control" onclick="combo(event,'@number', 'Stop_stopName')">@number</button></li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <h4 class="text-muted">Конечная</h4>
+            <div class="input-group">
+                @Html.TextBoxFor(x => x.Stop.finalStop, new { @class = " form-control" })
+                <div class="input-group-btn">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="caret"></span>
+                        <span class="sr-only">Toggle Dropdown</span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-right">
+                        @foreach (string number in Model.FinalStops)
+                        {
+                            @Html.Hidden("EndBrakes", number);
+                            <li><button class="btn btn-default form-control" onclick="combo(event,'@number', 'Stop_finalStop')">@number</button></li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <h4 class="text-muted">Дни</h4>
+            <div class="input-group">
+                @Html.TextBoxFor(x => x.Stop.days, new { @class = " form-control" })
+                <div class="input-group-btn">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="caret"></span>
+                        <span class="sr-only">Toggle Dropdown</span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-right">
+                        @foreach (string number in Model.Days)
+                        {
+                            @Html.Hidden("EndBrakes", number);
+                            <li><button class="btn btn-default form-control" onclick="combo(event,'@number', 'Stop_days')">@number</button></li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <h4 class="text-muted">Расписание</h4>
+            @Html.TextAreaFor(x => x.Stop.stops, new { @class = "form-control", rows = "10" })
+        </div>
+    </div>
+    <hr />
+    <button type="submit" class="btn btn-success">Сохранить</button>
+}
+
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Scripts/AddStop.js")
+}
+

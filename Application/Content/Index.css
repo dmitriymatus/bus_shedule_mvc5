@@ -1,0 +1,49 @@
+﻿.col-sm-3 h4
+{
+    margin-top:0px;
+}
+
+
+#stopsContainer h3:first-child
+{
+    color:RGB(22, 141, 226);
+    text-align:right;
+    margin-left:15px;
+    margin-right:20px;
+    margin-top:5px;
+}
+
+
+#nearestTime, #nodes, #otherBuses
+{
+    font-weight:bold;
+    margin-right:15px;
+    margin-left:15px;
+}
+
+
+
+#otherBusContainer h4:first-child
+{
+    color:RGB(22, 141, 226);
+    text-align:left;
+    margin-top:5px;
+    margin-right:20px;
+    margin-left:20px;
+}
+
+
+#nearestTimeContainer h3:first-child
+{
+    color:RGB(22, 141, 226);
+    text-align:left;
+    margin-top:5px;
+    margin-right:20px;
+    margin-left:20px;
+}
+
+
+#otherBuses span
+{
+  cursor:pointer
+}

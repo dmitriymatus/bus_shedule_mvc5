@@ -1,0 +1,38 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/bootstrap.css")
+    @Styles.Render("~/Content/jumbotron-narrow.css")
+    @Styles.Render("~/Content/Site.css")
+    @RenderSection("styles", required: false)
+    @Scripts.Render("~/bundles/modernizr")
+
+</head>
+<body>
+    <div class="container">
+        <div class="header clearfix">
+            <h3 class="text-muted">Расписание автобусов</h3>
+            <blockquote>
+                <h4 class="text-muted">Брест</h4>
+                @*@Html.Partial("_LoginPartial")*@
+            </blockquote>
+        </div>
+        <div class="jumbotron">
+            @RenderBody()
+        </div>
+        <hr />
+        <footer>
+            <p class="text-muted">Брест 2015</p>
+        </footer>
+    </div> <!-- /container -->
+    <img id="loadImg" src="~/Content/load.gif" />
+    <div id="loadBackground"></div>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

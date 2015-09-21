@@ -1,0 +1,51 @@
+﻿@model IEnumerable<string>
+@{
+    ViewBag.Title = "Delete";
+}
+
+@section styles
+{
+    @Styles.Render("~/Content/Index.css")
+}
+
+<p class="bg-success">@TempData["Success"]</p>
+<p class="bg-danger">@TempData["Erors"]</p>
+
+@using (Html.BeginForm())
+{
+    <blockquote class="blockquote-reverse">
+        <div class="row">
+            <div class="col-sm-3">
+                <h4 class="text-muted">Номер</h4>
+                @Html.DropDownList("busNumber", new SelectList(Model), "", new { @class = "form-control", onchange = "selectNumber();" })
+            </div>
+            <div class="col-sm-3">
+                <h4 class="text-muted">Остановка</h4>
+                @Html.DropDownList("stopName", new SelectList(new List<string>()), "", new { @class = "form-control", onchange = "selectStop(); selectAll() " })
+            </div>
+            <div class="col-sm-3">
+                <h4 class="text-muted">Конечная</h4>
+                @Html.DropDownList("finalStop", new SelectList(new List<string>()), "", new { @class = "form-control", onchange = "selectendStop(); selectAll(); " })
+            </div>
+            <div class="col-sm-3">
+                <h4 class="text-muted">Дни</h4>
+                @Html.DropDownList("days", new SelectList(new List<string>()), "", new { @class = "form-control", onchange = "selectAll();" })
+            </div>
+        </div>
+    </blockquote>
+    <hr />
+    <div class="row">
+        <blockquote id="stopsContainer" hidden>
+            <h4 class="text-muted">Расписание:</h4>
+            <h4 id="stops"></h4>
+            <br />
+            <button type="submit" class="btn btn-success">Удалить</button>
+        </blockquote>
+    </div>
+
+}
+@section Scripts
+{
+    @Scripts.Render("~/Scripts/AdminEdit.js")
+}
+

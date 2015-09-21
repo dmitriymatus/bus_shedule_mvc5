@@ -1,0 +1,85 @@
+﻿/* Styles for validation helpers
+-----------------------------------------------------------*/
+.field-validation-error {
+    color: #f00;
+}
+
+.field-validation-valid {
+    display: none;
+}
+
+.input-validation-error {
+    border: 1px solid #f00;
+    background-color: #fee;
+}
+
+.validation-summary-errors {
+    font-weight: bold;
+    color: #f00;
+}
+
+.validation-summary-valid {
+    display: none;
+}
+
+/* Styles for layout
+-----------------------------------------------------------*/
+h3
+{
+    font-weight:bold;
+}
+
+
+blockquote
+{
+    border-color:RGB(22, 141, 226);
+    margin-bottom:10px;
+    padding:5px;
+}
+
+.blockquote-reverse
+{
+    border-color:RGB(22, 141, 226);
+    margin-bottom:10px;
+    padding:10px;
+    text-align:center;
+}
+
+.jumbotron
+{
+    margin:0px;
+    margin-top:10px;
+    padding:0px;
+    background-color:white;
+}
+
+footer
+{
+    margin:0px;
+    padding:0px;
+}
+
+.clearfix
+{
+    margin:0px;
+    padding:0px;
+}
+
+hr
+{
+    margin:8px;
+}
+
+#loadImg{position:absolute; z-index:1000; display:none; left:50%; top:50% }
+#loadBackground
+{
+    position:absolute; z-index:999; display:none;
+    background-color:RGBA(148,148,148,0.25);
+}
+
+
+.form-signin {
+  max-width: 300px;
+  padding: 15px;
+  margin: 0 auto;
+}
