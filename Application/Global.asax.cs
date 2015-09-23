@@ -9,6 +9,7 @@ using MvcApplication.Infrastructure;
 using Application.Infrastructure;
 using Application.Models;
 using Ninject;
+using System.Data.Entity;
 
 namespace Application
 {
@@ -16,6 +17,9 @@ namespace Application
     {
         protected void Application_Start()
         {
+
+            //Database.SetInitializer<ApplicationDbContext>(new AppDbInitializer());
+
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);

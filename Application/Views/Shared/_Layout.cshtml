@@ -14,11 +14,27 @@
 </head>
 <body>
     <div class="container">
-        <div class="header clearfix">
-            <h3 class="text-muted">Расписание автобусов</h3>
+        <div class="headerContainer">
+            <nav class="navbar navbar-default">
+                <div class="container-fluid">
+                    <!-- Brand and toggle get grouped for better mobile display -->
+                    <div class="navbar-header">
+                        <a class="navbar-brand" href="~/Home/Index">Расписание автобусов</a>
+                        <button type="button" class="navbar-toggle navbar-left collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                    </div>
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                        @Html.Partial("_LoginPartial")
+                    </div><!-- /.navbar-collapse -->
+                </div><!-- /.container-fluid -->
+            </nav>
+
             <blockquote>
                 <h4 class="text-muted">Брест</h4>
-                @*@Html.Partial("_LoginPartial")*@
             </blockquote>
         </div>
         <div class="jumbotron">

@@ -1,0 +1,6 @@
+﻿@model IQueryable<Application.Models.ApplicationUser>
+
+@foreach (var item in Model)
+{
+    <li class="list-group-item"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> @Html.ActionLink(item.UserName, "User", "AdminManage", new { id = item.Id }, null)</li>
+}

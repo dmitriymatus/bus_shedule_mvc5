@@ -59,12 +59,6 @@ footer
     padding:0px;
 }
 
-.clearfix
-{
-    margin:0px;
-    padding:0px;
-}
-
 hr
 {
     margin:8px;
@@ -82,4 +76,42 @@ hr
   max-width: 300px;
   padding: 15px;
   margin: 0 auto;
+}
+
+
+.headerContainer
+{
+    border-bottom: 1px solid #e5e5e5;
+}
+
+nav, .navbar
+{
+    margin-bottom:0px;
+    background-color:white;
+    border:none;
+    padding:0px;
+}
+
+.navbar-header a:first-child
+{
+
+    padding-left:0px;
+    font-weight:bold;
+
+}
+
+
+.list-group, .list-group-item
+{
+    text-align:left;
+}
+
+.col-lg-8 > .text-muted
+{
+    text-align:left;
+}
+
+.col-lg-8 h4
+{
+    text-align:left;
 }

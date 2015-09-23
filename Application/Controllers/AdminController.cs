@@ -11,7 +11,7 @@ using Application.Models;
 
 namespace Application.Controllers
 {
-    //[Authorize]
+    [Authorize(Roles = "admin")]
     public class AdminController : Controller
     {
         IStopsRepository repository;

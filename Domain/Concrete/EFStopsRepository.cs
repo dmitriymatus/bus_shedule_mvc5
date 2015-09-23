@@ -19,7 +19,6 @@ namespace Domain.Concrete
 
         public IEnumerable<string> GetBuses()
         {
-            //получение номеров автобусов
             return context.Stops.AsEnumerable()
                                 .OrderBy(x => x.Id)
                                 .Select(x => x.busNumber)
@@ -28,7 +27,6 @@ namespace Domain.Concrete
 
         public IEnumerable<string> GetAllStops()
         {
-            //получение названий всех остановок
             return context.Stops.AsEnumerable()
                        .OrderBy(x => x.stopName)
                        .Select(x => x.stopName)
@@ -37,7 +35,6 @@ namespace Domain.Concrete
 
         public IEnumerable<string> GetStops(string busNumber)
         {
-            //получение названий остановок
             return context.Stops.AsEnumerable()
                                 .Where(x => x.busNumber == busNumber)
                                 .Select(x => x.stopName)
@@ -46,7 +43,6 @@ namespace Domain.Concrete
 
         public IEnumerable<string> GetOtherBuses(string stopName, string busNumber)
         {
-            //получение других автобусов на этой остановке
             return context.Stops.Where(x => x.stopName == stopName && x.busNumber != busNumber)
                                 .Select(x => x.busNumber)
                                 .Distinct();
@@ -55,7 +51,6 @@ namespace Domain.Concrete
 
         public IEnumerable<string> GetFinalStops(string stopName, string busNumber)
         {
-            //получение конечных остановок
             return context.Stops.Where(x => x.stopName == stopName && x.busNumber == busNumber)
                                 .Select(x => x.finalStop)
                                 .Distinct();
@@ -63,7 +58,6 @@ namespace Domain.Concrete
 
         public IEnumerable<string> GetDays(string stopName, string busNumber, string endStop)
         {
-            //получение дней
             return context.Stops.Where(x => x.stopName == stopName && x.busNumber == busNumber && x.finalStop == endStop)
                                 .Select(x => x.days)
                                 .Distinct();
@@ -71,7 +65,6 @@ namespace Domain.Concrete
 
         public IEnumerable<string> GetItems(string stopName, string busNumber, string endStop, string days)
         {
-            //получение времени остановок
             String stops = context.Stops.First(x => x.busNumber == busNumber && x.stopName == stopName && x.finalStop == endStop && x.days == days).stops;
             Regex reg = new Regex(@"\d{1,2}:\d{1,2}");
             MatchCollection matches = reg.Matches(stops);
