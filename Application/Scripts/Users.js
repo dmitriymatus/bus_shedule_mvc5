@@ -13,7 +13,7 @@
 
             $.ajax({
                 type: 'GET',
-                url: '/AdminManage/Users/'+ searchValue +'/Page' + page,
+                url: '/AdminManage/Users/' + encodeURIComponent(searchValue) + '/Page' + page,
                 success: function (data, textstatus) {
                     if (data != '') {
                         $("#scrolList").append(data);

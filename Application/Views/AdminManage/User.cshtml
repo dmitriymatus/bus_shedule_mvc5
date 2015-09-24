@@ -1,0 +1,54 @@
+﻿@model Application.Models.AdminManage.UserViewModel
+@{
+    ViewBag.Title = "Пользователь";
+}
+
+<h4 class="text-capitalize">Пользователь</h4>
+<ul class="list-group">
+    <li class="list-group-item"><div class="row"> <div class="col-lg-6"><h4 class="text-info">Имя пользователя:</h4> </div> <div class="col-lg-6"><h4 class="text-muted">@Model.Name</h4></div> </div></li>
+    <li class="list-group-item"><div class="row"> <div class="col-lg-6"><h4 class="text-info">Почта:</h4> </div> <div class="col-lg-6"><h4 class="text-muted">@Model.Email</h4></div> </div></li>
+    <li class="list-group-item">
+        <div class="row">
+            <div class="col-lg-6"><h4 class="text-info">Роли:</h4> </div>
+            <div class="col-lg-6">
+
+                @foreach (var item in Model.Roles)
+                {
+                    <h4 class="text-muted">@item</h4>
+                }
+
+            </div>
+        </div>
+    </li>
+</ul>
+
+<div class="row">
+    <div class="col-lg-6">
+        @if (!Model.Roles.Contains("admin"))
+        {
+            using (Html.BeginForm("SetOnRole", "AdminManage", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(x => x.Id)
+                <button type="submit" class="btn btn-primary form-control ">Сделать администратором</button>
+            }
+        }
+        else
+        {
+            using (Html.BeginForm("RemoveFromRole", "AdminManage", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(x => x.Id)
+                <button type="submit" class="btn btn-primary form-control">Удалить из администраторов</button>
+            }
+        }
+    </div>
+    <div class="col-lg-6">
+        @using (Html.BeginForm("Delete", "AdminManage"))
+        {
+            @Html.AntiForgeryToken();
+            @Html.HiddenFor(x => x.Id)
+            <button type="submit" class="btn  btn-danger form-control ">Удалить пользователя</button>
+        }
+    </div>
+</div>

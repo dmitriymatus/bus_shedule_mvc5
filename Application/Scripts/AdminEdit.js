@@ -27,7 +27,7 @@ function getData(result) {
     if (document.getElementById("stopsContainer").hasAttribute("hidden") != true) {
         document.getElementById("stopsContainer").setAttribute("hidden");
     }
-    $.each(result.Stops, function (i) { $("#stopName").append("<option>" + this + "</option>") })
+    $.each(result, function (i) { $("#stopName").append("<option>" + this + "</option>") })
     stopLoadingAnimation();
 }
 
@@ -89,7 +89,7 @@ function GetendStops(stops) {
 
     var finalStop = document.getElementById("finalStop");
     finalStop.options.selectedIndex = 1;
-    selectFinalStop();
+    selectendStop();
 
     stopLoadingAnimation();
 }

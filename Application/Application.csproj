@@ -189,6 +189,7 @@
     <Compile Include="Infrastructure\StopsFormatAttribute.cs" />
     <Compile Include="Models\Account\LoginModel.cs" />
     <Compile Include="Models\Account\RegisterModel.cs" />
+    <Compile Include="Models\AdminManage\UserViewModel.cs" />
     <Compile Include="Models\Admin\AddFileViewModel.cs" />
     <Compile Include="Models\Admin\AdminAddViewModel.cs" />
     <Compile Include="Models\AppDbInitializer.cs" />
@@ -265,6 +266,7 @@
     <Content Include="Views\Admin\Edit.cshtml" />
     <Content Include="Views\AdminManage\Users.cshtml" />
     <Content Include="Views\AdminManage\_Items.cshtml" />
+    <Content Include="Views\AdminManage\User.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

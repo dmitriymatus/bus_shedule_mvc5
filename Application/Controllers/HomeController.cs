@@ -18,7 +18,6 @@ namespace Application.Controllers
 
         public ActionResult Index()
         {
-            //получение номеров автобусов
             var buses = repository.GetBuses();
 
             return View(buses);
@@ -27,7 +26,6 @@ namespace Application.Controllers
         [OutputCache(Duration = 1, NoStore = true)]
         public JsonResult GetStopsNames(string busNumber)
         {
-            //получение названий остановок
             var result = repository.GetStops(busNumber);
 
             return Json(result, JsonRequestBehavior.AllowGet);
@@ -36,7 +34,6 @@ namespace Application.Controllers
         [OutputCache(Duration = 1, NoStore = true)]
         public JsonResult GetFinalStops(string stopName, string busNumber)
         {
-            //получение конечных остановок
             var result = repository.GetFinalStops(stopName, busNumber);
 
             return Json(result, JsonRequestBehavior.AllowGet);
@@ -45,7 +42,6 @@ namespace Application.Controllers
         [OutputCache(Duration = 1, NoStore = true)]
         public JsonResult GetDays(string stopName, string busNumber, string endStop)
         {
-            //получение дней
             var result = repository.GetDays(stopName, busNumber, endStop);
             var now = Days.GetDays(result);
 
@@ -56,9 +52,7 @@ namespace Application.Controllers
         [OutputCache(Duration = 1, NoStore = true)]
         public JsonResult GetStops(string busNumber, string stopName, string endStopName, string days)
         {
-            //получение времени остановок
             var result = repository.GetItems(stopName, busNumber, endStopName, days);
-            //получение ближайшего рейса
             var nearestTime = Stops.GetNearestTime(result);
 
             var model = new { stops = result, nearestStop = nearestTime };
@@ -67,7 +61,7 @@ namespace Application.Controllers
 
         public JsonResult GetOtherBuses(string stopName, string busNumber)
         {
-            //получение других автобусов на этой остановке
+
             var result = repository.GetOtherBuses(stopName, busNumber);
 
             return Json(result, JsonRequestBehavior.AllowGet);
