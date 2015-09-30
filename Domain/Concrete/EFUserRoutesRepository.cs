@@ -31,5 +31,26 @@ namespace Domain.Concrete
         {
             return context.UserRoutes.Where(x => x.UserName == userName);
         }
+
+
+        public void UpdateRoute(int Id, string Name, string BusNumber, string Stop, string EndStop, string Days)
+        {
+            UserRoute route = context.UserRoutes.Where(x => x.Id == Id).FirstOrDefault();
+            route.BusNumber = BusNumber;
+            route.Name = Name;
+            route.Stop = Stop;
+            route.EndStop = EndStop;
+            route.Days = Days;
+
+            context.SaveChanges();
+        }
+
+
+        public void Delete(int Id)
+        {
+            UserRoute route = context.UserRoutes.Where(x => x.Id == Id).FirstOrDefault();
+            context.UserRoutes.Remove(route);
+            context.SaveChanges();
+        }
     }
 }

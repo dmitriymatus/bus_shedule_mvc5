@@ -1,9 +1,12 @@
 ﻿@model IEnumerable<Application.Models.Routes.RoutesViewModel>
 
-
-@foreach (var item in Model)
-{
-    <p>Маршрут N: @item.BusNumber</p>
-    <p>Остановка: @item.Stop</p>
-    <p>Ближайший маршрут: @item.NearestBus</p>
-}
+<ul class="list-group">
+    @foreach (var item in Model)
+    {
+    <li class="list-group-item">
+        <h4 class="text-capitalize"><strong>Маршрут N: </strong>@item.BusNumber</h4>
+        <h4 class="text-capitalize"><strong>Остановка:</strong> @item.Stop</h4>
+        <h4 class="text-capitalize"><strong>Ближайший маршрут:</strong> @item.NearestBus</h4>
+    </li>
+    }
+</ul>

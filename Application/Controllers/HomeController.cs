@@ -24,6 +24,14 @@ namespace Application.Controllers
         }
 
         [OutputCache(Duration = 1, NoStore = true)]
+        public JsonResult GetBuses()
+        {
+            var buses = repository.GetBuses();
+
+            return Json(buses, JsonRequestBehavior.AllowGet);
+        }
+
+        [OutputCache(Duration = 1, NoStore = true)]
         public JsonResult GetStopsNames(string busNumber)
         {
             var result = repository.GetStops(busNumber);

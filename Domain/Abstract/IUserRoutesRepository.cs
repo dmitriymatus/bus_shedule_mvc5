@@ -13,5 +13,7 @@ namespace Domain.Abstract
         IEnumerable<UserRoute> GetUserRoutes(string userName);
 
         void AddRoute(string userName, string busNumber, string name, string stop, string endStop, string days);
+        void UpdateRoute(int Id, string Name, string BusNumber,string Stop, string EndStop, string Days);
+        void Delete(int Id);
     }
 }

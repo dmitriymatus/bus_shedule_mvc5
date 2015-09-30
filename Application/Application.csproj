@@ -197,6 +197,7 @@
     <Compile Include="Models\BusStopViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\Routes\RouteAddViewModel.cs" />
+    <Compile Include="Models\Routes\RoutesEditViewModel.cs" />
     <Compile Include="Models\Routes\RoutesViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -242,6 +243,7 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\RouteAdd.js" />
+    <Content Include="Scripts\RouteEdit.js" />
     <Content Include="Scripts\RoutesIndex.js" />
     <Content Include="Scripts\Users.js" />
     <Content Include="Scripts\_references.js" />
@@ -276,6 +278,7 @@
     <Content Include="Views\Routes\Edit.cshtml" />
     <Content Include="Views\Routes\_SelectRoutes.cshtml" />
     <Content Include="Views\Routes\Add.cshtml" />
+    <Content Include="Views\Routes\Route.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

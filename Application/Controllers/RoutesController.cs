@@ -15,18 +15,16 @@ namespace Application.Controllers
     {
         IUserRoutesRepository repository;
         IStopsRepository stopsRepository;
-        List<UserRoute> examplelist = new List<UserRoute>();
 
         public RoutesController(IUserRoutesRepository _repository, IStopsRepository _stopsRepository)
         {
-           // examplelist.Add(new UserRoute { Id = "1" , BusNumber = "19",Name = "Домой", UserName = "Admin", Stop = "АП", EndStop = "АП-Пригородный вокзал", Days = "Рабочие" });
             repository = _repository;
             stopsRepository = _stopsRepository; 
         }
 
         public ActionResult Index()
         {
-            var model = repository.Routes.Where(x=> x.UserName == User.Identity.Name).Select(x => x.Name);
+            var model = repository.Routes.Where(x=> x.UserName == User.Identity.Name).Select(x => x.Name).Distinct();
             return PartialView("_IndexPartial",new SelectList(model));
         }
 
@@ -53,7 +51,8 @@ namespace Application.Controllers
         [HttpGet]
         public ActionResult Edit()
         {
-            return View();
+            var model = repository.Routes.Where(x => x.UserName == User.Identity.Name);
+            return View(model);
         }
     
 
@@ -73,6 +72,65 @@ namespace Application.Controllers
             return PartialView("_SelectRoutes",model);
         }
 
+
+        public ActionResult Route(int Id)
+        {
+            ViewBag.Id = Id;
+            var model = repository.Routes.Where(x=>x.Id == Id).FirstOrDefault();
+
+            var Buses = stopsRepository.GetBuses();
+            var Stops = stopsRepository.GetStops(model.BusNumber);
+            var FinalStops = stopsRepository.GetFinalStops(model.Stop, model.BusNumber);
+            var Days = stopsRepository.GetDays(model.Stop, model.BusNumber, model.EndStop);
+
+            var result = new RoutesEditViewModel() {
+                BusNumber = model.BusNumber,
+                Stop = model.Stop,
+                Name = model.Name,
+                Days = model.Days,
+                EndStop = model.EndStop,
+                Buses  =Buses,
+                Stops = Stops,
+                EndStops = FinalStops,
+                AllDays  = Days
+            };
+            return View(result);
+        }
+
+
+        [HttpPost]
+        public ActionResult SaveChanges(int Id, RoutesEditViewModel model)
+        {
+            if(!ModelState.IsValid)
+            {
+                model.Buses = stopsRepository.GetBuses();
+                model.Stops = stopsRepository.GetStops(model.BusNumber);
+                model.EndStops = stopsRepository.GetFinalStops(model.Stop, model.BusNumber);
+                model.AllDays = stopsRepository.GetDays(model.Stop, model.BusNumber, model.EndStop);
+                ViewBag.Id = Id;                
+                return View("Route", model);
+            }
+
+            repository.UpdateRoute(Id, model.Name, model.BusNumber, model.Stop, model.EndStop, model.Days);
+            TempData["result"] = "Запись обновлена";
+            return RedirectToAction("Edit");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Delete(int? Id)
+        {
+            if(Id != null)
+            {
+                var route = repository.Routes.Where(x => x.Id == Id).FirstOrDefault();
+                if(route.UserName == User.Identity.Name)
+                { 
+                repository.Delete((int)Id);
+                TempData["result"] = "Запись удалена";
+                }
+            }            
+            return RedirectToAction("Edit","Routes");
+        }
 
     }
 }

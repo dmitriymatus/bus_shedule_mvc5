@@ -5,6 +5,11 @@
 
 <p class="bg-success">@TempData["result"]</p>
 
+<div class="row">
+    <div class="col-lg-3"><h4><small><a href="@Url.Action("Edit","Routes")" class="text-left"><span class="glyphicon glyphicon-list-alt"></span> Маршруты</a></small></h4></div>
+    <div class="col-lg-offset-2 col-lg-2"><h4 class="text-capitalize">Добавить</h4></div>
+</div>
+
 @using (Html.BeginForm())
 { 
 
