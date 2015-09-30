@@ -8,7 +8,13 @@
     @Styles.Render("~/Content/Index.css")
 }
 
-<blockquote class="blockquote-reverse">
+@if (Request.IsAuthenticated)
+{
+    @Html.Action("Index", "Routes")
+}
+
+
+<blockquote class="blockquote">
     <div class="row">
         <div class="col-sm-3">
             <h4 class="text-muted">Номер</h4>
@@ -55,4 +61,5 @@
 @section Scripts
 {
     @Scripts.Render("~/Scripts/Index.js")
+    @Scripts.Render("~/Scripts/RoutesIndex.js") 
 }

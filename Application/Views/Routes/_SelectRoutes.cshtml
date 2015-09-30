@@ -1,0 +1,9 @@
+﻿@model IEnumerable<Application.Models.Routes.RoutesViewModel>
+
+
+@foreach (var item in Model)
+{
+    <p>Маршрут N: @item.BusNumber</p>
+    <p>Остановка: @item.Stop</p>
+    <p>Ближайший маршрут: @item.NearestBus</p>
+}

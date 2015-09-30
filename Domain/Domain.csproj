@@ -54,10 +54,13 @@
   <ItemGroup>
     <Compile Include="Abstract\ISheduleCreator.cs" />
     <Compile Include="Abstract\IStopsRepository.cs" />
+    <Compile Include="Abstract\IUserRoutesRepository.cs" />
     <Compile Include="Concrete\EFStopsRepository.cs" />
+    <Compile Include="Concrete\EFUserRoutesRepository.cs" />
     <Compile Include="Concrete\SheduleCreator.cs" />
     <Compile Include="Concrete\SheduleDbContext.cs" />
     <Compile Include="Models\busStop.cs" />
+    <Compile Include="Models\UserRoute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

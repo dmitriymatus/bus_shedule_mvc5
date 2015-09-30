@@ -1,0 +1,52 @@
+﻿@model Application.Models.Routes.RouteAddViewModel
+    @{
+        ViewBag.Title = "Добавить маршруты";
+    }
+
+<p class="bg-success">@TempData["result"]</p>
+
+@using (Html.BeginForm())
+{ 
+
+    <blockquote class="blockquote">
+        <div class="row">
+            <div class="col-lg-offset-3 col-lg-6">
+                <h4 class="text-muted">Название</h4>
+                @Html.TextBoxFor(x => x.Name, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-offset-3 col-lg-6">
+                <h4 class="text-muted">Номер</h4>
+                @Html.DropDownListFor(x=> x.BusNumber, new SelectList(ViewBag.Buses), "",new { @class = "form-control", onchange = "selectNumber();" })
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-offset-3 col-lg-6">
+                <h4 class="text-muted">Остановка</h4>
+                @Html.DropDownListFor(x=>x.Stop, new SelectList(new List<string>()), "", new { @class = "form-control", onchange = "selectStop();" })
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-offset-3 col-lg-6">
+                <h4 class="text-muted">Направление</h4>
+                @Html.DropDownListFor(x=>x.EndStop, new SelectList(new List<string>()), "", new { @class = "form-control", onchange = "selectFinalStop();" })
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-offset-3 col-lg-6">
+                <h4 class="text-muted">Дни</h4>
+                @Html.DropDownListFor(x=>x.Days, new SelectList(new List<string>()), "", new { @class = "form-control"})
+            </div>
+        </div>
+        <br />
+        <button type="submit" class="btn btn-primary col-lg-offset-3 col-lg-6">Добавить</button>
+        <br />
+    </blockquote>   
+}
+
+@section Scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Scripts/RouteAdd.js")
+}
