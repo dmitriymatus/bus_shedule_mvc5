@@ -178,6 +178,7 @@
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\AdminManageController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\RoutesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -188,6 +189,7 @@
     <Compile Include="Infrastructure\NinjectDependencyResolver.cs" />
     <Compile Include="Infrastructure\Stops.cs" />
     <Compile Include="Infrastructure\StopsFormatAttribute.cs" />
+    <Compile Include="Models\Account\ExternalLoginConfirmationViewModel.cs" />
     <Compile Include="Models\Account\LoginModel.cs" />
     <Compile Include="Models\Account\RegisterModel.cs" />
     <Compile Include="Models\AdminManage\UserViewModel.cs" />
@@ -196,6 +198,9 @@
     <Compile Include="Models\AppDbInitializer.cs" />
     <Compile Include="Models\BusStopViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\Manage\ChangePasswordViewModel.cs" />
+    <Compile Include="Models\Manage\IndexViewModel.cs" />
+    <Compile Include="Models\Manage\SetPasswordViewModel.cs" />
     <Compile Include="Models\Routes\RouteAddViewModel.cs" />
     <Compile Include="Models\Routes\RoutesEditViewModel.cs" />
     <Compile Include="Models\Routes\RoutesViewModel.cs" />
@@ -279,6 +284,11 @@
     <Content Include="Views\Routes\_SelectRoutes.cshtml" />
     <Content Include="Views\Routes\Add.cshtml" />
     <Content Include="Views\Routes\Route.cshtml" />
+    <Content Include="Views\Manage\Index.cshtml" />
+    <Content Include="Views\Manage\ChangePassword.cshtml" />
+    <Content Include="Views\Account\ExternalLoginConfirmation.cshtml" />
+    <Content Include="Views\Account\ExternalLoginFailure.cshtml" />
+    <Content Include="Views\Manage\SetPassword.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

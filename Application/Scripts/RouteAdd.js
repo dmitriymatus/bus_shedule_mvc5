@@ -66,5 +66,5 @@ function GetDays(days)
     $("#Days").empty();
     $("#Days").append("<option>" + "</option>");
 
-    $.each(days, function (i) { $("#Days").append("<option>" + this + "</option>") })
+    $.each(days.result, function (i) { $("#Days").append("<option>" + this + "</option>") })
 }

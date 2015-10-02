@@ -16,6 +16,7 @@ namespace Application
             // Настройка контекста базы данных, диспетчера пользователей и диспетчера входа для использования одного экземпляра на запрос
             app.CreatePerOwinContext(ApplicationDbContext.Create);
             app.CreatePerOwinContext<ApplicationUserManager>(ApplicationUserManager.Create);
+            app.CreatePerOwinContext<ApplicationSignInManager>(ApplicationSignInManager.Create);
 
             // регистрация менеджера ролей
             app.CreatePerOwinContext<ApplicationRoleManager>(ApplicationRoleManager.Create);
@@ -30,7 +31,13 @@ namespace Application
                         validateInterval: TimeSpan.FromMinutes(30),
                         regenerateIdentity: (manager, user) => user.GenerateUserIdentityAsync(manager))
                 }
-            });            
+            });
+            app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
+            app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
+            {
+                ClientId = "66902402963-14v6dfmne1mg34jbb1htto9uasqe1hnu.apps.googleusercontent.com",
+                ClientSecret = "QQsHpgVXq2BzRQvgM2T-_uag"
+            });
 
         }
     }
