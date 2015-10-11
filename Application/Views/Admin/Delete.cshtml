@@ -13,6 +13,7 @@
 
 @using (Html.BeginForm())
 {
+    @Html.AntiForgeryToken()
     <blockquote class="blockquote-reverse">
         <div class="row">
             <div class="col-sm-3">
@@ -42,7 +43,7 @@
             <button type="submit" class="btn btn-success">Удалить</button>
         </blockquote>
     </div>
-
+    @Html.HttpMethodOverride(HttpVerbs.Delete)
 }
 @section Scripts
 {

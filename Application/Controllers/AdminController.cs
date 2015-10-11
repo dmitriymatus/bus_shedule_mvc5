@@ -12,6 +12,7 @@ using Application.Models;
 namespace Application.Controllers
 {
     [Authorize(Roles = "admin")]
+    [OutputCache(Duration = 3600, SqlDependency = "shedule:BusStops")]
     public class AdminController : Controller
     {
         IStopsRepository repository;
@@ -81,16 +82,12 @@ namespace Application.Controllers
                 model.Stop = stop;
                 return View(model);
             }
-            else
-            {
-                repository.AddStop(stop.busNumber, stop.stopName, stop.finalStop, stop.days);
-                TempData["Success"] = "Запись добавлена";
-            }
+            repository.AddStop(stop.busNumber, stop.stopName, stop.finalStop, stop.days);
+            TempData["Success"] = "Запись добавлена";
             return RedirectToAction("AddStop");
         }
 
         [HttpGet]
-        [OutputCache(Duration = 1, NoStore = true)]
         public ActionResult Edit()
         {
             var buses = repository.GetBuses();
@@ -102,36 +99,31 @@ namespace Application.Controllers
         public ActionResult Edit(BusStopViewModel stop)
         {
             if (repository.Update(stop.busNumber, stop.stopName, stop.finalStop, stop.days, stop.stops))
-            {
                 TempData["Success"] = "Запись обновлена";
-            }
             else
-            {
                 TempData["Erors"] = "Запись не обновлена";
-            }
             return RedirectToAction("Edit");
         }
 
         [HttpGet]
-        [OutputCache(Duration = 1, NoStore = true)]
         public ActionResult Delete()
         {
             var buses = repository.GetBuses();
             return View(buses);
         }
 
-
-        [HttpPost]
+        [HttpDelete]
+        [ValidateAntiForgeryToken]
         public ActionResult Delete(BusStopViewModel stop)
         {
             if (repository.Delete(stop.busNumber, stop.stopName, stop.finalStop, stop.days))
-            {
                 TempData["Success"] = "Запись удалена";
-            }
             return RedirectToAction("Delete");
         }
 
-        [HttpGet]
+
+        [HttpDelete]
+        [ValidateAntiForgeryToken]
         public ActionResult DeleteAll()
         {
             repository.DeleteAll();
@@ -139,14 +131,13 @@ namespace Application.Controllers
             return RedirectToAction("Index");
         }
 
-        [NonAction]
         private AdminAddViewModel CreateViewModel()
         {
-            var numbers = repository.Stops.Select(x => x.busNumber).Distinct();
-            var stopNames = repository.Stops.Select(x => x.stopName).Distinct().OrderBy(x => x);
-            var finalStops = repository.Stops.Select(x => x.finalStop).Distinct().OrderBy(x => x);
-            var days = repository.Stops.Select(x => x.days).Distinct().OrderBy(x => x);
-            AdminAddViewModel model = new AdminAddViewModel
+            var numbers = repository.Stops.Select(x => x.BusNumber).Distinct();
+            var stopNames = repository.Stops.Select(x => x.StopName).Distinct().OrderBy(x => x);
+            var finalStops = repository.Stops.Select(x => x.FinalStop).Distinct().OrderBy(x => x);
+            var days = repository.Stops.Select(x => x.Days).Distinct().OrderBy(x => x);
+            return new AdminAddViewModel
             {
                 Numbers = numbers,
                 StopNames = stopNames,
@@ -154,7 +145,6 @@ namespace Application.Controllers
                 FinalStops = finalStops,
                 Stop = new BusStopViewModel()
             };
-            return model;
         }
 
 

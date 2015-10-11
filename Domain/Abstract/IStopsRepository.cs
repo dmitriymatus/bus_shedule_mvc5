@@ -5,7 +5,7 @@ namespace Domain.Abstract
 {
     public interface IStopsRepository
     {
-        IEnumerable<busStop> Stops { get; }
+        IEnumerable<BusStop> Stops { get; }
         IEnumerable<string> GetBuses();
         IEnumerable<string> GetStops(string busNumber);
         IEnumerable<string> GetOtherBuses(string stopName, string busNumber);
@@ -13,7 +13,7 @@ namespace Domain.Abstract
         IEnumerable<string> GetDays(string stopName, string busNumber, string endStop);
         IEnumerable<string> GetItems(string stopName, string busNumber, string endStop, string days);
         IEnumerable<string> GetAllStops();
-        void AddStops(IEnumerable<busStop> stops);
+        void AddStops(IEnumerable<BusStop> stops);
         void AddStop(string busNumber, string stopName, string finalStop, string days);
         bool Contain(string busNumber, string stopName, string finalStop, string days);
         void DeleteAll();

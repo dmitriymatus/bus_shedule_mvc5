@@ -10,7 +10,8 @@
 
 @if (Request.IsAuthenticated)
 {
-    @Html.Action("Index", "Routes")
+    @Html.Partial("_IndexPartial")
+    @*@Html.Action("Index", "Routes")*@
 }
 
 

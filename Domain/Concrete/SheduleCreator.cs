@@ -10,9 +10,17 @@ using Domain.Abstract;
 
 namespace Domain.Concrete
 {
-    public class SheduleCreator: ISheduleCreator
+    public class SheduleCreator : ISheduleCreator
     {
         const int dataStart = 4;
+        const int busNumberOffset = 0;
+        const int stopNameOffset = 3;
+        const int finalStopOffset = 2;
+        const int daysOffset = 1;
+        const int sheduleStartOffset = 7;
+        const int endOffset = 11;
+
+
         public void Create(string fileName, IStopsRepository repository)
         {
 
@@ -38,8 +46,8 @@ namespace Domain.Concrete
                     rows.Add(item);
                 }
             }
-            IEnumerable<busStop> stops = Parse(rows);
-            stream.Close();
+            IEnumerable<BusStop> stops = Parse(rows);
+            stream.Dispose();
             excelReader.Dispose();
 
             repository.DeleteAll();
@@ -47,7 +55,7 @@ namespace Domain.Concrete
         }
 
 
-        private IEnumerable<busStop> Parse(List<StringBuilder> rows)
+        private IEnumerable<BusStop> Parse(List<StringBuilder> rows)
         {
             string busNumber;
             string stopName;
@@ -63,12 +71,19 @@ namespace Domain.Concrete
                 cols = row.ToString().Split(separator, StringSplitOptions.None);
                 if (!String.IsNullOrEmpty(cols[0] as string) && !String.IsNullOrEmpty(cols[1] as string) && !String.IsNullOrEmpty(cols[2] as string) && !String.IsNullOrEmpty(cols[3] as string))
                 {
-                    busNumber = cols[0].Remove(0, 1);
-                    stopName = cols[3];
-                    finalStop = cols[2];
-                    days = cols[1] == "Р" ? "Рабочие" : cols[1] == "В" ? "Выходные" : cols[1] == "Р,В" ? "Ежедневно" : cols[1];
-                    stops = Convert(cols.Skip(7).Take(cols.Count() - 11));
-                    yield return new busStop { busNumber = busNumber, stopName = stopName, finalStop = finalStop, days = days, stops = stops };
+                    busNumber = cols[busNumberOffset].Remove(0, 1);
+                    stopName = cols[stopNameOffset];
+                    finalStop = cols[finalStopOffset];
+                    days = cols[daysOffset] == "Р" ? "Рабочие" : cols[daysOffset] == "В" ? "Выходные" : cols[daysOffset] == "Р,В" ? "Ежедневно" : cols[daysOffset];
+                    stops = Convert(cols.Skip(sheduleStartOffset).Take(cols.Count() - endOffset));
+                    yield return new BusStop
+                    {
+                        BusNumber = busNumber,
+                        StopName = stopName,
+                        FinalStop = finalStop,
+                        Days = days,
+                        Stops = stops
+                    };
                 }
             }
         }

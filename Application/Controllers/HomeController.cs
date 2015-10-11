@@ -8,22 +8,25 @@ using Application.Infrastructure;
 
 namespace Application.Controllers
 {
+    [OutputCache(Duration = 3600, SqlDependency = "shedule:BusStops")]
     public class HomeController : Controller
     {
+        IUserRoutesRepository routesRepository;
         IStopsRepository repository;
-        public HomeController(IStopsRepository _repository)
+        public HomeController(IStopsRepository _repository, IUserRoutesRepository _routesRepository)
         {
             repository = _repository;
+            routesRepository = _routesRepository;
         }
 
         public ActionResult Index()
         {
-            var buses = repository.GetBuses();
-
-            return View(buses);
+            ViewBag.HasUserRoutes = routesRepository.Routes.Where(x => x.UserName == User.Identity.Name).Any();
+            return View(repository.GetBuses());
         }
 
-        [OutputCache(Duration = 1, NoStore = true)]
+        //----------------------------------------------------------------------------------------
+
         public JsonResult GetBuses()
         {
             var buses = repository.GetBuses();
@@ -31,7 +34,6 @@ namespace Application.Controllers
             return Json(buses, JsonRequestBehavior.AllowGet);
         }
 
-        [OutputCache(Duration = 1, NoStore = true)]
         public JsonResult GetStopsNames(string busNumber)
         {
             var result = repository.GetStops(busNumber);
@@ -39,7 +41,6 @@ namespace Application.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
-        [OutputCache(Duration = 1, NoStore = true)]
         public JsonResult GetFinalStops(string stopName, string busNumber)
         {
             var result = repository.GetFinalStops(stopName, busNumber);
@@ -47,7 +48,6 @@ namespace Application.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
-        [OutputCache(Duration = 1, NoStore = true)]
         public JsonResult GetDays(string stopName, string busNumber, string endStop)
         {
             var result = repository.GetDays(stopName, busNumber, endStop);
@@ -57,23 +57,23 @@ namespace Application.Controllers
             return Json(model, JsonRequestBehavior.AllowGet);
         }
 
-        [OutputCache(Duration = 1, NoStore = true)]
         public JsonResult GetStops(string busNumber, string stopName, string endStopName, string days)
         {
             var result = repository.GetItems(stopName, busNumber, endStopName, days);
             var nearestTime = Stops.GetNearestTime(result);
 
-            var model = new { stops = result, nearestStop = nearestTime };
+            var model = new {stops = result, nearestStop = nearestTime };
             return Json(model, JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult GetOtherBuses(string stopName, string busNumber)
         {
-
             var result = repository.GetOtherBuses(stopName, busNumber);
 
             return Json(result, JsonRequestBehavior.AllowGet);
         }
+
+        //-------------------------------------------------------------------------------------------------
 
     }
 }

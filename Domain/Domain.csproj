@@ -59,7 +59,7 @@
     <Compile Include="Concrete\EFUserRoutesRepository.cs" />
     <Compile Include="Concrete\SheduleCreator.cs" />
     <Compile Include="Concrete\SheduleDbContext.cs" />
-    <Compile Include="Models\busStop.cs" />
+    <Compile Include="Models\BusStop.cs" />
     <Compile Include="Models\UserRoute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

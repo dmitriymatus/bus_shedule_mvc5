@@ -22,11 +22,15 @@ namespace Application.Controllers
             stopsRepository = _stopsRepository; 
         }
 
-        public ActionResult Index()
+        [OutputCache(Duration = 1, NoStore = false)]
+        public JsonResult Index()
         {
-            var model = repository.Routes.Where(x=> x.UserName == User.Identity.Name).Select(x => x.Name).Distinct();
-            return PartialView("_IndexPartial",new SelectList(model));
+            var model = repository.Routes.Where(x => x.UserName == User.Identity.Name)
+                                         .Select(x => x.Name)
+                                         .Distinct();
+            return Json(model, JsonRequestBehavior.AllowGet);
         }
+
 
         [HttpGet]
         public ActionResult Add()
@@ -38,12 +42,13 @@ namespace Application.Controllers
         [HttpPost]
         public ActionResult Add(RouteAddViewModel userRoute)
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return View(userRoute);
             }
-            repository.AddRoute(User.Identity.Name, userRoute.BusNumber, userRoute.Name, userRoute.Stop, userRoute.EndStop, userRoute.Days);
+            repository.AddRoute(User.Identity.Name, userRoute.BusNumber, userRoute.Name, userRoute.Stop, userRoute.EndStop);
             TempData["result"] = "Запись добавлена";
+
             return RedirectToAction("Add");
         }
 
@@ -59,40 +64,45 @@ namespace Application.Controllers
 
         public ActionResult SelectRoutes(string Name)
         {
-            var routes = repository.Routes.Where(x => x.Name == Name.Trim(' '));
+            var routes = repository.Routes.Where(x => x.Name == Name.Trim(' ') && x.UserName == User.Identity.Name);
             var model = new List<RoutesViewModel>();
 
             foreach(var route in routes)
-            {
-                var result = stopsRepository.GetItems(route.Stop, route.BusNumber, route.EndStop, route.Days);
+            {               
+                var allDays = stopsRepository.GetDays(route.Stop, route.BusNumber, route.EndStop);
+                var result = stopsRepository.GetItems(route.Stop, route.BusNumber, route.EndStop, Days.GetDays(allDays));
                 var nearestTime = Stops.GetNearestTime(result);
-                model.Add(new RoutesViewModel() { Name = route.Name, BusNumber = route.BusNumber, Stop = route.Stop, Days = route.Days, NearestBus = nearestTime });
+                model.Add(new RoutesViewModel()
+                {
+                    Name = route.Name,
+                    BusNumber = route.BusNumber,
+                    Stop = route.Stop,
+                    NearestBus = nearestTime
+                });
             }
-
-            return PartialView("_SelectRoutes",model);
+            return PartialView("_SelectRoutes", model);
         }
 
 
         public ActionResult Route(int Id)
         {
             ViewBag.Id = Id;
-            var model = repository.Routes.Where(x=>x.Id == Id).FirstOrDefault();
+            var model = repository.Routes.Where(x => x.Id == Id).FirstOrDefault();
 
             var Buses = stopsRepository.GetBuses();
             var Stops = stopsRepository.GetStops(model.BusNumber);
             var FinalStops = stopsRepository.GetFinalStops(model.Stop, model.BusNumber);
             var Days = stopsRepository.GetDays(model.Stop, model.BusNumber, model.EndStop);
 
-            var result = new RoutesEditViewModel() {
+            var result = new RoutesEditViewModel()
+            {
                 BusNumber = model.BusNumber,
                 Stop = model.Stop,
                 Name = model.Name,
-                Days = model.Days,
                 EndStop = model.EndStop,
-                Buses  =Buses,
+                Buses = Buses,
                 Stops = Stops,
                 EndStops = FinalStops,
-                AllDays  = Days
             };
             return View(result);
         }
@@ -101,17 +111,16 @@ namespace Application.Controllers
         [HttpPost]
         public ActionResult SaveChanges(int Id, RoutesEditViewModel model)
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 model.Buses = stopsRepository.GetBuses();
                 model.Stops = stopsRepository.GetStops(model.BusNumber);
                 model.EndStops = stopsRepository.GetFinalStops(model.Stop, model.BusNumber);
-                model.AllDays = stopsRepository.GetDays(model.Stop, model.BusNumber, model.EndStop);
                 ViewBag.Id = Id;                
                 return View("Route", model);
             }
 
-            repository.UpdateRoute(Id, model.Name, model.BusNumber, model.Stop, model.EndStop, model.Days);
+            repository.UpdateRoute(Id, model.Name, model.BusNumber, model.Stop, model.EndStop);
             TempData["result"] = "Запись обновлена";
             return RedirectToAction("Edit");
         }
@@ -120,7 +129,7 @@ namespace Application.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int? Id)
         {
-            if(Id != null)
+            if (Id != null)
             {
                 var route = repository.Routes.Where(x => x.Id == Id).FirstOrDefault();
                 if(route.UserName == User.Identity.Name)

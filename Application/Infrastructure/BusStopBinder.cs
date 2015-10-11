@@ -17,18 +17,20 @@ namespace Application.Infrastructure
             {
                 HttpRequestBase request = controllerContext.HttpContext.Request;
                 var model = base.BindModel(controllerContext, bindingContext) as BusStopViewModel;
-
-                Regex reg = new Regex(@"\d{1,2}:\d{1,2}");
-                MatchCollection matches = reg.Matches(model.stops);
-                if (matches.Count != 0)
-                {                
-                StringBuilder stops = new StringBuilder();
-                foreach (Match match in matches)
+                if (model.stops != null)
                 {
-                    string time = match.Value;
-                    stops.Append(time + " ");
-                }
-                model.stops = stops.ToString();
+                    Regex reg = new Regex(@"\d{1,2}:\d{1,2}");
+                    MatchCollection matches = reg.Matches(model.stops);
+                    if (matches.Count != 0)
+                    {
+                        StringBuilder stops = new StringBuilder();
+                        foreach (Match match in matches)
+                        {
+                            string time = match.Value;
+                            stops.Append(time + " ");
+                        }
+                        model.stops = stops.ToString();
+                    }
                 }
                 return model;
 

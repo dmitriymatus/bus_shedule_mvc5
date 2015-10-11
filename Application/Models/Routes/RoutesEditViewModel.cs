@@ -16,12 +16,9 @@ namespace Application.Models.Routes
         public string Stop { get; set; }
         [Required]
         public string EndStop { get; set; }
-        [Required]
-        public string Days { get; set; }
 
         public IEnumerable<string> Buses { get; set; }
         public IEnumerable<string> Stops { get; set; }
         public IEnumerable<string> EndStops { get; set; }
-        public IEnumerable<string> AllDays { get; set; }
     }
 }

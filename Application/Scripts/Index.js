@@ -1,4 +1,17 @@
-﻿//обработчик события выбора автобуса
+﻿$(function ()
+{
+    $.getJSON("/Routes/Index", null, GetRoutes);
+}
+)
+function GetRoutes(routes)
+{
+    $("#userRoutes").empty();
+    $("#userRoutes").append("<option></option>")
+    $.each(routes, function (i) { $("#userRoutes").append("<option>" + this + "</option>") })
+}
+
+
+//обработчик события выбора автобуса
 function selectNumber() {
     var busNumber = document.getElementById("busNumber");
     if (busNumber.value != "") {
@@ -53,7 +66,7 @@ function selectAll() {
 
     if (busNumber.value != "" & stopName.value != "" & endStopName.value != "" & days.value != "") {
         startLoadingAnimation();
-        $.getJSON("/Home/GetStops" + "?busNumber=" + encodeURIComponent(busNumber.value) + "&stopName=" + encodeURIComponent(stopName.value) + "&endStopName=" + encodeURIComponent(endStopName.value) + "&days=" + encodeURIComponent(days.value), null, GetNodes);
+        $.getJSON("/Home/GetStops" + "?busNumber=" + encodeURIComponent(busNumber.value) + "&stopName=" + encodeURIComponent(stopName.value) + "&endStopName=" + encodeURIComponent(endStopName.value) + "&days=" + encodeURIComponent($("#days").val()), null, GetNodes);
         if (document.getElementById("stopsContainer").hasAttribute("hidden") == true) {
             document.getElementById("stopsContainer").removeAttribute("hidden");
         }

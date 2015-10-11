@@ -35,13 +35,7 @@
         <div class="row">
             <div class="col-lg-offset-3 col-lg-6">
                 <h4 class="text-muted">Направление</h4>
-                @Html.DropDownListFor(x=>x.EndStop, new SelectList(new List<string>()), "", new { @class = "form-control", onchange = "selectFinalStop();" })
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-offset-3 col-lg-6">
-                <h4 class="text-muted">Дни</h4>
-                @Html.DropDownListFor(x=>x.Days, new SelectList(new List<string>()), "", new { @class = "form-control"})
+                @Html.DropDownListFor(x=>x.EndStop, new SelectList(new List<string>()), "", new { @class = "form-control"})
             </div>
         </div>
         <br />

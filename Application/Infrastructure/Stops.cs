@@ -11,29 +11,9 @@ namespace Application.Infrastructure
         {
 
             var time = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.CreateCustomTimeZone("Brest Standard Time", TimeSpan.FromHours(3), "BrestTimeZone", "wintertime"));
-
-            List<DateTime> items = new List<DateTime>();
-            foreach (string stop in stops)
-            {
-                items.Add(DateTime.Parse(stop));
-            }
-            items.Add(time);
-            var orderedItems = items.OrderBy(x => x.TimeOfDay);
-            for (int i = 0; i < orderedItems.Count(); i++)
-            {
-                if (orderedItems.ElementAt(i) == time)
-                {
-                    if (i != orderedItems.Count() - 1)
-                    {
-                        return orderedItems.ElementAt(i + 1).ToString("HH:mm");
-                    }
-                    else
-                    {
-                        return orderedItems.ElementAt(0).ToString("HH:mm");
-                    }
-                }
-            }
-            return null;
+            var orderedItems = stops.Select(x => DateTime.Parse(x)).OrderBy(x => x);
+            var items = orderedItems.SkipWhile(x => x <= time);         
+            return items.Any() ? items.FirstOrDefault().ToString("HH:mm") : orderedItems.FirstOrDefault().ToString("HH:mm");
         }
     }
 }

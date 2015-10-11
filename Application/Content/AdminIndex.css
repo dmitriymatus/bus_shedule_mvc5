@@ -13,3 +13,42 @@ a blockquote:hover
     font-weight:bold;
     background-color:RGBA(22, 141, 226,0.1);
 }
+
+form
+{
+    width:inherit;
+      /* Убираем отступы */
+  margin: 0;
+  padding: 0;
+}
+
+
+button.link {
+  /* Первые два свойства нужны чтобы убрать отступы в IE */
+  overflow: visible;
+  width:auto;
+  display:inline;
+ 
+  /* Убираем отступы */
+  margin: 0;
+  padding: 0;
+
+ 
+  /* Убираем все элементы оформления кнопки */
+  background: none;
+  border: none;
+ 
+  /* Обычный для ссылок курсор */
+  cursor: pointer;
+}
+ 
+button.link:hover
+{
+    text-decoration:none;
+}
+
+button.link blockquote:hover
+{
+    font-weight:bold;
+    background-color:RGBA(22, 141, 226,0.1);
+}

@@ -11,7 +11,13 @@
     <a href="@Url.Action("AddStop")"><blockquote> <h4 class="text-muted">Добавить расписание для одной остановки</h4> </blockquote></a>
     <a href="@Url.Action("Edit")"><blockquote> <h4 class="text-muted">Изменить</h4> </blockquote></a>
     <a href="@Url.Action("Delete")"><blockquote> <h4 class="text-muted">Удалить</h4> </blockquote></a>
-    <a href="@Url.Action("DeleteAll")"><blockquote> <h4 class="text-muted">Удалить все записи</h4> </blockquote></a>
+    @using (Html.BeginForm("DeleteAll","Admin"))
+    {
+        @Html.AntiForgeryToken()
+        <button type="submit" class="link"><blockquote> <h4 class="text-muted">Удалить все записи</h4> </blockquote></button>
+        @Html.HttpMethodOverride(HttpVerbs.Delete)
+    }
+
     <a href="@Url.Action("Users","AdminManage")"><blockquote> <h4 class="text-muted">Управление пользователями</h4> </blockquote></a>
 </div>
 

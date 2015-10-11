@@ -52,7 +52,13 @@ namespace Application.Controllers
             var roles = await UserManager.GetRolesAsync(id);           
             var user = await UserManager.FindByIdAsync(id);
 
-            UserViewModel model = new UserViewModel() { Name = user.UserName, Email = user.Email ?? "-", Roles = roles, Id = id };
+            UserViewModel model = new UserViewModel()
+            {
+                Name = user.UserName,
+                Email = user.Email ?? "-",
+                Roles = roles,
+                Id = id
+            };
             return View(model);
         }
   
@@ -99,11 +105,17 @@ namespace Application.Controllers
         {
             if(searchValue == "All" || searchValue == null)
             { 
-                return UserManager.Users.Where(x=>x.UserName != User.Identity.Name).OrderBy(x => x.UserName).Skip((page * usersOnPage) - usersOnPage).Take(usersOnPage);
+                return UserManager.Users.Where(x=>x.UserName != User.Identity.Name)
+                                        .OrderBy(x => x.UserName)
+                                        .Skip((page * usersOnPage) - usersOnPage)
+                                        .Take(usersOnPage);
             }
             else
             {
-                return UserManager.Users.Where(x => x.UserName.Contains(searchValue) &&  x.UserName != User.Identity.Name).OrderBy(x => x.UserName).Skip((page * usersOnPage) - usersOnPage).Take(usersOnPage);
+                return UserManager.Users.Where(x => x.UserName.Contains(searchValue) &&  x.UserName != User.Identity.Name)
+                                        .OrderBy(x => x.UserName)
+                                        .Skip((page * usersOnPage) - usersOnPage)
+                                        .Take(usersOnPage);
             }
         }
 

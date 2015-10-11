@@ -14,6 +14,5 @@ namespace Domain.Models
         public string Name { get; set; }
         public string Stop { get; set; }
         public string EndStop { get; set; }
-        public string Days { get; set; }
     }
 }

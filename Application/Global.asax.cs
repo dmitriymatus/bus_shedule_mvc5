@@ -19,7 +19,7 @@ namespace Application
         {
 
             //Database.SetInitializer<ApplicationDbContext>(new AppDbInitializer());
-
+            // закоментировано для удобства отладки... при развёртывании раскоментировать
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
@@ -27,6 +27,12 @@ namespace Application
 
             ModelBinders.Binders.Add(typeof(BusStopViewModel), new BusStopBinder());
             DependencyResolver.SetResolver(new NinjectDependencyResolver(new StandardKernel()));
+
+            String connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["SheduleDbContext"].ConnectionString;
+            System.Web.Caching.SqlCacheDependencyAdmin.EnableNotifications(connectionString);
+            System.Web.Caching.SqlCacheDependencyAdmin.EnableTableForNotifications(connectionString, "BusStops");
+
+
         }
     }
 }

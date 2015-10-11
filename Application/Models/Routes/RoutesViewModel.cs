@@ -16,7 +16,5 @@ namespace Application.Models.Routes
         public string Stop { get; set; }
         [Required]
         public string NearestBus { get; set; }
-        [Required]
-        public string Days { get; set; }
     }
 }

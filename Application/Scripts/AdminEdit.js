@@ -56,8 +56,8 @@ function selectAll() {
 
 function GetNodes(nodes) {
     $("#stops").text("");
-    if (nodes.length != 0) {
-        $.each(nodes, function (i) { $("#stops").append(this + " ") })
+    if (nodes.stops.length != 0) {
+        $.each(nodes.stops, function (i) { $("#stops").append(this + " ") })
     }
     else {
         $("#stops").append("Нет рейсов")
