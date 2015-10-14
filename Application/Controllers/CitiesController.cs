@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Application.Models.Cities;
 
 namespace Application.Controllers
 {
@@ -17,31 +18,25 @@ namespace Application.Controllers
 
         public ActionResult Index()
         {
-            var model = citiesRepository.GetCitiesName();
+            
             if (Session["City"] == null)
             {
             Session["City"] = citiesRepository.Cities.FirstOrDefault().Id;
             }
             else
             {
-
             }
+            var model = new CitiesIndexViewModel { Cities = citiesRepository.GetCitiesName(), SelectedCity = citiesRepository.Cities.FirstOrDefault(x => x.Id == (int)Session["City"]).Name };
             return PartialView("_CitiesIndex",model);
         }
-
-        public ActionResult SetCity(string city, string returnUrl)
+        [OutputCache(Duration = 1, NoStore =false)]
+        public void SetCity(string city)
         {
             var result = citiesRepository.Cities.Where(x => x.Name == city);
             if(result.Any())
             {
                 Session["City"] = result.First().Id;
             }
-
-            if(string.IsNullOrEmpty(returnUrl))
-            {
-                returnUrl = Url.Action("Index", "Home");
-            }
-            return Redirect(returnUrl);
         }
 
     }

@@ -128,7 +128,8 @@ namespace Application.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteAll()
         {
-            repository.DeleteAll();
+            int city = (int)Session["City"];
+            repository.DeleteAll(city);
             TempData["Success"] = "Записи удалены";
             return RedirectToAction("Index");
         }

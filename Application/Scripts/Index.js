@@ -1,7 +1,8 @@
 ﻿$(function ()
 {
     $.getJSON("/Routes/Index", null, GetRoutes);
-    $.getJSON("/Home/GetBuses", null, GetBuses);
+    var city = $("#city").val();
+    $.getJSON("/Home/GetBuses", { city:city }, GetBuses);
 }
 )
 function GetRoutes(routes)

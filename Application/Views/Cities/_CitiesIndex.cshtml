@@ -1,8 +1,9 @@
-﻿@model IEnumerable<string>
+﻿@model Application.Models.Cities.CitiesIndexViewModel
 <blockquote>
     <h4 class="text-muted">
+        @*@Html.DropDownList("city", new SelectList(Model), (string)ViewBag.SelectedCity, new {onchange = "SelectCity();" })*@
         <select id="city" onchange="SelectCity();">
-            @foreach (var name in Model)
+            @foreach (var name in Model.Cities)
             {
                 <option>@name</option>
             }
@@ -10,3 +11,14 @@
     </h4>
 </blockquote>
   
+
+<script type="text/javascript">
+   var allCities = document.getElementById("city");
+    for (i = 0; i < allCities.length; i++) {
+        if (allCities.options[i].value == "@Model.SelectedCity") {
+            allCities.options.selectedIndex = i;
+        }
+    }
+    
+
+</script>

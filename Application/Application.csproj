@@ -198,6 +198,7 @@
     <Compile Include="Models\Admin\AdminAddViewModel.cs" />
     <Compile Include="Models\AppDbInitializer.cs" />
     <Compile Include="Models\BusStopViewModel.cs" />
+    <Compile Include="Models\Cities\CitiesIndexViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\Manage\ChangePasswordViewModel.cs" />
     <Compile Include="Models\Manage\IndexViewModel.cs" />

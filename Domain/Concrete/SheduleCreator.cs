@@ -50,7 +50,7 @@ namespace Domain.Concrete
             stream.Dispose();
             excelReader.Dispose();
 
-            repository.DeleteAll();
+            repository.DeleteAll(city);
             repository.AddStops(stops);
         }
 

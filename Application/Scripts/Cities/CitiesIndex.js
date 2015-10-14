@@ -1,5 +1,6 @@
 ﻿function SelectCity()
 {
     var city = $("#city").val();
-    $.getJSON("/Cities/SetCity" + "?city=" + encodeURIComponent(city), null, null);
+    var returnUrl = window.location.href;
+    $.get("/Cities/SetCity", { city: city }, function () { location.reload(true);})
 }

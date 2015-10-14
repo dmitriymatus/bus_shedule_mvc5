@@ -98,9 +98,9 @@ namespace Domain.Concrete
             context.SaveChanges();
         }
 
-        public void DeleteAll()
+        public void DeleteAll(int city)
         {
-            IEnumerable<BusStop> stops = context.Stops;
+            IEnumerable<BusStop> stops = context.Stops.Where(x=>x.CityId == city);
             context.Stops.RemoveRange(stops);
             context.SaveChanges();
         }

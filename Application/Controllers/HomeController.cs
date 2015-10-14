@@ -29,11 +29,11 @@ namespace Application.Controllers
         }
 
         //----------------------------------------------------------------------------------------
-
-        public JsonResult GetBuses()
+        [OutputCache(Duration = 60, VaryByParam = "city")]
+        public JsonResult GetBuses(string city)
         {
-            int city = (int)Session["City"];
-            var buses = repository.GetBuses(city);
+            int acity = (int)Session["City"];
+            var buses = repository.GetBuses(acity);
 
             return Json(buses, JsonRequestBehavior.AllowGet);
         }

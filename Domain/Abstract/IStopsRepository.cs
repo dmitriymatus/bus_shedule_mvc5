@@ -16,7 +16,7 @@ namespace Domain.Abstract
         void AddStops(IEnumerable<BusStop> stops);
         void AddStop(string busNumber, string stopName, string finalStop, string days);
         bool Contain(string busNumber, string stopName, string finalStop, string days);
-        void DeleteAll();
+        void DeleteAll(int city);
         bool Update(string busNumber, string stopName, string finalStop, string days, string stops);
         bool Delete(string busNumber, string stopName, string finalStop, string days);
     }
