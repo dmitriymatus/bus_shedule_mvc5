@@ -6,11 +6,11 @@
 <p class="bg-success">@TempData["result"]</p>
 
 <div class="row">
-    <div class="col-lg-offset-5 col-lg-2"><h4 class="text-capitalize">Маршруты</h4></div>
+    <div class="col-lg-offset-5 col-lg-2"><h4 class="text-capitalize" style="font-weight: bold">Маршруты</h4></div>
     <div class="col-lg-offset-2 col-lg-3"><h4><small><a href="@Url.Action("Add","Routes")" class="text-right"><span class="glyphicon glyphicon-plus"></span> Добавить</a></small></h4></div>    
 </div>
 
-<ul class="list-group">
+<ul class="list-group" id="RoutesContainer">
     @foreach (var item in Model)
     {
         <li class="list-group-item">
