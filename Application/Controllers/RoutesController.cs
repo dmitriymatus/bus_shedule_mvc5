@@ -22,7 +22,6 @@ namespace Application.Controllers
             stopsRepository = _stopsRepository; 
         }
 
-        [OutputCache(Duration = 1, NoStore = false)]
         public JsonResult Index()
         {
             var model = repository.Routes.Where(x => x.UserName == User.Identity.Name)

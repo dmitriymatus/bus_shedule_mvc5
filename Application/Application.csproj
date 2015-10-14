@@ -18,7 +18,7 @@
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
-    <IISExpressSSLPort />
+    <IISExpressSSLPort>44300</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
@@ -235,6 +235,14 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\Index.js" />
+    <None Include="Properties\PublishProfiles\bus-shedule-brest - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\bus-shedule-brest - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\raspisanie-brest - FTP %282%29.pubxml" />
+    <None Include="Properties\PublishProfiles\raspisanie-brest - FTP %283%29.pubxml" />
+    <None Include="Properties\PublishProfiles\raspisanie-brest - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\raspisanie-brest - Web Deploy %282%29.pubxml" />
+    <None Include="Properties\PublishProfiles\raspisanie-brest - Web Deploy %283%29.pubxml" />
+    <None Include="Properties\PublishProfiles\raspisanie-brest - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\jquery-2.1.4.js" />
     <Content Include="Scripts\jquery-2.1.4.min.js" />

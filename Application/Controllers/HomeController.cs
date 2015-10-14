@@ -19,10 +19,12 @@ namespace Application.Controllers
             routesRepository = _routesRepository;
         }
 
+
+        [OutputCache(Duration = 2,NoStore = false)]
         public ActionResult Index()
         {
             ViewBag.HasUserRoutes = routesRepository.Routes.Where(x => x.UserName == User.Identity.Name).Any();
-            return View(repository.GetBuses());
+            return View();
         }
 
         //----------------------------------------------------------------------------------------

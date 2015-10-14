@@ -1,6 +1,7 @@
 ﻿$(function ()
 {
     $.getJSON("/Routes/Index", null, GetRoutes);
+    $.getJSON("/Home/GetBuses", null, GetBuses);
 }
 )
 function GetRoutes(routes)
@@ -9,6 +10,13 @@ function GetRoutes(routes)
     $("#userRoutes").append("<option></option>")
     $.each(routes, function (i) { $("#userRoutes").append("<option>" + this + "</option>") })
 }
+
+function GetBuses(buses) {
+    $("#busNumber").empty();
+    $("#busNumber").append("<option></option>")
+    $.each(buses, function (i) { $("#busNumber").append("<option>" + this + "</option>") })
+}
+
 
 
 //обработчик события выбора автобуса

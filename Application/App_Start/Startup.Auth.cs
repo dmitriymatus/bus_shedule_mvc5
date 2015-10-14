@@ -33,10 +33,15 @@ namespace Application
                 }
             });
             app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
+            //app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
+            //{
+            //    ClientId = "66902402963-14v6dfmne1mg34jbb1htto9uasqe1hnu.apps.googleusercontent.com",
+            //    ClientSecret = "QQsHpgVXq2BzRQvgM2T-_uag"
+            //});
             app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
             {
-                ClientId = "66902402963-14v6dfmne1mg34jbb1htto9uasqe1hnu.apps.googleusercontent.com",
-                ClientSecret = "QQsHpgVXq2BzRQvgM2T-_uag"
+                ClientId = "619121707933-9ik39c6vvu91s81ana68ii6rbmht1gf2.apps.googleusercontent.com",
+                ClientSecret = "quRy9DgE6LquMpHf52tq91YO"
             });
 
         }

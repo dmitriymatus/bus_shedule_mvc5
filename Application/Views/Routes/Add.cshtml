@@ -10,8 +10,8 @@
     <div class="col-lg-offset-2 col-lg-2"><h4 class="text-capitalize">Добавить</h4></div>
 </div>
 
-@using (Html.BeginForm())
-{ 
+@using (Html.BeginForm("Add","Routes",FormMethod.Post,new {id = "RoutesContainer" }))
+{
 
     <blockquote class="blockquote">
         <div class="row">

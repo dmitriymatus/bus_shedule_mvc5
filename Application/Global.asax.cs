@@ -32,7 +32,6 @@ namespace Application
             System.Web.Caching.SqlCacheDependencyAdmin.EnableNotifications(connectionString);
             System.Web.Caching.SqlCacheDependencyAdmin.EnableTableForNotifications(connectionString, "BusStops");
 
-
         }
     }
 }
