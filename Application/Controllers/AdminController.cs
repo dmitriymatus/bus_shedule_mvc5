@@ -12,7 +12,7 @@ using Application.Models;
 namespace Application.Controllers
 {
     [Authorize(Roles = "admin")]
-    [OutputCache(Duration = 3600, SqlDependency = "shedule:BusStops")]
+   // [OutputCache(Duration = 3600, SqlDependency = "shedule:BusStops")]
     public class AdminController : Controller
     {
         IStopsRepository repository;
@@ -43,8 +43,8 @@ namespace Application.Controllers
                 {
                     var fileName = this.HttpContext.Request.MapPath("~/Content/shedule.xls");
                     model.file.SaveAs(fileName);
-
-                    creator.Create(fileName,repository);
+                    int city = (int)Session["City"];
+                    creator.Create(fileName,repository, city);
 
                     TempData["Success"] = "Расписание добавлено";
                 }
@@ -90,7 +90,8 @@ namespace Application.Controllers
         [HttpGet]
         public ActionResult Edit()
         {
-            var buses = repository.GetBuses();
+            int city = (int)Session["City"];
+            var buses = repository.GetBuses(city);
             return View(buses);
         }
 
@@ -108,7 +109,8 @@ namespace Application.Controllers
         [HttpGet]
         public ActionResult Delete()
         {
-            var buses = repository.GetBuses();
+            int city = (int)Session["City"];
+            var buses = repository.GetBuses(city);
             return View(buses);
         }
 

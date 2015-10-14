@@ -31,6 +31,7 @@ namespace MvcApplication.Infrastructure
         {
             kernel.Bind<IStopsRepository>().To<EFStopsRepository>();
             kernel.Bind<IUserRoutesRepository>().To<EFUserRoutesRepository>();
+            kernel.Bind<ICitiesRepository>().To<EFCitiesRepository>();
             kernel.Bind<ISheduleCreator>().To<SheduleCreator>();
         }
 

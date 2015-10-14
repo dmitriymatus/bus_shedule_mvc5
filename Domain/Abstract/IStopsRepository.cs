@@ -6,7 +6,7 @@ namespace Domain.Abstract
     public interface IStopsRepository
     {
         IEnumerable<BusStop> Stops { get; }
-        IEnumerable<string> GetBuses();
+        IEnumerable<string> GetBuses(int city);
         IEnumerable<string> GetStops(string busNumber);
         IEnumerable<string> GetOtherBuses(string stopName, string busNumber);
         IEnumerable<string> GetFinalStops(string stopName, string busNumber);

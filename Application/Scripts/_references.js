@@ -2,6 +2,7 @@
 /// <reference path="addstop.js" />
 /// <reference path="adminedit.js" />
 /// <reference path="bootstrap.min.js" />
+/// <reference path="cities/citiesindex.js" />
 /// <reference path="index.js" />
 /// <reference path="jquery.validate.js" />
 /// <reference path="jquery.validate.unobtrusive.js" />

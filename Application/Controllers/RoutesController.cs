@@ -34,7 +34,8 @@ namespace Application.Controllers
         [HttpGet]
         public ActionResult Add()
         {
-            ViewBag.Buses = stopsRepository.GetBuses();
+            int city = (int)Session["City"];
+            ViewBag.Buses = stopsRepository.GetBuses(city);
             return View(new RouteAddViewModel());
         }
 
@@ -88,7 +89,9 @@ namespace Application.Controllers
             ViewBag.Id = Id;
             var model = repository.Routes.Where(x => x.Id == Id).FirstOrDefault();
 
-            var Buses = stopsRepository.GetBuses();
+
+            int city = (int)Session["City"];
+            var Buses = stopsRepository.GetBuses(city);
             var Stops = stopsRepository.GetStops(model.BusNumber);
             var FinalStops = stopsRepository.GetFinalStops(model.Stop, model.BusNumber);
             var Days = stopsRepository.GetDays(model.Stop, model.BusNumber, model.EndStop);
@@ -112,7 +115,8 @@ namespace Application.Controllers
         {
             if (!ModelState.IsValid)
             {
-                model.Buses = stopsRepository.GetBuses();
+                int city = (int)Session["City"];
+                model.Buses = stopsRepository.GetBuses(city);
                 model.Stops = stopsRepository.GetStops(model.BusNumber);
                 model.EndStops = stopsRepository.GetFinalStops(model.Stop, model.BusNumber);
                 ViewBag.Id = Id;                

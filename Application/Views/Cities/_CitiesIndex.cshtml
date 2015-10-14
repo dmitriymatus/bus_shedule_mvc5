@@ -1,0 +1,12 @@
+﻿@model IEnumerable<string>
+<blockquote>
+    <h4 class="text-muted">
+        <select id="city" onchange="SelectCity();">
+            @foreach (var name in Model)
+            {
+                <option>@name</option>
+            }
+        </select>
+    </h4>
+</blockquote>
+  

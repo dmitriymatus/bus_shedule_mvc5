@@ -17,9 +17,9 @@ namespace Domain.Concrete
         //-------------------------------------------------------------------------------
         #region getMethods
 
-        public IEnumerable<string> GetBuses()
+        public IEnumerable<string> GetBuses(int city)
         {
-            return context.Stops.AsEnumerable()
+            return context.Stops.Where(x=>x.CityId == city).AsEnumerable()
                                 .OrderBy(x => x.Id)
                                 .Select(x => x.BusNumber)
                                 .Distinct();
@@ -93,6 +93,7 @@ namespace Domain.Concrete
 
         public void AddStops(IEnumerable<BusStop> stops)
         {
+            
             context.Stops.AddRange(stops);
             context.SaveChanges();
         }

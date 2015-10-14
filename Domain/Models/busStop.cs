@@ -27,5 +27,10 @@ namespace Domain.Models
         [Required]
         [Display(Name = "Дни")]
         public string Days { get; set; }
+
+        [Required]
+        public int? CityId { get; set; }
+
     }
+
 }

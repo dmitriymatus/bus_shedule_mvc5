@@ -6,6 +6,7 @@ namespace Domain.Concrete
     public class SheduleDbContext : DbContext
     {
         public DbSet<BusStop> Stops { get; set; }
+        public DbSet<City> Cities { get; set; }
         public DbSet<UserRoute> UserRoutes { get; set; }
     }
 }

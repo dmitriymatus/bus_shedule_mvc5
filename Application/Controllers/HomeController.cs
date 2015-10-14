@@ -13,6 +13,7 @@ namespace Application.Controllers
     {
         IUserRoutesRepository routesRepository;
         IStopsRepository repository;
+        
         public HomeController(IStopsRepository _repository, IUserRoutesRepository _routesRepository)
         {
             repository = _repository;
@@ -31,7 +32,8 @@ namespace Application.Controllers
 
         public JsonResult GetBuses()
         {
-            var buses = repository.GetBuses();
+            int city = (int)Session["City"];
+            var buses = repository.GetBuses(city);
 
             return Json(buses, JsonRequestBehavior.AllowGet);
         }

@@ -33,9 +33,19 @@
                 </div><!-- /.container-fluid -->
             </nav>
 
-            <blockquote>
-                <h4 class="text-muted">Брест</h4>
-            </blockquote>
+            @Html.Action("Index","Cities")
+            @*<blockquote>
+                <h4 class="text-muted">
+                <select id="city">
+                    <option>Брест</option>
+                    <option>Витебск</option>
+                    <option>Гродно</option>
+                    <option>Гомель</option>
+                    <option>Минск</option>
+
+                </select>
+                </h4>
+            </blockquote>*@
         </div>
         <div class="jumbotron">
             @RenderBody()
@@ -50,5 +60,6 @@
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
+    @Scripts.Render("~/Scripts/Cities/CitiesIndex.js")
 </body>
 </html>

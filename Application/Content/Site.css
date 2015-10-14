@@ -120,3 +120,8 @@ nav, .navbar
 {
     text-align:left;
 }
+
+#city
+{
+border:none;
+}

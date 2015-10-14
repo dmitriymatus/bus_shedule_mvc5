@@ -21,7 +21,7 @@ namespace Domain.Concrete
         const int endOffset = 11;
 
 
-        public void Create(string fileName, IStopsRepository repository)
+        public void Create(string fileName, IStopsRepository repository, int city)
         {
 
             List<StringBuilder> rows = new List<StringBuilder>();
@@ -46,7 +46,7 @@ namespace Domain.Concrete
                     rows.Add(item);
                 }
             }
-            IEnumerable<BusStop> stops = Parse(rows);
+            IEnumerable<BusStop> stops = Parse(rows,city);
             stream.Dispose();
             excelReader.Dispose();
 
@@ -55,7 +55,7 @@ namespace Domain.Concrete
         }
 
 
-        private IEnumerable<BusStop> Parse(List<StringBuilder> rows)
+        private IEnumerable<BusStop> Parse(List<StringBuilder> rows, int city)
         {
             string busNumber;
             string stopName;
@@ -82,7 +82,8 @@ namespace Domain.Concrete
                         StopName = stopName,
                         FinalStop = finalStop,
                         Days = days,
-                        Stops = stops
+                        Stops = stops,
+                        CityId = city
                     };
                 }
             }
