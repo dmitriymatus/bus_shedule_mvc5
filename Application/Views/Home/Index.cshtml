@@ -38,28 +38,34 @@
 
 <blockquote id="nearestTimeContainer" hidden>
     <div class="row">
-        <h3>Ближайший рейс:</h3>
+        <h3>Ближайший рейс</h3>
         <h3 id="nearestTime"></h3>
     </div>
 </blockquote>
 
 <blockquote class="blockquote-reverse" id="stopsContainer" hidden>
     <div class="row">
-        <h3>Расписание:</h3>
+        <h3>Расписание</h3>
         <h3 id="nodes"></h3>
     </div>
 </blockquote>
 
 <blockquote id="otherBusContainer" hidden>
     <div class="row">
-        <h4>Другие автобусы на этой остановке:</h4>
+        <h4>Другие автобусы на этой остановке</h4>
         <h4 id="otherBuses"></h4>
     </div>
 </blockquote>
 
+<hr />
+    @{
+        Html.RenderAction("Index", "News");
+    }
+    @*@Html.Action("Index", "News")*@
 
-@section Scripts
+    @section Scripts
 {
-    @Scripts.Render("~/Scripts/Index.js")
-    @Scripts.Render("~/Scripts/RoutesIndex.js") 
-}
+        @Scripts.Render("~/Scripts/Index.js")
+        @Scripts.Render("~/Scripts/RoutesIndex.js")
+        @Scripts.Render("~/Scripts/News/Index.js");   
+    }

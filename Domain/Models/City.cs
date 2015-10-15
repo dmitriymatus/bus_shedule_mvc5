@@ -11,5 +11,6 @@ namespace Domain.Models
         public string Name { get; set; }
 
         public virtual ICollection<BusStop> BusStops { get; set; }
+        public virtual ICollection<News> News { get; set; }
     }
 }

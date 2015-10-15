@@ -8,5 +8,6 @@ namespace Domain.Concrete
         public DbSet<BusStop> Stops { get; set; }
         public DbSet<City> Cities { get; set; }
         public DbSet<UserRoute> UserRoutes { get; set; }
+        public DbSet<News> News { get; set; }
     }
 }

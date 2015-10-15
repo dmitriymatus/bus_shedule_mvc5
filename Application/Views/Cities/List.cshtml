@@ -18,13 +18,11 @@
     }
     else
     {
-        <ul class="list-group">
+        <div class="list-group">
             @foreach (var item in Model)
             {
-                <li class="list-group-item">
-                    @Html.ActionLink(item,"Edit","Cities",new {City = item},new {@class="text-info" })                  
-                </li>
+                    @Html.ActionLink(item,"Edit","Cities",new {City = item},new {@class= "text-info list-group-item" })                  
             }
-        </ul>
+        </div>
     }
 </blockquote>

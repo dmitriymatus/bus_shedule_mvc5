@@ -1,0 +1,13 @@
+﻿@model IEnumerable<Domain.Models.News>
+@foreach (var item in Model)
+{
+    <div class="list-group newsItem">
+        <div class="list-group-item">
+            <div class="row list-group-item-heading">
+                <div class="col-lg-8"><h4 id="NewsTitle"> @item.Title</h4></div>
+                <div class="col-lg-4"><h4 class="text-right"><span class="badge">@item.Time.ToShortDateString()</span></h4></div>
+            </div>
+            <h4 class="list-group-item-text">@item.Text</h4>
+        </div>
+    </div>
+}

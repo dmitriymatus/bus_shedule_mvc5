@@ -24,11 +24,14 @@ namespace Application.Controllers
             {
                 Session["City"] = city.Id;
             }
+            if(citiesRepository.Cities.Any())
+            { 
             model = new CitiesIndexViewModel
             {
                 Cities = citiesRepository.GetCitiesName(),
                 SelectedCity = citiesRepository.Cities.FirstOrDefault(x => x.Id == (int)Session["City"]).Name
             };
+            }
             return PartialView("_CitiesIndex", model);
         }
 

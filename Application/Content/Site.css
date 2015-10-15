@@ -125,3 +125,33 @@ nav, .navbar
 {
 border:none;
 }
+
+
+#NewsTitle
+{
+    font-weight:bold;
+}
+
+#News
+{
+    font-weight:bold;
+    color:RGB(22, 141, 226);
+    text-align:right;
+    padding-top:5px;
+    margin-top:5px;
+    text-shadow: 1px 1px 0px rgba(0,0,0,0.2);
+    
+}
+
+#NewsContainer
+{
+    padding-top:5px;    
+}
+
+
+.newsItem
+{
+    border-radius:0px;
+    box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.16), 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+    
+}
