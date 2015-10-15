@@ -17,7 +17,7 @@ namespace Domain.Concrete
         //-------------------------------------------------------------------------------
         #region getMethods
 
-        public IEnumerable<string> GetBuses(int city)
+        public IEnumerable<string> GetBuses(int? city)
         {
             return context.Stops.Where(x=>x.CityId == city).AsEnumerable()
                                 .OrderBy(x => x.Id)
@@ -25,47 +25,47 @@ namespace Domain.Concrete
                                 .Distinct();
         }
 
-        public IEnumerable<string> GetAllStops()
+        public IEnumerable<string> GetAllStops(int? city)
         {
-            return context.Stops.AsEnumerable()
+            return context.Stops.Where(x=>x.CityId == city).AsEnumerable()
                        .OrderBy(x => x.StopName)
                        .Select(x => x.StopName)
                        .Distinct();
         }
 
-        public IEnumerable<string> GetStops(string busNumber)
+        public IEnumerable<string> GetStops(string busNumber, int? city)
         {
             return context.Stops.AsEnumerable()
-                                .Where(x => x.BusNumber == busNumber)
+                                .Where(x => x.BusNumber == busNumber && x.CityId == city)
                                 .Select(x => x.StopName)
                                 .Distinct();
         }
 
-        public IEnumerable<string> GetOtherBuses(string stopName, string busNumber)
+        public IEnumerable<string> GetOtherBuses(string stopName, string busNumber, int? city)
         {
-            return context.Stops.Where(x => x.StopName == stopName && x.BusNumber != busNumber)
+            return context.Stops.Where(x => x.StopName == stopName && x.BusNumber != busNumber && x.CityId == city)
                                 .Select(x => x.BusNumber)
                                 .Distinct();
         }
 
 
-        public IEnumerable<string> GetFinalStops(string stopName, string busNumber)
+        public IEnumerable<string> GetFinalStops(string stopName, string busNumber, int? city)
         {
-            return context.Stops.Where(x => x.StopName == stopName && x.BusNumber == busNumber)
+            return context.Stops.Where(x => x.StopName == stopName && x.BusNumber == busNumber && x.CityId == city)
                                 .Select(x => x.FinalStop)
                                 .Distinct();
         }
 
-        public IEnumerable<string> GetDays(string stopName, string busNumber, string endStop)
+        public IEnumerable<string> GetDays(string stopName, string busNumber, string endStop, int? city)
         {
-            return context.Stops.Where(x => x.StopName == stopName && x.BusNumber == busNumber && x.FinalStop == endStop)
+            return context.Stops.Where(x => x.StopName == stopName && x.BusNumber == busNumber && x.FinalStop == endStop && x.CityId == city)
                                 .Select(x => x.Days)
                                 .Distinct();
         }
 
-        public IEnumerable<string> GetItems(string stopName, string busNumber, string endStop, string days)
+        public IEnumerable<string> GetItems(string stopName, string busNumber, string endStop, string days, int? city)
         {
-            String stops = context.Stops.FirstOrDefault(x => x.BusNumber == busNumber && x.StopName == stopName && x.FinalStop == endStop && x.Days == days).Stops;
+            String stops = context.Stops.FirstOrDefault(x => x.BusNumber == busNumber && x.StopName == stopName && x.FinalStop == endStop && x.Days == days && x.CityId == city).Stops;
             Regex reg = new Regex(@"\d{1,2}:\d{1,2}");
             MatchCollection matches = reg.Matches(stops);
 
@@ -77,14 +77,15 @@ namespace Domain.Concrete
         //--------------------------------------------------------------------------------------------------
         #region adminMethods
 
-        public void AddStop(string busNumber, string stopName, string finalStop, string days)
+        public void AddStop(string busNumber, string stopName, string finalStop, string days, int? city)
         {
             BusStop stop = new BusStop
             {
                 BusNumber = busNumber,
                 StopName = stopName,
                 FinalStop = finalStop,
-                Days = days
+                Days = days,
+                CityId = city
             };
             context.Stops.Add(stop);
             context.SaveChanges();
@@ -98,26 +99,14 @@ namespace Domain.Concrete
             context.SaveChanges();
         }
 
-        public void DeleteAll(int city)
+        public void DeleteAll(int? city)
         {
             IEnumerable<BusStop> stops = context.Stops.Where(x=>x.CityId == city);
             context.Stops.RemoveRange(stops);
             context.SaveChanges();
         }
 
-        public bool Contain(string busNumber, string stopName, string finalStop, string days)
-        {
-            BusStop stop = new BusStop
-            {
-                BusNumber = busNumber,
-                StopName = stopName,
-                FinalStop = finalStop,
-                Days = days
-            };
-            return Filter(stop).Any();
-        }
-
-        public bool Update(string busNumber, string stopName, string finalStop, string days, string stops)
+        public bool Contain(string busNumber, string stopName, string finalStop, string days, int? city)
         {
             BusStop stop = new BusStop
             {
@@ -125,7 +114,21 @@ namespace Domain.Concrete
                 StopName = stopName,
                 FinalStop = finalStop,
                 Days = days,
-                Stops = stops
+                CityId = city
+            };
+            return Filter(stop).Any();
+        }
+
+        public bool Update(string busNumber, string stopName, string finalStop, string days, string stops, int? city)
+        {
+            BusStop stop = new BusStop
+            {
+                BusNumber = busNumber,
+                StopName = stopName,
+                FinalStop = finalStop,
+                Days = days,
+                Stops = stops,
+                CityId = city
             };
             BusStop item = Filter(stop).FirstOrDefault();
             if (item == null)
@@ -135,14 +138,15 @@ namespace Domain.Concrete
             return true;
         }
 
-        public bool Delete(string busNumber, string stopName, string finalStop, string days)
+        public bool Delete(string busNumber, string stopName, string finalStop, string days, int? city)
         {
             BusStop stop = new BusStop
             {
                 BusNumber = busNumber,
                 StopName = stopName,
                 FinalStop = finalStop,
-                Days = days
+                Days = days,
+                CityId = city
             };
             BusStop item = Filter(stop).FirstOrDefault();
             if (item != null)
@@ -158,7 +162,7 @@ namespace Domain.Concrete
 
         private IEnumerable<BusStop> Filter(BusStop stop)
         {
-            return context.Stops.Where(x => x.BusNumber == stop.BusNumber && x.StopName == stop.StopName && x.FinalStop == stop.FinalStop && x.Days == stop.Days);
+            return context.Stops.Where(x => x.BusNumber == stop.BusNumber && x.StopName == stop.StopName && x.FinalStop == stop.FinalStop && x.Days == stop.Days && x.CityId == stop.CityId);
         }
     }
 }

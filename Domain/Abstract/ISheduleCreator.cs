@@ -10,6 +10,6 @@ namespace Domain.Abstract
 {
     public interface ISheduleCreator
     {
-        void Create(string fileName, IStopsRepository repository, int city);
+        void Create(string fileName, IStopsRepository repository, int? city);
     }
 }

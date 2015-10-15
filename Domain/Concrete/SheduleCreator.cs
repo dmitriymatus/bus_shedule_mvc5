@@ -21,7 +21,7 @@ namespace Domain.Concrete
         const int endOffset = 11;
 
 
-        public void Create(string fileName, IStopsRepository repository, int city)
+        public void Create(string fileName, IStopsRepository repository, int? city)
         {
 
             List<StringBuilder> rows = new List<StringBuilder>();
@@ -55,7 +55,7 @@ namespace Domain.Concrete
         }
 
 
-        private IEnumerable<BusStop> Parse(List<StringBuilder> rows, int city)
+        private IEnumerable<BusStop> Parse(List<StringBuilder> rows, int? city)
         {
             string busNumber;
             string stopName;

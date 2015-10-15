@@ -29,50 +29,61 @@ namespace Application.Controllers
         }
 
         //----------------------------------------------------------------------------------------
+        
         [OutputCache(Duration = 60, VaryByParam = "city")]
         public JsonResult GetBuses(string city)
         {
-            int acity = (int)Session["City"];
-            var buses = repository.GetBuses(acity);
+            int? cityId = (int?)Session["City"];
+            var buses = repository.GetBuses(cityId);
 
             return Json(buses, JsonRequestBehavior.AllowGet);
         }
 
+        [OutputCache(Duration = 60, VaryByParam = "busNumber")]
         public JsonResult GetStopsNames(string busNumber)
         {
-            var result = repository.GetStops(busNumber);
+            int cityId = (int)Session["City"];
+            var result = repository.GetStops(busNumber, cityId);
 
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
+        [OutputCache(Duration = 60, VaryByParam = "stopName ; busNumber")]
         public JsonResult GetFinalStops(string stopName, string busNumber)
         {
-            var result = repository.GetFinalStops(stopName, busNumber);
+            int cityId = (int)Session["City"];
+            var result = repository.GetFinalStops(stopName, busNumber, cityId);
 
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
+        [OutputCache(Duration = 60, VaryByParam = "stopName ; busNumber ; endStop")]
         public JsonResult GetDays(string stopName, string busNumber, string endStop)
         {
-            var result = repository.GetDays(stopName, busNumber, endStop);
+            int cityId = (int)Session["City"];
+            var result = repository.GetDays(stopName, busNumber, endStop, cityId);
             var now = Days.GetDays(result);
 
             var model = new { result = result, now = now };
             return Json(model, JsonRequestBehavior.AllowGet);
         }
 
+        [OutputCache(Duration = 60, VaryByParam = "busNumber ; stopName ; endStopName; days")]
         public JsonResult GetStops(string busNumber, string stopName, string endStopName, string days)
         {
-            var result = repository.GetItems(stopName, busNumber, endStopName, days);
+            int cityId = (int)Session["City"];
+            var result = repository.GetItems(stopName, busNumber, endStopName, days, cityId);
             var nearestTime = Stops.GetNearestTime(result);
 
             var model = new {stops = result, nearestStop = nearestTime };
             return Json(model, JsonRequestBehavior.AllowGet);
         }
 
+        [OutputCache(Duration = 60, VaryByParam = "stopName ; busNumber")]
         public JsonResult GetOtherBuses(string stopName, string busNumber)
         {
-            var result = repository.GetOtherBuses(stopName, busNumber);
+            int cityId = (int)Session["City"];
+            var result = repository.GetOtherBuses(stopName, busNumber, cityId);
 
             return Json(result, JsonRequestBehavior.AllowGet);
         }

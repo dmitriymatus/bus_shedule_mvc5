@@ -1,0 +1,35 @@
+﻿@model Application.Models.Cities.CityViewModel
+@{
+    ViewBag.Title = "Edit";
+}
+
+<p class="bg-danger">@TempData["Errors"]</p>
+<h4 class="text-muted">Редактировать</h4>
+
+
+<blockquote>
+    <div class="row">
+        @using (Html.BeginForm("Edit", "Cities", FormMethod.Post, new { @class = "col-lg-9" }))
+        {
+            @Html.Hidden("Id", Model.Id)
+            <div class="input-group">
+                @Html.TextBoxFor(x => x.Name, new { @class = "form-control" })
+                <button type="submit" class="btn btn-info input-group-addon">Сохранить</button>
+            </div>                          
+        }
+        @using (Html.BeginForm("Delete", "Cities", FormMethod.Post, new { @class = "col-lg-3" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.Hidden("Id", Model.Id)
+            <button type="submit" class="btn btn-danger form-control">Удалить</button>
+            @Html.HttpMethodOverride(HttpVerbs.Delete)
+        }
+    </div>
+
+</blockquote>
+
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+}

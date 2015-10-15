@@ -26,6 +26,7 @@ namespace Application
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
             ModelBinders.Binders.Add(typeof(BusStopViewModel), new BusStopBinder());
+           // ValueProviderFactories.Factories.Add(new CityValueProviderFactory());
             DependencyResolver.SetResolver(new NinjectDependencyResolver(new StandardKernel()));
 
             String connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["SheduleDbContext"].ConnectionString;

@@ -16,7 +16,7 @@ namespace Domain.Concrete
             get { return context.UserRoutes; }
         }
 
-        public void AddRoute(string userName, string busNumber, string name, string stop, string endStop)
+        public void AddRoute(string userName, string busNumber, string name, string stop, string endStop, int city)
         {
             UserRoute route = new UserRoute
             {
@@ -24,26 +24,28 @@ namespace Domain.Concrete
                 UserName = userName,
                 Stop = stop,
                 EndStop = endStop,
-                BusNumber = busNumber
+                BusNumber = busNumber,
+                CityId = city
             };
             context.UserRoutes.Add(route);
             context.SaveChanges();
 
         }
 
-        public IEnumerable<UserRoute> GetUserRoutes(string userName)
+        public IEnumerable<UserRoute> GetUserRoutes(string userName, int? city)
         {
-            return context.UserRoutes.Where(x => x.UserName == userName);
+            return context.UserRoutes.Where(x => x.UserName == userName && x.CityId == city);
         }
 
 
-        public void UpdateRoute(int Id, string Name, string BusNumber, string Stop, string EndStop)
+        public void UpdateRoute(int Id, string Name, string BusNumber, string Stop, string EndStop, int city)
         {
             UserRoute route = context.UserRoutes.FirstOrDefault(x => x.Id == Id);
             route.BusNumber = BusNumber;
             route.Name = Name;
             route.Stop = Stop;
             route.EndStop = EndStop;
+            route.CityId = city;
 
             context.SaveChanges();
         }

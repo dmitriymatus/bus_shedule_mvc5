@@ -185,6 +185,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Infrastructure\BusStopBinder.cs" />
+    <Compile Include="Infrastructure\CityValueProvider.cs" />
     <Compile Include="Infrastructure\Days.cs" />
     <Compile Include="Infrastructure\FileSizeAttribute.cs" />
     <Compile Include="Infrastructure\NinjectDependencyResolver.cs" />
@@ -199,6 +200,7 @@
     <Compile Include="Models\AppDbInitializer.cs" />
     <Compile Include="Models\BusStopViewModel.cs" />
     <Compile Include="Models\Cities\CitiesIndexViewModel.cs" />
+    <Compile Include="Models\Cities\CityViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\Manage\ChangePasswordViewModel.cs" />
     <Compile Include="Models\Manage\IndexViewModel.cs" />
@@ -301,6 +303,9 @@
     <Content Include="Views\Account\ExternalLoginFailure.cshtml" />
     <Content Include="Views\Manage\SetPassword.cshtml" />
     <Content Include="Views\Cities\_CitiesIndex.cshtml" />
+    <Content Include="Views\Cities\List.cshtml" />
+    <Content Include="Views\Cities\Edit.cshtml" />
+    <Content Include="Views\Cities\Add.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

@@ -1,0 +1,22 @@
+﻿@model Application.Models.Cities.CityViewModel
+@{
+    ViewBag.Title = "Add";
+}
+
+<h4 class="text-muted">Добавить</h4>
+
+
+<blockquote>
+        @using (Html.BeginForm("Add", "Cities", FormMethod.Post))
+        {
+            <div class="input-group">
+                @Html.TextBoxFor(x => x.Name, new { @class = "form-control" })
+                <button type="submit" class="btn btn-success input-group-addon">Добавить</button>
+            </div>
+        }
+</blockquote>
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+}

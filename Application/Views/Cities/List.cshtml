@@ -1,0 +1,30 @@
+﻿@model IEnumerable<string>
+@{
+    ViewBag.Title = "List";
+}
+
+
+<p class="bg-success">@TempData["Success"]</p>
+<p class="bg-danger">@TempData["Errors"]</p>
+<div class="row">
+    <h4 class="text-muted col-lg-offset-5 col-lg-2">Города</h4>
+    <div class="col-lg-offset-2 col-lg-3"><h4><small><a href="@Url.Action("Add","Cities")" class="text-right"><span class="glyphicon glyphicon-plus"></span> Добавить</a></small></h4></div>
+</div>
+
+<blockquote>
+    @if (Model.Count() == 0 || Model == null)
+    {
+        <h4>Список городов пуст. @Html.ActionLink("Добавить город", "Add")</h4>
+    }
+    else
+    {
+        <ul class="list-group">
+            @foreach (var item in Model)
+            {
+                <li class="list-group-item">
+                    @Html.ActionLink(item,"Edit","Cities",new {City = item},new {@class="text-info" })                  
+                </li>
+            }
+        </ul>
+    }
+</blockquote>

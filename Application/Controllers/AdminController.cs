@@ -12,7 +12,7 @@ using Application.Models;
 namespace Application.Controllers
 {
     [Authorize(Roles = "admin")]
-   // [OutputCache(Duration = 3600, SqlDependency = "shedule:BusStops")]
+    [OutputCache(Duration = 3600, SqlDependency = "shedule:BusStops")]
     public class AdminController : Controller
     {
         IStopsRepository repository;
@@ -43,7 +43,7 @@ namespace Application.Controllers
                 {
                     var fileName = this.HttpContext.Request.MapPath("~/Content/shedule.xls");
                     model.file.SaveAs(fileName);
-                    int city = (int)Session["City"];
+                    int? city = (int?)Session["City"];
                     creator.Create(fileName,repository, city);
 
                     TempData["Success"] = "Расписание добавлено";
@@ -74,15 +74,15 @@ namespace Application.Controllers
                 model.Stop = stop;
                 return View(model);
             }
-
-            if (repository.Contain(stop.busNumber, stop.stopName, stop.finalStop, stop.days))
+            int? city = (int?)Session["City"];
+            if (repository.Contain(stop.busNumber, stop.stopName, stop.finalStop, stop.days, city))
             {
                 ModelState.AddModelError("", "Запись уже существует");
                 var model = CreateViewModel();
                 model.Stop = stop;
                 return View(model);
             }
-            repository.AddStop(stop.busNumber, stop.stopName, stop.finalStop, stop.days);
+            repository.AddStop(stop.busNumber, stop.stopName, stop.finalStop, stop.days, city);
             TempData["Success"] = "Запись добавлена";
             return RedirectToAction("AddStop");
         }
@@ -90,16 +90,18 @@ namespace Application.Controllers
         [HttpGet]
         public ActionResult Edit()
         {
-            int city = (int)Session["City"];
+            int? city = (int?)Session["City"];
             var buses = repository.GetBuses(city);
             return View(buses);
         }
 
 
         [HttpPost]
+        [OutputCache(Duration = 60, NoStore = false)]
         public ActionResult Edit(BusStopViewModel stop)
         {
-            if (repository.Update(stop.busNumber, stop.stopName, stop.finalStop, stop.days, stop.stops))
+            int? city = (int?)Session["City"];
+            if (repository.Update(stop.busNumber, stop.stopName, stop.finalStop, stop.days, stop.stops, city))
                 TempData["Success"] = "Запись обновлена";
             else
                 TempData["Erors"] = "Запись не обновлена";
@@ -109,16 +111,18 @@ namespace Application.Controllers
         [HttpGet]
         public ActionResult Delete()
         {
-            int city = (int)Session["City"];
+            int? city = (int?)Session["City"];
             var buses = repository.GetBuses(city);
             return View(buses);
         }
 
         [HttpDelete]
         [ValidateAntiForgeryToken]
+        [OutputCache(Duration = 60, NoStore = false)]
         public ActionResult Delete(BusStopViewModel stop)
         {
-            if (repository.Delete(stop.busNumber, stop.stopName, stop.finalStop, stop.days))
+            int? city = (int?)Session["City"];
+            if (repository.Delete(stop.busNumber, stop.stopName, stop.finalStop, stop.days, city))
                 TempData["Success"] = "Запись удалена";
             return RedirectToAction("Delete");
         }
@@ -126,9 +130,10 @@ namespace Application.Controllers
 
         [HttpDelete]
         [ValidateAntiForgeryToken]
+        [OutputCache(Duration = 60, NoStore = false)]
         public ActionResult DeleteAll()
         {
-            int city = (int)Session["City"];
+            int? city = (int?)Session["City"];
             repository.DeleteAll(city);
             TempData["Success"] = "Записи удалены";
             return RedirectToAction("Index");
