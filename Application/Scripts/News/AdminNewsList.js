@@ -14,7 +14,7 @@
 
             $.ajax({
                 type: 'GET',
-                url: '/News/GetItems',
+                url: '/News/GetAdminItems',
                 data: { Page: page, City: $("#city").val() },
                 success: function (data, textstatus) {
                     if (data != '') {
@@ -24,7 +24,7 @@
                     }
                     else {
                         page = -1;
-                        $('#loadLink').hide();       
+                        $('#loadLink').hide();
                     }
                     _inCallback = false;
                     $("div#loading").hide();

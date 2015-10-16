@@ -206,6 +206,7 @@
     <Compile Include="Models\Manage\ChangePasswordViewModel.cs" />
     <Compile Include="Models\Manage\IndexViewModel.cs" />
     <Compile Include="Models\Manage\SetPasswordViewModel.cs" />
+    <Compile Include="Models\News\NewsViewModel.cs" />
     <Compile Include="Models\Routes\RouteAddViewModel.cs" />
     <Compile Include="Models\Routes\RoutesEditViewModel.cs" />
     <Compile Include="Models\Routes\RoutesViewModel.cs" />
@@ -259,6 +260,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\News\AdminNewsList.js" />
     <Content Include="Scripts\News\Index.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
@@ -310,6 +312,10 @@
     <Content Include="Views\Cities\Add.cshtml" />
     <Content Include="Views\News\Index.cshtml" />
     <Content Include="Views\News\Items.cshtml" />
+    <Content Include="Views\News\List.cshtml" />
+    <Content Include="Views\News\AdminItems.cshtml" />
+    <Content Include="Views\News\Add.cshtml" />
+    <Content Include="Views\News\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

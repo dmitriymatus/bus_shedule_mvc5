@@ -1,0 +1,33 @@
+﻿@model Application.Models.News.NewsViewModel
+@{
+    ViewBag.Title = "Add";
+}
+<p class="bg-success">@TempData["Success"]</p>
+<p class="bg-danger">@TempData["Errors"]</p>
+<p class="bg-danger">@Html.ValidationSummary()</p>
+
+<blockquote>
+    <div class="row">
+        <h3 class="Title text-left col-lg-9">Новая новость</h3>
+        <h5 class="NavigateLink text-right col-lg-3"><a href=@Url.Action("List","News")><span class="glyphicon glyphicon-list-alt"></span> Новости</a></h5>
+    </div>
+    <div class="list-group">
+        <div class="list-group-item">
+            @using (Html.BeginForm())
+            {
+                @Html.Label("Title","Заголовок")
+                @Html.TextBoxFor(x => x.Title, new {@class = "form-control" })
+                @Html.Label("Text", "Текст")
+                @Html.TextAreaFor(x => x.Text, new { @class = "form-control", rows = 9 })
+                <br />
+                <button type="submit" class="btn btn-primary">Добавить</button>
+            }
+        </div>
+    </div>
+</blockquote>
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+}
+

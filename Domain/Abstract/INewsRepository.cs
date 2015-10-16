@@ -11,5 +11,8 @@ namespace Domain.Abstract
     {
         IEnumerable<News> News { get; }
         IEnumerable<News> GetNewsInCity(int? City);
+        bool Add(string Title, string Text, DateTime Time, int? CityId);
+        bool Update(string Title, string Text, DateTime Time, int Id);
+        bool Delete(int Id);
     }
 }

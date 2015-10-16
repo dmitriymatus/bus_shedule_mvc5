@@ -32,6 +32,7 @@ namespace Application
             String connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["SheduleDbContext"].ConnectionString;
             System.Web.Caching.SqlCacheDependencyAdmin.EnableNotifications(connectionString);
             System.Web.Caching.SqlCacheDependencyAdmin.EnableTableForNotifications(connectionString, "BusStops");
+            System.Web.Caching.SqlCacheDependencyAdmin.EnableTableForNotifications(connectionString, "News");
 
         }
     }

@@ -1,0 +1,29 @@
+﻿@model bool
+@{
+    ViewBag.Title = "List";
+}
+
+<p class="bg-success">@TempData["Success"]</p>
+<p class="bg-danger">@TempData["Errors"]</p>
+@if (Model)
+{
+    <blockquote id="NewsContainer">
+        <div class="row">
+            <h3 id="News" class="Title text-left col-lg-9">Новости</h3>
+            <h5 class="NavigateLink text-right col-lg-3"><a href= @Url.Action("Add","News")><span class="glyphicon glyphicon-plus"></span> Добавить</a></h5>
+        </div>
+        <div id="NewsList"></div>
+    </blockquote>
+}
+else
+{
+    <h4>Нет новостей</h4>
+}
+
+<a href="#" id="loadLink">Показать ещё</a>
+<div id="loading"><img src="~/Content/load.gif" /></div>
+
+@section scripts
+    {
+    @Scripts.Render("~/Scripts/News/AdminNewsList.js");
+}

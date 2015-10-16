@@ -132,7 +132,7 @@ border:none;
     font-weight:bold;
 }
 
-#News
+/*#News
 {
     font-weight:bold;
     color:RGB(22, 141, 226);
@@ -141,7 +141,24 @@ border:none;
     margin-top:5px;
     text-shadow: 1px 1px 0px rgba(0,0,0,0.2);
     
+}*/
+
+.Title
+{
+    font-weight:bold;
+    color:RGB(22, 141, 226);
+    padding-top:5px;
+    margin-top:5px;
+    text-shadow: 1px 1px 0px rgba(0,0,0,0.2);    
 }
+
+
+.NavigateLink
+{
+    padding-top:10px;
+    margin-top:5px;
+}
+
 
 #NewsContainer
 {
@@ -154,4 +171,10 @@ border:none;
     border-radius:0px;
     box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.16), 0 2px 5px 0 rgba(0, 0, 0, 0.26);
     
+}
+
+.NoPadding
+{
+    padding:0px;
+    margin:0px;
 }
