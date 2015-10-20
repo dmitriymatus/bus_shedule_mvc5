@@ -8,6 +8,8 @@ using Application.Models.Admin;
 using System.Text;
 using System.Text.RegularExpressions;
 using Application.Models;
+using System.Reflection;
+using Domain.SheduleParsers.Abstract;
 
 namespace Application.Controllers
 {
@@ -16,11 +18,9 @@ namespace Application.Controllers
     public class AdminController : Controller
     {
         IStopsRepository repository;
-        ISheduleCreator creator;
-        public AdminController(IStopsRepository _repository, ISheduleCreator _creator)
+        public AdminController(IStopsRepository _repository)
         {
             repository = _repository;
-            creator = _creator;
         }
 
         public ActionResult Index()
@@ -31,7 +31,13 @@ namespace Application.Controllers
         [HttpGet]
         public ActionResult Add()
         {
-            return View();
+            var assembly = Assembly.Load("Domain");
+            var parser = assembly.GetType("Domain.SheduleParsers.Abstract.ISheduleParser");
+            var parsers = assembly.GetTypes().Where(x=>x.GetInterfaces().Contains(parser)).Select(x=>x.Name);
+
+            AddFileViewModel model = new AddFileViewModel { Parsers = parsers };
+
+            return View(model);
         }
 
         [HttpPost]
@@ -41,10 +47,20 @@ namespace Application.Controllers
             {
                 try
                 {
-                    var fileName = this.HttpContext.Request.MapPath("~/Content/shedule.xls");
-                    model.file.SaveAs(fileName);
                     int? city = (int?)Session["City"];
-                    creator.Create(fileName,repository, city);
+                    var fileName = this.HttpContext.Request.MapPath("~/Content/shedule" + city + ".xls");
+                    model.file.SaveAs(fileName);
+
+                    var assembly = Assembly.Load("Domain");
+                    var parserInterface = assembly.GetType("Domain.SheduleParsers.Abstract.ISheduleParser");
+                    var parserType = assembly.GetTypes().FirstOrDefault(x => x.GetInterfaces().Contains(parserInterface) && x.Name == model.Parser);
+
+                    ISheduleParser parser = Activator.CreateInstance(parserType) as ISheduleParser;
+
+                    var shedule = parser.Parse(fileName, city);
+
+                    repository.DeleteAll(city);
+                    repository.AddStops(shedule);
 
                     TempData["Success"] = "Расписание добавлено";
                 }

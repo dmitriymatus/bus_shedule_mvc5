@@ -1,6 +1,7 @@
 ﻿using System.Web;
 using System.ComponentModel.DataAnnotations;
 using Application.Infrastructure;
+using System.Collections.Generic;
 
 namespace Application.Models.Admin
 {
@@ -10,5 +11,11 @@ namespace Application.Models.Admin
         [DataType(DataType.Upload)]
         [FileSize(20000000, ErrorMessage = "Максимальный размер файла не должен превышать 20MB")]
         public HttpPostedFileBase file { get; set; }
+
+        public IEnumerable<string> Parsers { get; set; }
+
+        [Required]
+        public string Parser { get; set; }
+
     }
 }

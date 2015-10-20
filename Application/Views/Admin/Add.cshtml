@@ -11,10 +11,14 @@
     @using (Html.BeginForm("Add", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
         <div class="form-group">
-            <h4 class="text-muted">Загрузить файл</h4>
+            <h4 class="text-muted">Выберите файл</h4>
             @Html.ValidationMessageFor(x => x.file)
             @Html.TextBoxFor(x => x.file, null, new { type = "file", @class = "center-block", accept = "application/vnd.ms-excel" })
-            <br />
+
+            <h4 class="text-muted">Выберите файл</h4>
+            @Html.DropDownList("Parser", new SelectList(Model.Parsers), "")
+
+            <hr />
             <input type="submit" value="Загрузить" class="btn btn-default" />
         </div>
     }

@@ -33,7 +33,6 @@ namespace MvcApplication.Infrastructure
             kernel.Bind<IUserRoutesRepository>().To<EFUserRoutesRepository>();
             kernel.Bind<ICitiesRepository>().To<EFCitiesRepository>();
             kernel.Bind<INewsRepository>().To<EFNewsRepository>();
-            kernel.Bind<ISheduleCreator>().To<SheduleCreator>();
         }
 
     }
