@@ -35,14 +35,22 @@
         </div>
     </blockquote>
     <hr />
-    <div class="row">
-        <blockquote id="stopsContainer" hidden>
-            <h4 class="text-muted">Расписание:</h4>
-            @Html.TextArea("stops", new { @class = "form-control", rows = "10" })
-            <br />
-            <button type="submit" class="btn btn-success">Сохранить</button>
-        </blockquote>
-    </div>
+
+
+            <div class="row">
+                <blockquote id="stopsContainer" hidden>
+                    <div class="row">
+                        <h3 class="Title text-left col-lg-12">Расписание:</h3>
+                    </div>
+                    <div class="list-group">
+                        <div class="list-group-item">
+                            @Html.TextArea("stops", new { @class = "form-control", rows = "10" })
+                            <hr />
+                            <button type="submit" class="btn btn-success">Сохранить</button>
+                        </div>
+                    </div>
+                </blockquote>
+            </div>
 
 }
 @section Scripts

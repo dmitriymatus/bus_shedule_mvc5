@@ -7,21 +7,31 @@
 <p class="bg-danger">@TempData["Erors"]</p>
 
 <blockquote>
+    <div class="row">
+        <h3 id="News" class="Title text-left col-lg-9">Создать расписание</h3>
+    </div>
     @Html.ValidationSummary()
-    @using (Html.BeginForm("Add", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
-    {
-        <div class="form-group">
-            <h4 class="text-muted">Выберите файл</h4>
-            @Html.ValidationMessageFor(x => x.file)
-            @Html.TextBoxFor(x => x.file, null, new { type = "file", @class = "center-block", accept = "application/vnd.ms-excel" })
 
-            <h4 class="text-muted">Выберите файл</h4>
-            @Html.DropDownList("Parser", new SelectList(Model.Parsers), "")
+    <div class="list-group">
+        <div class="list-group-item">
+            @using (Html.BeginForm("Add", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                <div class="form-group">
+                    <h4 class="text-muted">Выберите файл</h4>
+                    @Html.ValidationMessageFor(x => x.file)
+                    @Html.TextBoxFor(x => x.file, null, new { type = "file", accept = "application/vnd.ms-excel" })
 
-            <hr />
-            <input type="submit" value="Загрузить" class="btn btn-default" />
+                    <h4 class="text-muted">Выберите файл</h4>
+                    @Html.DropDownList("Parser", new SelectList(Model.Parsers), "")
+
+                    <hr />
+                    <input type="submit" value="Загрузить" class="btn btn-default" />
+                </div>
+            }
         </div>
-    }
+    </div>
+
+
 </blockquote>
 
 

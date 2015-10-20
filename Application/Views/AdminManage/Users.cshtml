@@ -3,30 +3,30 @@
     ViewBag.Title = "Управление пользователями";
     }
 
-
-<div class="row">
-    <div class="col-lg-8">
-        <h4 class="text-muted">Пользователи</h4>
-    </div><!-- /.col-lg-8 -->
-    <div class="col-lg-4">
-        <div class="input-group">
-            <input id="searchInput" type="text" class="form-control" placeholder="Поиск">
-            <span class="input-group-btn">
-                <button id="searchButton" class="btn btn-default" type="button">OK!</button>
-            </span>
-        </div><!-- /input-group -->
-    </div><!-- /.col-lg-4 -->
-</div><!-- /.row -->
+<blockquote>
+    <div class="row">
+        <h3 id="News" class="Title text-left col-lg-8">Пользователи</h3>
+        <div class="col-lg-4">
+            <div class="input-group">
+                <input id="searchInput" type="text" class="form-control" placeholder="Поиск">
+                <span class="input-group-btn">
+                    <button id="searchButton" class="btn btn-default" type="button">OK!</button>
+                </span>
+            </div><!-- /input-group -->
+        </div><!-- /.col-lg-4 -->
+    </div>
 
 
+    <div class="list-group" id="scrolList">
+        @Html.Partial("_Items")
+    </div>
 
-<ul class="list-group" id="scrolList">
-    @Html.Partial("_Items")
-</ul>
+    <a href="#" id="loadLink">Показать ещё</a>
 
-<a href="#" id="loadLink">Показать ещё</a>
+    <div id="loading"><img src="~/Content/load.gif" /></div>
 
-<div id="loading"><img src="~/Content/load.gif" /></div>
+</blockquote>
+
 
 @section scripts
 {

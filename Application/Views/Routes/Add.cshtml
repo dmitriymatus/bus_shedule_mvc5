@@ -5,42 +5,48 @@
 
 <p class="bg-success">@TempData["result"]</p>
 
-<div class="row">
-    <div class="col-lg-3"><h4><small><a href="@Url.Action("Edit","Routes")" class="text-left"><span class="glyphicon glyphicon-list-alt"></span> Маршруты</a></small></h4></div>
-    <div class="col-lg-offset-2 col-lg-2"><h4 class="text-capitalize">Добавить</h4></div>
-</div>
 
 @using (Html.BeginForm("Add","Routes",FormMethod.Post,new {id = "RoutesContainer" }))
 {
 
     <blockquote class="blockquote">
+
         <div class="row">
-            <div class="col-lg-offset-3 col-lg-6">
-                <h4 class="text-muted">Название</h4>
-                @Html.TextBoxFor(x => x.Name, new { @class = "form-control" })
+            <h3 class="Title text-left col-lg-9">Новый маршрут</h3>
+            <h5 class="NavigateLink text-right col-lg-3"><a href=@Url.Action("Edit","Routes")><span class="glyphicon glyphicon-list-alt"></span> Маршруты</a></h5>
+        </div>
+
+        <div class="list-group">
+            <div class="list-group-item">
+                <div class="row">
+                    <div class="col-lg-offset-3 col-lg-6">
+                        <h4 class="text-muted">Название</h4>
+                        @Html.TextBoxFor(x => x.Name, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-offset-3 col-lg-6">
+                        <h4 class="text-muted">Номер</h4>
+                        @Html.DropDownListFor(x => x.BusNumber, new SelectList(ViewBag.Buses), "", new { @class = "form-control", onchange = "selectNumber();" })
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-offset-3 col-lg-6">
+                        <h4 class="text-muted">Остановка</h4>
+                        @Html.DropDownListFor(x => x.Stop, new SelectList(new List<string>()), "", new { @class = "form-control", onchange = "selectStop();" })
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-offset-3 col-lg-6">
+                        <h4 class="text-muted">Направление</h4>
+                        @Html.DropDownListFor(x => x.EndStop, new SelectList(new List<string>()), "", new { @class = "form-control" })
+                    </div>
+                </div>
+                <br />
+                <button type="submit" class="btn btn-primary col-lg-offset-3 col-lg-6">Добавить</button>
+                <br />
             </div>
         </div>
-        <div class="row">
-            <div class="col-lg-offset-3 col-lg-6">
-                <h4 class="text-muted">Номер</h4>
-                @Html.DropDownListFor(x=> x.BusNumber, new SelectList(ViewBag.Buses), "",new { @class = "form-control", onchange = "selectNumber();" })
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-offset-3 col-lg-6">
-                <h4 class="text-muted">Остановка</h4>
-                @Html.DropDownListFor(x=>x.Stop, new SelectList(new List<string>()), "", new { @class = "form-control", onchange = "selectStop();" })
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-offset-3 col-lg-6">
-                <h4 class="text-muted">Направление</h4>
-                @Html.DropDownListFor(x=>x.EndStop, new SelectList(new List<string>()), "", new { @class = "form-control"})
-            </div>
-        </div>
-        <br />
-        <button type="submit" class="btn btn-primary col-lg-offset-3 col-lg-6">Добавить</button>
-        <br />
     </blockquote>   
 }
 

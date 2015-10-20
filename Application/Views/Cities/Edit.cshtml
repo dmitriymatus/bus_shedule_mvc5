@@ -4,10 +4,12 @@
 }
 
 <p class="bg-danger">@TempData["Errors"]</p>
-<h4 class="text-muted">Редактировать</h4>
 
 
 <blockquote>
+    <div class="row">
+        <h3 id="News" class="Title text-left col-lg-9">Редактировать</h3>
+    </div>
     <div class="row">
         @using (Html.BeginForm("Edit", "Cities", FormMethod.Post, new { @class = "col-lg-9" }))
         {

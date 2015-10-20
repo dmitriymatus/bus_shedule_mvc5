@@ -3,10 +3,10 @@
     ViewBag.Title = "Add";
 }
 
-<h4 class="text-muted">Добавить</h4>
-
-
 <blockquote>
+    <div class="row">
+        <h3 id="News" class="Title text-left col-lg-9">Добавить город</h3>
+    </div>
         @using (Html.BeginForm("Add", "Cities", FormMethod.Post))
         {
             <div class="input-group">

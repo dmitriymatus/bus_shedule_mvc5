@@ -1,8 +1,10 @@
 ﻿$(function ()
 {
+    startLoadingAnimation();
     $.getJSON("/Routes/Index", null, GetRoutes);
     var city = $("#city").val();
-    $.getJSON("/Home/GetBuses", { city:city }, GetBuses);
+    $.getJSON("/Home/GetBuses", { city: city }, GetBuses);
+    stopLoadingAnimation();
 }
 )
 function GetRoutes(routes)

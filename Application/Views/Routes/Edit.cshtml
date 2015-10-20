@@ -5,18 +5,21 @@
 
 <p class="bg-success">@TempData["result"]</p>
 
-<div class="row">
-    <div class="col-lg-offset-5 col-lg-2"><h4 class="text-capitalize" style="font-weight: bold">Маршруты</h4></div>
-    <div class="col-lg-offset-2 col-lg-3"><h4><small><a href="@Url.Action("Add","Routes")" class="text-right"><span class="glyphicon glyphicon-plus"></span> Добавить</a></small></h4></div>    
-</div>
+<blockquote>
 
-<ul class="list-group" id="RoutesContainer">
-    @foreach (var item in Model)
-    {
-        <li class="list-group-item">
-            <h4 class="text-info"><strong>@Html.ActionLink(item.Name, "Route", "Routes", new { id = item.Id }, null)</strong></h4>
-            <h4 class="text-muted"><strong>Номер автобуса:</strong> @item.BusNumber</h4>
-            <h4 class="text-muted"><strong>Остановка:</strong> @item.Stop</h4>
-    </li>
-    }
-</ul>
+    <div class="row">
+        <h3 id="News" class="Title text-left col-lg-9">Маршруты</h3>
+        <h5 class="NavigateLink text-right col-lg-3"><a href=@Url.Action("Add","Routes")><span class="glyphicon glyphicon-plus"></span> Добавить</a></h5>
+    </div>
+
+    <ul class="list-group" id="RoutesContainer">
+        @foreach (var item in Model)
+        {
+            <li class="list-group-item">
+                <h4 class="text-info"><strong>@Html.ActionLink(item.Name, "Route", "Routes", new { id = item.Id }, null)</strong></h4>
+                <h4 class="text-muted"><strong>Номер автобуса:</strong> @item.BusNumber</h4>
+                <h4 class="text-muted"><strong>Остановка:</strong> @item.Stop</h4>
+            </li>
+        }
+    </ul>
+</blockquote>

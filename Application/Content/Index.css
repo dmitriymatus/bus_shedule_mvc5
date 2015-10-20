@@ -7,14 +7,14 @@
 #stopsContainer h3:first-child
 {
     color:RGB(22, 141, 226);
-    text-align:right;
+    /*text-align:right;*/
     margin-left:15px;
     margin-right:20px;
     margin-top:5px;
 }
 
 
-#nearestTime, #nodes, #otherBuses
+#nearestTime, #nodes, #otherBuses, #stops
 {
     font-weight:bold;
     margin-right:15px;

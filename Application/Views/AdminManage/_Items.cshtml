@@ -2,5 +2,5 @@
 
 @foreach (var item in Model)
 {
-    <li class="list-group-item"><h5 class="text-info"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> @Html.ActionLink(item.UserName, "User", "AdminManage", new { id = item.Id }, null)</h5></li>
+    <a href="@Url.Action("User", "AdminManage", new { id = item.Id })" class="list-group-item"><h5><span class="glyphicon glyphicon-user" aria-hidden="true"></span> @item.UserName</h5></a>
 }

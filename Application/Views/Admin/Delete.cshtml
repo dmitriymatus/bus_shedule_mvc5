@@ -37,10 +37,16 @@
     <hr />
     <div class="row">
         <blockquote id="stopsContainer" hidden>
-            <h4 class="text-muted">Расписание:</h4>
-            <h4 id="stops"></h4>
-            <br />
-            <button type="submit" class="btn btn-success">Удалить</button>
+            <div class="row">
+                <h3 class="Title text-left col-lg-9">Расписание:</h3>
+            </div>
+            <div class="list-group">
+                <div class="list-group-item">
+                    <h4 id="stops"></h4>
+                    <hr />
+                    <button type="submit" class="btn btn-success">Удалить</button>
+                </div>
+            </div>
         </blockquote>
     </div>
     @Html.HttpMethodOverride(HttpVerbs.Delete)
