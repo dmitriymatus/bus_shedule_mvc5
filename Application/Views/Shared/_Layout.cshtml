@@ -1,7 +1,7 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title</title>
@@ -32,18 +32,27 @@
                     </div><!-- /.navbar-collapse -->
                 </div><!-- /.container-fluid -->
             </nav>
-            @Html.Action("Index","Cities")
+                    @Html.Action("Index", "Cities")
         </div>
         <div class="jumbotron">
             @RenderBody()
         </div>
         <hr />
-        <footer>
-            <p class="text-muted">Брест 2015</p>
-        </footer>
+    <footer>
+        <div class="row">
+            <div class="col-lg-9">
+                <p class="text-muted">Брест 2015</p>
+            </div>
+            <div class="col-lg-3">
+                <div class="yashare-auto-init" data-yashareL10n="ru" data-yashareType="small" data-yashareQuickServices="vkontakte,facebook,twitter" data-yashareTheme="counter"></div>
+
+            </div>
+            </div>
+    </footer>
     </div> <!-- /container -->
     <img id="loadImg" src="~/Content/load.gif" />
     <div id="loadBackground"></div>
+    <script type="text/javascript" src="//yastatic.net/share/share.js" charset="utf-8"></script>
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)

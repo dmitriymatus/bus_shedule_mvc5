@@ -68,7 +68,7 @@ namespace Application.Controllers
                 {
                     TempData["Erors"] = "Ошибка при обработке файла, проверьте правильность файла";
                 }
-                return View();
+                return RedirectToAction("Add");
             }
             return View(model);
         }
