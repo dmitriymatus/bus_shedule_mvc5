@@ -10,6 +10,6 @@ namespace Domain.SheduleParsers.Abstract
 {
     public interface ISheduleParser
     {
-        IEnumerable<BusStop> Parse(string fileName,int? city);
+        IEnumerable<Shedule> Parse(string fileName,City city);
     }
 }

@@ -9,18 +9,21 @@ using System.Text;
 using System.Text.RegularExpressions;
 using Application.Models;
 using System.Reflection;
+using Domain.Models;
 using Domain.SheduleParsers.Abstract;
 
 namespace Application.Controllers
 {
     [Authorize(Roles = "admin")]
-    [OutputCache(Duration = 3600, SqlDependency = "shedule:BusStops")]
+    // [OutputCache(Duration = 3600, SqlDependency = "shedule:BusStops")]
     public class AdminController : Controller
     {
-        IStopsRepository repository;
-        public AdminController(IStopsRepository _repository)
+        ISheduleRepository sheduleRepository;
+        ICitiesRepository citiesRepository;
+        public AdminController(ISheduleRepository _sheduleRepository, ICitiesRepository _citiesRepository)
         {
-            repository = _repository;
+            sheduleRepository = _sheduleRepository;
+            citiesRepository = _citiesRepository;
         }
 
         public ActionResult Index()
@@ -33,7 +36,7 @@ namespace Application.Controllers
         {
             var assembly = Assembly.Load("Domain");
             var parser = assembly.GetType("Domain.SheduleParsers.Abstract.ISheduleParser");
-            var parsers = assembly.GetTypes().Where(x=>x.GetInterfaces().Contains(parser)).Select(x=>x.Name);
+            var parsers = assembly.GetTypes().Where(x => x.GetInterfaces().Contains(parser)).Select(x => x.Name);
 
             AddFileViewModel model = new AddFileViewModel { Parsers = parsers };
 
@@ -47,8 +50,10 @@ namespace Application.Controllers
             {
                 try
                 {
-                    int? city = (int?)Session["City"];
-                    var fileName = this.HttpContext.Request.MapPath("~/Content/shedule" + city + ".xls");
+                    int? cityId = (int?)Session["City"];
+                    // City city = citiesRepository.Cities.FirstOrDefault(x => x.Id == cityId);
+                    City city = sheduleRepository.Cities.FirstOrDefault(x => x.Id == cityId);
+                    var fileName = this.HttpContext.Request.MapPath("~/Content/shedule" + cityId + ".xls");
                     model.file.SaveAs(fileName);
 
                     var assembly = Assembly.Load("Domain");
@@ -59,8 +64,7 @@ namespace Application.Controllers
 
                     var shedule = parser.Parse(fileName, city);
 
-                    repository.DeleteAll(city);
-                    repository.AddStops(shedule);
+                    sheduleRepository.AddSheduleRange(shedule);
 
                     TempData["Success"] = "Расписание добавлено";
                 }
@@ -73,103 +77,117 @@ namespace Application.Controllers
             return View(model);
         }
 
-        [HttpGet]
-        public ActionResult AddStop()
-        {
-            var model = CreateViewModel();
+        //[HttpGet]
+        //public ActionResult AddStop()
+        //{
+        //    int? cityId = (int?)Session["City"];
+        //    var city = citiesRepository.Cities.FirstOrDefault(x => x.Id == cityId);
+        //    var model = new AdminAddViewModel
+        //    {
+        //        Numbers = city.Buses.Select(x => x.Number),
+        //        Stop = new BusStopViewModel(),
+        //        StopNames = city.BusStops.Select(x => x.Name),
+        //        FinalStops = sheduleRepository.Shedule.Where(x => x.City == city).Select(x => x.EndStop.Name).Distinct(),
+        //        Days = sheduleRepository.Shedule.Where(x => x.City == city).Select(x => x.Days.Name).Distinct()
+        //    };
 
-            return View(model);
-        }
+        //    return View(model);
+        //}
 
-        [HttpPost]
-        public ActionResult AddStop(BusStopViewModel stop)
-        {
-            if (!ModelState.IsValid)
-            {
-                var model = CreateViewModel();
-                model.Stop = stop;
-                return View(model);
-            }
-            int? city = (int?)Session["City"];
-            if (repository.Contain(stop.busNumber, stop.stopName, stop.finalStop, stop.days, city))
-            {
-                ModelState.AddModelError("", "Запись уже существует");
-                var model = CreateViewModel();
-                model.Stop = stop;
-                return View(model);
-            }
-            repository.AddStop(stop.busNumber, stop.stopName, stop.finalStop, stop.days, city);
-            TempData["Success"] = "Запись добавлена";
-            return RedirectToAction("AddStop");
-        }
-
-        [HttpGet]
-        public ActionResult Edit()
-        {
-            int? city = (int?)Session["City"];
-            var buses = repository.GetBuses(city);
-            return View(buses);
-        }
-
-
-        [HttpPost]
-        [OutputCache(Duration = 60, NoStore = false)]
-        public ActionResult Edit(BusStopViewModel stop)
-        {
-            int? city = (int?)Session["City"];
-            if (repository.Update(stop.busNumber, stop.stopName, stop.finalStop, stop.days, stop.stops, city))
-                TempData["Success"] = "Запись обновлена";
-            else
-                TempData["Erors"] = "Запись не обновлена";
-            return RedirectToAction("Edit");
-        }
-
-        [HttpGet]
-        public ActionResult Delete()
-        {
-            int? city = (int?)Session["City"];
-            var buses = repository.GetBuses(city);
-            return View(buses);
-        }
-
-        [HttpDelete]
-        [ValidateAntiForgeryToken]
-        [OutputCache(Duration = 60, NoStore = false)]
-        public ActionResult Delete(BusStopViewModel stop)
-        {
-            int? city = (int?)Session["City"];
-            if (repository.Delete(stop.busNumber, stop.stopName, stop.finalStop, stop.days, city))
-                TempData["Success"] = "Запись удалена";
-            return RedirectToAction("Delete");
-        }
+        //[HttpPost]
+        //public ActionResult AddStop(BusStopViewModel stop)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        // var model = CreateViewModel();
+        //        // model.Stop = stop;
+        //        // return View(model);
+        //    }
+        //    int? city = (int?)Session["City"];
+        //    //if (repository.Contain(stop.busNumber, stop.stopName, stop.finalStop, stop.days, city))
+        //    //{
+        //    //    ModelState.AddModelError("", "Запись уже существует");
+        //    //    var model = CreateViewModel();
+        //    //    model.Stop = stop;
+        //    //    return View(model);
+        //    //}
+        //    Shedule item = new Shedule
+        //    {
 
 
-        [HttpDelete]
-        [ValidateAntiForgeryToken]
-        [OutputCache(Duration = 60, NoStore = false)]
-        public ActionResult DeleteAll()
-        {
-            int? city = (int?)Session["City"];
-            repository.DeleteAll(city);
-            TempData["Success"] = "Записи удалены";
-            return RedirectToAction("Index");
-        }
+        //    };
+        //    //repository.AddStop(stop.busNumber, stop.stopName, stop.finalStop, stop.days, city);
+        //    TempData["Success"] = "Запись добавлена";
+        //    return RedirectToAction("AddStop");
+        //}
 
-        private AdminAddViewModel CreateViewModel()
-        {
-            var numbers = repository.Stops.Select(x => x.BusNumber).Distinct();
-            var stopNames = repository.Stops.Select(x => x.StopName).Distinct().OrderBy(x => x);
-            var finalStops = repository.Stops.Select(x => x.FinalStop).Distinct().OrderBy(x => x);
-            var days = repository.Stops.Select(x => x.Days).Distinct().OrderBy(x => x);
-            return new AdminAddViewModel
-            {
-                Numbers = numbers,
-                StopNames = stopNames,
-                Days = days,
-                FinalStops = finalStops,
-                Stop = new BusStopViewModel()
-            };
-        }
+        //[HttpGet]
+        //public ActionResult Edit()
+        //{
+        //    int? city = (int?)Session["City"];
+        //    var buses = repository.GetBuses(city);
+        //    return View(buses);
+        //}
+
+
+        //[HttpPost]
+        //[OutputCache(Duration = 60, NoStore = false)]
+        //public ActionResult Edit(BusStopViewModel stop)
+        //{
+        //    int? city = (int?)Session["City"];
+        //    if (repository.Update(stop.busNumber, stop.stopName, stop.finalStop, stop.days, stop.stops, city))
+        //        TempData["Success"] = "Запись обновлена";
+        //    else
+        //        TempData["Erors"] = "Запись не обновлена";
+        //    return RedirectToAction("Edit");
+        //}
+
+        //[HttpGet]
+        //public ActionResult Delete()
+        //{
+        //    int? city = (int?)Session["City"];
+        //    var buses = repository.GetBuses(city);
+        //    return View(buses);
+        //}
+
+        //[HttpDelete]
+        //[ValidateAntiForgeryToken]
+        //[OutputCache(Duration = 60, NoStore = false)]
+        //public ActionResult Delete(BusStopViewModel stop)
+        //{
+        //    int? city = (int?)Session["City"];
+        //    if (repository.Delete(stop.busNumber, stop.stopName, stop.finalStop, stop.days, city))
+        //        TempData["Success"] = "Запись удалена";
+        //    return RedirectToAction("Delete");
+        //}
+
+
+        //[HttpDelete]
+        //[ValidateAntiForgeryToken]
+        //[OutputCache(Duration = 60, NoStore = false)]
+        //public ActionResult DeleteAll()
+        //{
+        //    int? city = (int?)Session["City"];
+        //    repository.DeleteAll(city);
+        //    TempData["Success"] = "Записи удалены";
+        //    return RedirectToAction("Index");
+        //}
+
+        //private AdminAddViewModel CreateViewModel()
+        //{
+        //    var numbers = repository.Stops.Select(x => x.BusNumber).Distinct();
+        //    var stopNames = repository.Stops.Select(x => x.StopName).Distinct().OrderBy(x => x);
+        //    var finalStops = repository.Stops.Select(x => x.FinalStop).Distinct().OrderBy(x => x);
+        //    var days = repository.Stops.Select(x => x.Days).Distinct().OrderBy(x => x);
+        //    return new AdminAddViewModel
+        //    {
+        //        Numbers = numbers,
+        //        StopNames = stopNames,
+        //        Days = days,
+        //        FinalStops = finalStops,
+        //        Stop = new BusStopViewModel()
+        //    };
+        //}
 
 
     }

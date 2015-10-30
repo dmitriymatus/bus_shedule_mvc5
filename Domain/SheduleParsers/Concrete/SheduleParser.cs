@@ -21,7 +21,7 @@ namespace Domain.SheduleParsers.Concrete
         const int endOffset = 11;
 
 
-        public IEnumerable<BusStop> Parse(string fileName, int? city)
+        public IEnumerable<Shedule> Parse(string fileName, City city)
         {
 
             List<StringBuilder> rows = new List<StringBuilder>();
@@ -46,7 +46,10 @@ namespace Domain.SheduleParsers.Concrete
                     rows.Add(item);
                 }
             }
-            IEnumerable<BusStop> stops = Parse(rows,city);
+            IEnumerable<Shedule> stops = Parse(rows,city);
+
+
+
             stream.Dispose();
             excelReader.Dispose();
 
@@ -54,7 +57,7 @@ namespace Domain.SheduleParsers.Concrete
         }
 
 
-        private IEnumerable<BusStop> Parse(List<StringBuilder> rows, int? city)
+        private IEnumerable<Shedule> Parse(List<StringBuilder> rows, City city)
         {
             string busNumber;
             string stopName;
@@ -75,14 +78,14 @@ namespace Domain.SheduleParsers.Concrete
                     finalStop = cols[finalStopOffset];
                     days = cols[daysOffset] == "Р" ? "Рабочие" : cols[daysOffset] == "В" ? "Выходные" : cols[daysOffset] == "Р,В" ? "Ежедневно" : cols[daysOffset];
                     stops = Convert(cols.Skip(sheduleStartOffset).Take(cols.Count() - endOffset));
-                    yield return new BusStop
+                    yield return new Shedule
                     {
-                        BusNumber = busNumber,
-                        StopName = stopName,
-                        FinalStop = finalStop,
-                        Days = days,
-                        Stops = stops,
-                        CityId = city
+                        Bus = new Bus { Number = busNumber, City = city },
+                        BusStop = new BusStop { Name = stopName, City = city },
+                        Direction = new Direction { Name = finalStop,  Bus = new Bus { Number = busNumber, City = city } },
+                        Days = new Days { Name = days },
+                        City = city,
+                        Items = stops
                     };
                 }
             }

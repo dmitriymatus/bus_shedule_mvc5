@@ -29,7 +29,7 @@ namespace MvcApplication.Infrastructure
 
         private void AddBindings()
         {
-            kernel.Bind<IStopsRepository>().To<EFStopsRepository>();
+            kernel.Bind<ISheduleRepository>().To<EFSheduleRepository>();
             kernel.Bind<IUserRoutesRepository>().To<EFUserRoutesRepository>();
             kernel.Bind<ICitiesRepository>().To<EFCitiesRepository>();
             kernel.Bind<INewsRepository>().To<EFNewsRepository>();

@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Collections.Generic;
 
 namespace Domain.Models
 {
@@ -8,28 +9,11 @@ namespace Domain.Models
         [Key]
         public int Id { get; set; }
 
-        [Required]
-        [Display(Name = "Номер")]
-        public string BusNumber { get; set; }
+        public string Name { get; set; }
 
-        [Required]
-        [Display(Name = "Остановка")]
-        public string StopName { get; set; }
+        public City City { get; set; }
 
-        [Required]
-        [Display(Name = "Расписание")]
-        public string Stops { get; set; }
-
-        [Required]
-        [Display(Name = "Конечная")]
-        public string FinalStop { get; set; }
-
-        [Required]
-        [Display(Name = "Дни")]
-        public string Days { get; set; }
-
-        [Required]
-        public int? CityId { get; set; }
+        public virtual ICollection<Bus> Buses { get; set; }
 
     }
 
