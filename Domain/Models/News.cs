@@ -10,7 +10,7 @@ namespace Domain.Models
     {
         public int Id { get; set; }
         public string Title { get; set; }
-        public int? CityId { get; set; }
+        public City City { get; set; }
         public DateTime Time { get; set; }
         public string Text { get; set; }
     }

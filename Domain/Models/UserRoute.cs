@@ -5,10 +5,10 @@ namespace Domain.Models
     {
         public int Id { get; set; }
         public string UserName { get; set; }
-        public string BusNumber { get; set; }
+        public Bus Bus { get; set; }
         public string Name { get; set; }
-        public string Stop { get; set; }
-        public string EndStop { get; set; }
-        public int? CityId { get; set; }
+        public BusStop Stop { get; set; }
+        public Direction Direction { get; set; }
+        public City City { get; set; }
     }
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Domain.Abstract;
+using Domain.Models;
 using Application.Models.News;
 
 namespace Application.Controllers
@@ -12,17 +13,17 @@ namespace Application.Controllers
     {
         private const int ItemsOnPage = 5;
         INewsRepository repository;
-        ICitiesRepository citiesRepository;
-        public NewsController(INewsRepository _repository, ICitiesRepository _citiesRepository)
+        ISheduleRepository sheduleRepository;
+        public NewsController(INewsRepository _repository, ISheduleRepository _sheduleRepository)
         {
             repository = _repository;
-            citiesRepository = _citiesRepository;
+            sheduleRepository = _sheduleRepository;
         }
 
         public ActionResult Index()
         {
-            var city = citiesRepository.Cities.FirstOrDefault();
-            var model = repository.GetNewsInCity(city.Id).Any();
+            var city = sheduleRepository.Cities.FirstOrDefault();
+            var model = city.News.Any();
             return PartialView(model);
         }
 
@@ -30,7 +31,8 @@ namespace Application.Controllers
         public ActionResult GetItems(string City, int Page = 1)
         {
             int? cityId = (int?)Session["City"];
-            var model = repository.GetNewsInCity(cityId)
+            City city = sheduleRepository.Cities.FirstOrDefault(x => x.Id == cityId);
+            var model = city.News
                 .OrderByDescending(x => x.Time)
                 .Skip((Page * ItemsOnPage) - ItemsOnPage)
                 .Take(ItemsOnPage);
@@ -42,7 +44,8 @@ namespace Application.Controllers
         public ActionResult GetAdminItems(string City, int Page = 1)
         {
             int? cityId = (int?)Session["City"];
-            var model = repository.GetNewsInCity(cityId)
+            City city = sheduleRepository.Cities.FirstOrDefault(x => x.Id == cityId);
+            var model = city.News
                 .OrderByDescending(x => x.Time)
                 .Skip((Page * ItemsOnPage) - ItemsOnPage)
                 .Take(ItemsOnPage);
@@ -57,12 +60,13 @@ namespace Application.Controllers
             int? cityId = (int?)Session["City"];
             if(cityId == null)
             {
-                if(citiesRepository.Cities.Any())
+                if(sheduleRepository.Cities.Any())
                 {
-                    cityId = citiesRepository.Cities.First().Id;
+                    cityId = sheduleRepository.Cities.First().Id;
                 }
             }
-            var model = repository.GetNewsInCity(cityId).Any();
+            City city = sheduleRepository.Cities.FirstOrDefault(x => x.Id == cityId);
+            var model = city.News.Any();
             return View(model);
         }
 
@@ -81,7 +85,9 @@ namespace Application.Controllers
                 return View(model);
             }
             int? cityId = (int?)Session["City"];
-            if (repository.Add(model.Title, model.Text, DateTime.Now, cityId))
+            City city = sheduleRepository.Cities.FirstOrDefault(x => x.Id == cityId);
+            News news = new News { Title = model.Title, Text = model.Text, Time = DateTime.Now, City = city };
+            if (repository.Add(news))
             {
                 TempData["Success"] = "Новость добавлена";
             }
@@ -89,7 +95,6 @@ namespace Application.Controllers
             {
                 TempData["Errors"] = "Что-то пошло не так";
             }
-
             return View(new NewsViewModel());
         }
 

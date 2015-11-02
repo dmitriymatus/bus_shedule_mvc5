@@ -19,12 +19,6 @@ namespace Domain.Concrete
             }
         }
 
-        public IEnumerable<string> GetCitiesName()
-        {
-            return context.Cities.Select(x => x.Name);
-        }
-
-
         public bool Update(City city)
         {
             var items = context.Cities.Where(x => x.Id == city.Id);
@@ -39,10 +33,10 @@ namespace Domain.Concrete
 
         public bool Delete(int Id)
         {
-            var items = context.Cities.Where(x => x.Id == Id);
-            if (items.Any())
+            var item = Cities.Where(x => x.Id == Id).FirstOrDefault();
+            if (item != null)
             {
-                context.Cities.Remove(items.First());
+                context.Cities.Remove(item);
                 context.SaveChanges();
                 return true;
             }

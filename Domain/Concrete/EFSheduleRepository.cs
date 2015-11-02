@@ -4,6 +4,7 @@ using System.Linq;
 using Domain.Models;
 using Domain.Abstract;
 using System.Text.RegularExpressions;
+using System.Data.Entity;
 
 namespace Domain.Concrete
 {
@@ -16,6 +17,10 @@ namespace Domain.Concrete
             get { return context.Cities; }
         }
 
+        public IEnumerable<Direction> Directions
+        {
+            get { return context.Directions.Include(x => x.Bus) ; }
+        }
 
         public IEnumerable<BusStop> BusStops
         {
@@ -45,6 +50,7 @@ namespace Domain.Concrete
             context.SaveChanges();
         }
 
+
         public IEnumerable<Days> Days
         {
             get { return context.Days; }
@@ -57,7 +63,7 @@ namespace Domain.Concrete
 
         public IEnumerable<Shedule> Shedule
         {
-            get { return context.Shedule; }
+            get { return context.Shedule.Include(x => x.Direction).Include(x => x.Days).Include(x => x.Bus).Include(x => x.BusStop).Include(x => x.City); }
         }
 
         public void AddSheduleRange(IEnumerable<Shedule> entities)
@@ -72,12 +78,54 @@ namespace Domain.Concrete
             context.Shedule.Add(entity);
             context.SaveChanges();
         }
-        //public void AddStops(IEnumerable<BusStop> stops)
-        //{
 
-        //    context.Stops.AddRange(stops);
-        //    context.SaveChanges();
-        //}
+        public bool UpdateShedule(Shedule entity, string newShedule)
+        {
+            try
+            {
+                entity.Items = newShedule;
+                context.SaveChanges();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public bool DeleteShedule(Shedule entity)
+        {
+            try
+            {
+                Bus bus = entity.Bus;
+                bus.BusStops.Remove(entity.BusStop);
+                context.Shedule.Remove(entity);
+                context.SaveChanges();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public bool DeleteAllShedule(City city)
+        {
+            try
+            {
+                var allShedule = Shedule.Where(x => x.City == city);
+                context.Shedule.RemoveRange(allShedule);
+                context.Buses.RemoveRange(city.Buses);
+                context.BusStops.RemoveRange(city.BusStops);
+                context.Directions.RemoveRange(Directions.Where(x => x.Bus == null));
+                context.SaveChanges();
+                return true;
+            }
+            catch 
+            {
+                return false;
+            }
+        }
 
 
         class Compare : IEqualityComparer<Bus>
@@ -92,155 +140,6 @@ namespace Domain.Concrete
             }
         }
 
-        //-------------------------------------------------------------------------------
-        //#region getMethods
-
-        //public IEnumerable<string> GetBuses(int? city)
-        //{
-        //    return context.Stops.Where(x=>x.CityId == city).AsEnumerable()
-        //                        .OrderBy(x => x.Id)
-        //                        .Select(x => x.BusNumber)
-        //                        .Distinct();
-        //}
-
-        //public IEnumerable<string> GetAllStops(int? city)
-        //{
-        //    return context.Stops.Where(x=>x.CityId == city).AsEnumerable()
-        //               .OrderBy(x => x.StopName)
-        //               .Select(x => x.StopName)
-        //               .Distinct();
-        //}
-
-        //public IEnumerable<string> GetStops(string busNumber, int? city)
-        //{
-        //    return context.Stops.AsEnumerable()
-        //                        .Where(x => x.BusNumber == busNumber && x.CityId == city)
-        //                        .Select(x => x.StopName)
-        //                        .Distinct();
-        //}
-
-        //public IEnumerable<string> GetOtherBuses(string stopName, string busNumber, int? city)
-        //{
-        //    return context.Stops.Where(x => x.StopName == stopName && x.BusNumber != busNumber && x.CityId == city)
-        //                        .Select(x => x.BusNumber)
-        //                        .Distinct();
-        //}
-
-
-        //public IEnumerable<string> GetFinalStops(string stopName, string busNumber, int? city)
-        //{
-        //    return context.Stops.Where(x => x.StopName == stopName && x.BusNumber == busNumber && x.CityId == city)
-        //                        .Select(x => x.FinalStop)
-        //                        .Distinct();
-        //}
-
-        //public IEnumerable<string> GetDays(string stopName, string busNumber, string endStop, int? city)
-        //{
-        //    return context.Stops.Where(x => x.StopName == stopName && x.BusNumber == busNumber && x.FinalStop == endStop && x.CityId == city)
-        //                        .Select(x => x.Days)
-        //                        .Distinct();
-        //}
-
-        //public IEnumerable<string> GetItems(string stopName, string busNumber, string endStop, string days, int? city)
-        //{
-        //    String stops = context.Stops.FirstOrDefault(x => x.BusNumber == busNumber && x.StopName == stopName && x.FinalStop == endStop && x.Days == days && x.CityId == city).Stops;
-        //    Regex reg = new Regex(@"\d{1,2}:\d{1,2}");
-        //    MatchCollection matches = reg.Matches(stops);
-
-        //    return matches.Cast<Match>().Select(x => x.Value);
-        //}
-        //#endregion
-        ////----------------------------------------------------------------------------------------------------------
-
-        ////--------------------------------------------------------------------------------------------------
-        //#region adminMethods
-
-        //public void AddStop(string busNumber, string stopName, string finalStop, string days, int? city)
-        //{
-        //    BusStop stop = new BusStop
-        //    {
-        //        BusNumber = busNumber,
-        //        StopName = stopName,
-        //        FinalStop = finalStop,
-        //        Days = days,
-        //        CityId = city
-        //    };
-        //    context.Stops.Add(stop);
-        //    context.SaveChanges();
-
-        //}
-
-        //public void AddStops(IEnumerable<BusStop> stops)
-        //{
-
-        //    context.Stops.AddRange(stops);
-        //    context.SaveChanges();
-        //}
-
-        //public void DeleteAll(int? city)
-        //{
-        //    IEnumerable<BusStop> stops = context.Stops.Where(x=>x.CityId == city);
-        //    context.Stops.RemoveRange(stops);
-        //    context.SaveChanges();
-        //}
-
-        //public bool Contain(string busNumber, string stopName, string finalStop, string days, int? city)
-        //{
-        //    BusStop stop = new BusStop
-        //    {
-        //        BusNumber = busNumber,
-        //        StopName = stopName,
-        //        FinalStop = finalStop,
-        //        Days = days,
-        //        CityId = city
-        //    };
-        //    return Filter(stop).Any();
-        //}
-
-        //public bool Update(string busNumber, string stopName, string finalStop, string days, string stops, int? city)
-        //{
-        //    BusStop stop = new BusStop
-        //    {
-        //        BusNumber = busNumber,
-        //        StopName = stopName,
-        //        FinalStop = finalStop,
-        //        Days = days,
-        //        Stops = stops,
-        //        CityId = city
-        //    };
-        //    BusStop item = Filter(stop).FirstOrDefault();
-        //    if (item == null)
-        //        return false;
-        //    item.Stops = stop.Stops;
-        //    context.SaveChanges();
-        //    return true;
-        //}
-
-        //public bool Delete(string busNumber, string stopName, string finalStop, string days, int? city)
-        //{
-        //    BusStop stop = new BusStop
-        //    {
-        //        BusNumber = busNumber,
-        //        StopName = stopName,
-        //        FinalStop = finalStop,
-        //        Days = days,
-        //        CityId = city
-        //    };
-        //    BusStop item = Filter(stop).FirstOrDefault();
-        //    if (item != null)
-        //    {
-        //        context.Stops.Remove(item);
-        //        context.SaveChanges();
-        //        return true;
-        //    }
-        //    return false;
-        //}
-        //#endregion
-        ////-----------------------------------------------------------------------------------
-
-        //private IEnumerable<BusStop> Filter(BusStop stop)
-        //{
-        //    return context.Stops.Where(x => x.BusNumber == stop.BusNumber && x.StopName == stop.StopName && x.FinalStop == stop.FinalStop && x.Days == stop.Days && x.CityId == stop.CityId);
-        //}
+       
     }
 }

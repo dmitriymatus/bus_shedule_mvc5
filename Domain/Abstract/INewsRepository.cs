@@ -10,8 +10,7 @@ namespace Domain.Abstract
     public interface INewsRepository
     {
         IEnumerable<News> News { get; }
-        IEnumerable<News> GetNewsInCity(int? City);
-        bool Add(string Title, string Text, DateTime Time, int? CityId);
+        bool Add(News news);
         bool Update(string Title, string Text, DateTime Time, int Id);
         bool Delete(int Id);
     }

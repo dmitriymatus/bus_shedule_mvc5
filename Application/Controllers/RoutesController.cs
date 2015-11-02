@@ -26,34 +26,45 @@ namespace Application.Controllers
         public JsonResult Index()
         {
             int? city = (int?)Session["City"];
-            var model = repository.Routes.Where(x => x.UserName == User.Identity.Name && x.CityId == city)
+            var model = repository.Routes.Where(x => x.UserName == User.Identity.Name && x.City.Id == city)
                                          .Select(x => x.Name)
                                          .Distinct();
             return Json(model, JsonRequestBehavior.AllowGet);
         }
 
 
-        //[HttpGet]
-        //public ActionResult Add()
-        //{
-        //    int? city = (int?)Session["City"];
-        //    ViewBag.Buses = stopsRepository.GetBuses(city);
-        //    return View(new RouteAddViewModel());
-        //}
+        [HttpGet]
+        public ActionResult Add()
+        {
+            int? cityId = (int?)Session["City"];
+            City city = sheduleRepository.Cities.FirstOrDefault(x => x.Id == cityId);
+            ViewBag.Buses = city.Buses.Select(x => x.Number);
+            return View(new RouteAddViewModel());
+        }
 
-        //[HttpPost]
-        //public ActionResult Add(RouteAddViewModel userRoute)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return View(userRoute);
-        //    }
-        //    int city = (int)Session["City"];
-        //    repository.AddRoute(User.Identity.Name, userRoute.BusNumber, userRoute.Name, userRoute.Stop, userRoute.EndStop, city);
-        //    TempData["result"] = "Запись добавлена";
+        [HttpPost]
+        public ActionResult Add(RouteAddViewModel userRoute)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(userRoute);
+            }
+            int cityId = (int)Session["City"];
+            City city = sheduleRepository.Cities.FirstOrDefault(x => x.Id == cityId);
+            UserRoute route = new UserRoute
+            {
+                UserName = User.Identity.Name,
+                Bus = city.Buses.FirstOrDefault(x => x.Number == userRoute.BusNumber),
+                City = city,
+                Stop = city.BusStops.FirstOrDefault(x => x.Name == userRoute.Stop),
+                Name = userRoute.Name,
+                Direction = sheduleRepository.Directions.FirstOrDefault(x => x.Name == userRoute.EndStop && x.Bus.City == city)
+            }; 
+            repository.AddRoute(route);
+            TempData["result"] = "Запись добавлена";
 
-        //    return RedirectToAction("Add");
-        //}
+            return RedirectToAction("Add");
+        }
 
 
         //[HttpGet]
@@ -63,7 +74,7 @@ namespace Application.Controllers
         //    var model = repository.GetUserRoutes(User.Identity.Name, city);
         //    return View(model);
         //}
-    
+
 
 
         //public ActionResult SelectRoutes(string Name)

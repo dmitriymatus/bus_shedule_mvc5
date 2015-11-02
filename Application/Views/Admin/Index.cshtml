@@ -6,6 +6,7 @@
     @Styles.Render("~/Content/AdminIndex.css")
 }
 <p class="bg-success">@TempData["Success"]</p>
+<p class="bg-danger">@TempData["Erors"]</p>
 <div class="linkContainer">
     <a href="@Url.Action("Add")"><blockquote> <h4 class="text-muted">Создать расписание из файла</h4> </blockquote></a>
     <a href="@Url.Action("AddStop")"><blockquote> <h4 class="text-muted">Добавить расписание для одной остановки</h4> </blockquote></a>

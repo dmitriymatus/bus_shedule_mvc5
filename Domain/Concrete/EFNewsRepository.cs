@@ -19,18 +19,13 @@ namespace Domain.Concrete
             }
         }
 
-        public bool Add(string Title, string Text, DateTime Time, int? CityId)
+        public bool Add(News news)
         {
+            City city = context.Cities.Find(news.City.Id);
+            news.City = city;
             try
             {
-                Models.News item = new Models.News()
-                {
-                    Title = Title,
-                    Text = Text,
-                    Time = Time,
-                    CityId = CityId
-                };
-                context.News.Add(item);
+                context.News.Add(news);
                 context.SaveChanges();
                 return true;
             }
@@ -51,11 +46,6 @@ namespace Domain.Concrete
                 return true;
             }
             return false;
-        }
-
-        public IEnumerable<News> GetNewsInCity(int? City)
-        {
-            return context.News.Where(x => x.CityId == City);
         }
 
         public bool Update(string Title, string Text, DateTime Time, int Id)

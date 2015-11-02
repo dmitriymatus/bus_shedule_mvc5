@@ -15,15 +15,13 @@ using Domain.SheduleParsers.Abstract;
 namespace Application.Controllers
 {
     [Authorize(Roles = "admin")]
-    // [OutputCache(Duration = 3600, SqlDependency = "shedule:BusStops")]
+    [OutputCache(Duration = 3600, SqlDependency = "shedule:Shedules")]
     public class AdminController : Controller
     {
         ISheduleRepository sheduleRepository;
-        ICitiesRepository citiesRepository;
-        public AdminController(ISheduleRepository _sheduleRepository, ICitiesRepository _citiesRepository)
+        public AdminController(ISheduleRepository _sheduleRepository)
         {
             sheduleRepository = _sheduleRepository;
-            citiesRepository = _citiesRepository;
         }
 
         public ActionResult Index()
@@ -51,7 +49,6 @@ namespace Application.Controllers
                 try
                 {
                     int? cityId = (int?)Session["City"];
-                    // City city = citiesRepository.Cities.FirstOrDefault(x => x.Id == cityId);
                     City city = sheduleRepository.Cities.FirstOrDefault(x => x.Id == cityId);
                     var fileName = this.HttpContext.Request.MapPath("~/Content/shedule" + cityId + ".xls");
                     model.file.SaveAs(fileName);
@@ -77,117 +74,199 @@ namespace Application.Controllers
             return View(model);
         }
 
-        //[HttpGet]
-        //public ActionResult AddStop()
-        //{
-        //    int? cityId = (int?)Session["City"];
-        //    var city = citiesRepository.Cities.FirstOrDefault(x => x.Id == cityId);
-        //    var model = new AdminAddViewModel
-        //    {
-        //        Numbers = city.Buses.Select(x => x.Number),
-        //        Stop = new BusStopViewModel(),
-        //        StopNames = city.BusStops.Select(x => x.Name),
-        //        FinalStops = sheduleRepository.Shedule.Where(x => x.City == city).Select(x => x.EndStop.Name).Distinct(),
-        //        Days = sheduleRepository.Shedule.Where(x => x.City == city).Select(x => x.Days.Name).Distinct()
-        //    };
+        [HttpGet]
+        public ActionResult AddStop()
+        {
+            int? cityId = (int?)Session["City"];
+            City city = sheduleRepository.Cities.FirstOrDefault(x => x.Id == cityId);
+            var model = new AdminAddViewModel
+            {
+                Numbers = city.Buses.Select(x => x.Number),
+                Stop = new BusStopViewModel(),
+                StopNames = city.BusStops.Select(x => x.Name),
+                FinalStops = sheduleRepository.Directions.Where(x => x.Bus.City == city).Select(x => x.Name).Distinct(),
+                Days = sheduleRepository.Days.Select(x => x.Name).Distinct()
+            };
 
-        //    return View(model);
-        //}
+            return View(model);
+        }
 
-        //[HttpPost]
-        //public ActionResult AddStop(BusStopViewModel stop)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        // var model = CreateViewModel();
-        //        // model.Stop = stop;
-        //        // return View(model);
-        //    }
-        //    int? city = (int?)Session["City"];
-        //    //if (repository.Contain(stop.busNumber, stop.stopName, stop.finalStop, stop.days, city))
-        //    //{
-        //    //    ModelState.AddModelError("", "Запись уже существует");
-        //    //    var model = CreateViewModel();
-        //    //    model.Stop = stop;
-        //    //    return View(model);
-        //    //}
-        //    Shedule item = new Shedule
-        //    {
+        [HttpPost]
+        public ActionResult AddStop(BusStopViewModel stop)
+        {
+            int? cityId = (int?)Session["City"];
+            City city = sheduleRepository.Cities.FirstOrDefault(x => x.Id == cityId);
+
+            if (!ModelState.IsValid)
+            {
+                 var model = CreateViewModel(city);
+                 model.Stop = stop;
+                 return View(model);
+            }
+
+            Shedule item = new Shedule();
+            if(sheduleRepository.Buses.Where(x => x.Number == stop.busNumber).Any())
+            {
+                item.Bus = sheduleRepository.Buses.First(x => x.Number == stop.busNumber);
+            }
+            else
+            {
+                item.Bus = new Bus { Number = stop.busNumber, City = city };
+            }
+
+            if (sheduleRepository.BusStops.Where(x => x.Name == stop.stopName).Any())
+            {
+                item.BusStop = sheduleRepository.BusStops.First(x => x.Name == stop.stopName);
+                if(!item.BusStop.Buses.Contains(item.Bus))
+                {
+                    item.BusStop.Buses.Add(item.Bus);
+                }
+            }
+            else
+            {
+                item.BusStop = new BusStop {  Name = stop.stopName, City = city, Buses = new List<Bus>() };
+                item.BusStop.Buses.Add(item.Bus);
+            }
+            
+            if (sheduleRepository.Directions.Where(x => x.Name == stop.finalStop && x.Bus == item.Bus).Any())
+            {
+                item.Direction = sheduleRepository.Directions.First(x => x.Name == stop.finalStop && x.Bus == item.Bus);
+            }
+            else
+            {
+                item.Direction = new Direction { Bus = item.Bus, Name = stop.finalStop };
+            }
+
+            if (sheduleRepository.Days.Where(x => x.Name == stop.days).Any())
+            {
+                item.Days = sheduleRepository.Days.First(x => x.Name == stop.days);
+                if (!item.Days.Buses.Contains(item.Bus))
+                {
+                    item.Days.Buses.Add(item.Bus);
+                }
+            }
+            else
+            {
+                item.Days = new Days { Name = stop.days, Buses = new List<Bus>() };
+                item.Days.Buses.Add(item.Bus);
+            }
+
+            item.City = city;
+            item.Items = stop.stops;
+
+            if (sheduleRepository.Shedule.Where(x => x.Bus == item.Bus && x.BusStop == item.BusStop && x.City == item.City && x.Days == item.Days && x.Direction == item.Direction).Any())
+            {
+                ModelState.AddModelError("", "Запись уже существует");
+                var model = CreateViewModel(city);
+                model.Stop = stop;
+                return View(model);
+            }
+
+            sheduleRepository.AddShedule(item);
+            TempData["Success"] = "Запись добавлена";
+            return RedirectToAction("AddStop");
+        }
+
+        [HttpGet]
+        public ActionResult Edit()
+        {
+            int? cityId = (int?)Session["City"];
+            City city = sheduleRepository.Cities.FirstOrDefault(x => x.Id == cityId);
+            
+            var buses = city.Buses.Select(x => x.Number);
+            return View(buses);
+        }
 
 
-        //    };
-        //    //repository.AddStop(stop.busNumber, stop.stopName, stop.finalStop, stop.days, city);
-        //    TempData["Success"] = "Запись добавлена";
-        //    return RedirectToAction("AddStop");
-        //}
+        [HttpPost]
+        [OutputCache(Duration = 60, NoStore = false)]
+        public ActionResult Edit(BusStopViewModel stop)
+        {
+            int? cityId = (int?)Session["City"];
+            City city = sheduleRepository.Cities.FirstOrDefault(x => x.Id == cityId);
+            Shedule item = sheduleRepository.Shedule.FirstOrDefault(x => x.Bus.Number == stop.busNumber && x.BusStop.Name == stop.stopName && x.Direction.Name == stop.finalStop && x.Days.Name == stop.days && x.City == city);
+            if (sheduleRepository.UpdateShedule(item, stop.stops))
+                TempData["Success"] = "Запись обновлена";
+            else
+                TempData["Erors"] = "Запись не обновлена";
+            return RedirectToAction("Edit");
+        }
 
-        //[HttpGet]
-        //public ActionResult Edit()
-        //{
-        //    int? city = (int?)Session["City"];
-        //    var buses = repository.GetBuses(city);
-        //    return View(buses);
-        //}
+        [HttpGet]
+        public ActionResult Delete()
+        {
+            int? cityId = (int?)Session["City"];
+            City city = sheduleRepository.Cities.FirstOrDefault(x => x.Id == cityId);
+            var buses = city.Buses.Select(x => x.Number);
+            return View(buses);
+        }
 
-
-        //[HttpPost]
-        //[OutputCache(Duration = 60, NoStore = false)]
-        //public ActionResult Edit(BusStopViewModel stop)
-        //{
-        //    int? city = (int?)Session["City"];
-        //    if (repository.Update(stop.busNumber, stop.stopName, stop.finalStop, stop.days, stop.stops, city))
-        //        TempData["Success"] = "Запись обновлена";
-        //    else
-        //        TempData["Erors"] = "Запись не обновлена";
-        //    return RedirectToAction("Edit");
-        //}
-
-        //[HttpGet]
-        //public ActionResult Delete()
-        //{
-        //    int? city = (int?)Session["City"];
-        //    var buses = repository.GetBuses(city);
-        //    return View(buses);
-        //}
-
-        //[HttpDelete]
-        //[ValidateAntiForgeryToken]
-        //[OutputCache(Duration = 60, NoStore = false)]
-        //public ActionResult Delete(BusStopViewModel stop)
-        //{
-        //    int? city = (int?)Session["City"];
-        //    if (repository.Delete(stop.busNumber, stop.stopName, stop.finalStop, stop.days, city))
-        //        TempData["Success"] = "Запись удалена";
-        //    return RedirectToAction("Delete");
-        //}
+        [HttpDelete]
+        [ValidateAntiForgeryToken]
+        [OutputCache(Duration = 60, NoStore = false)]
+        public ActionResult Delete(BusStopViewModel stop)
+        {
+            int? cityId = (int?)Session["City"];
+            City city = sheduleRepository.Cities.FirstOrDefault(x => x.Id == cityId);
+            Shedule item = sheduleRepository.Shedule.FirstOrDefault(x => x.Bus.Number == stop.busNumber && x.BusStop.Name == stop.stopName && x.Direction.Name == stop.finalStop && x.Days.Name == stop.days && x.City == city);
+            if (sheduleRepository.DeleteShedule(item))
+            { 
+                TempData["Success"] = "Запись удалена";
+            }
+            return RedirectToAction("Delete");
+        }
 
 
-        //[HttpDelete]
-        //[ValidateAntiForgeryToken]
-        //[OutputCache(Duration = 60, NoStore = false)]
-        //public ActionResult DeleteAll()
-        //{
-        //    int? city = (int?)Session["City"];
-        //    repository.DeleteAll(city);
-        //    TempData["Success"] = "Записи удалены";
-        //    return RedirectToAction("Index");
-        //}
+        [HttpDelete]
+        [ValidateAntiForgeryToken]
+        [OutputCache(Duration = 60, NoStore = false)]
+        public ActionResult DeleteAll()
+        {
+            int? cityId = (int?)Session["City"];
+            City city = sheduleRepository.Cities.FirstOrDefault(x => x.Id == cityId);
+            if (sheduleRepository.DeleteAllShedule(city))
+            {
+                TempData["Success"] = "Записи удалены";
+            }
+            else
+            {
+                TempData["Erors"] = "Записи не удалены";
+            }
+            return RedirectToAction("Index");
+        }
 
-        //private AdminAddViewModel CreateViewModel()
-        //{
-        //    var numbers = repository.Stops.Select(x => x.BusNumber).Distinct();
-        //    var stopNames = repository.Stops.Select(x => x.StopName).Distinct().OrderBy(x => x);
-        //    var finalStops = repository.Stops.Select(x => x.FinalStop).Distinct().OrderBy(x => x);
-        //    var days = repository.Stops.Select(x => x.Days).Distinct().OrderBy(x => x);
-        //    return new AdminAddViewModel
-        //    {
-        //        Numbers = numbers,
-        //        StopNames = stopNames,
-        //        Days = days,
-        //        FinalStops = finalStops,
-        //        Stop = new BusStopViewModel()
-        //    };
-        //}
+        private AdminAddViewModel CreateViewModel(City city)
+        {
+            var numbers = city.
+                Buses.
+                Select(x=>x.Number).
+                Distinct();
+
+            var stopNames = city.
+                BusStops.
+                Select(x => x.Name).
+                Distinct();
+
+            var finalStops = sheduleRepository.
+                Directions.
+                Where(x => x.Bus.City == city).
+                Select(x => x.Name).
+                Distinct();
+
+            var days = sheduleRepository.
+                Days.
+                Select(x => x.Name).
+                Distinct();
+
+            return new AdminAddViewModel
+            {
+                Numbers = numbers,
+                StopNames = stopNames,
+                Days = days,
+                FinalStops = finalStops,
+                Stop = new BusStopViewModel()
+            };
+        }
 
 
     }

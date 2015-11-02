@@ -24,13 +24,22 @@ namespace Application.Controllers
             {
                 Session["City"] = city.Id;
             }
-            if(citiesRepository.Cities.Any())
-            { 
-            model = new CitiesIndexViewModel
+            if (citiesRepository.Cities.Any())
             {
-                Cities = citiesRepository.GetCitiesName(),
-                SelectedCity = citiesRepository.Cities.FirstOrDefault(x => x.Id == (int)Session["City"]).Name
-            };
+
+                model = new CitiesIndexViewModel
+                {
+                    Cities = citiesRepository.Cities.Select(x => x.Name),
+                };
+                var temp = citiesRepository.Cities.Where(x => x.Id == (int)Session["City"]);
+                if (temp.Any())
+                {
+                    model.SelectedCity = temp.First().Name;
+                }
+                else
+                {
+                    model.SelectedCity = citiesRepository.Cities.FirstOrDefault().Name;
+                }
             }
             return PartialView("_CitiesIndex", model);
         }
@@ -68,7 +77,7 @@ namespace Application.Controllers
         public ActionResult Add(CityViewModel model)
         {
             var contain = citiesRepository.Contain(model.Name);
-            if(ModelState.IsValid && !contain)
+            if (ModelState.IsValid && !contain)
             {
                 var success = citiesRepository.Add(model.Name);
                 if (success)
@@ -100,7 +109,7 @@ namespace Application.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int Id)
         {
-            if(citiesRepository.Cities.Count() == 1)
+            if (citiesRepository.Cities.Count() == 1)
             {
                 TempData["Errors"] = "Нельзя удалить единственную запись";
                 return RedirectToAction("List", "Cities");
@@ -109,7 +118,7 @@ namespace Application.Controllers
             if (success)
             {
                 TempData["Success"] = "Запись удалена";
-                
+
             }
             else
             {
@@ -123,7 +132,7 @@ namespace Application.Controllers
         {
             CityViewModel model = new CityViewModel();
             var cities = citiesRepository.Cities.Where(x => x.Name == City);
-            if(cities.Any())
+            if (cities.Any())
             {
                 var city = cities.First();
                 model.Id = city.Id;
@@ -136,7 +145,7 @@ namespace Application.Controllers
         [Authorize(Roles = "admin")]
         public ActionResult Edit(CityViewModel model)
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return View(model);
             }
@@ -145,7 +154,7 @@ namespace Application.Controllers
             if (success)
             {
                 TempData["Success"] = "Запись обновлена";
-                return RedirectToAction("List","Cities");
+                return RedirectToAction("List", "Cities");
             }
             else
             {

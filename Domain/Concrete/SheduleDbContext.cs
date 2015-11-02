@@ -10,6 +10,7 @@ namespace Domain.Concrete
         public DbSet<Days> Days { get; set; }
         public DbSet<Shedule> Shedule { get; set; }
         public DbSet<City> Cities { get; set; }
+        public DbSet<Direction> Directions { get; set; }
         public DbSet<UserRoute> UserRoutes { get; set; }
         public DbSet<News> News { get; set; }
     }

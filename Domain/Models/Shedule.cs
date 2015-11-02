@@ -13,9 +13,9 @@ namespace Domain.Models
 
         public BusStop BusStop { get; set; }
 
-        public Direction Direction { get; set; }
+        public virtual Direction Direction { get; set; }
 
-        public Days Days { get; set; }
+        public virtual Days Days { get; set; }
 
         public City City { get; set; }
 
