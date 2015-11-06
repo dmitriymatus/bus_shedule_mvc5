@@ -5,62 +5,42 @@ using System.Text;
 using System.Threading.Tasks;
 using Domain.Abstract;
 using Domain.Models;
+using System.Data.Entity;
 
 namespace Domain.Concrete
 {
     public class EFUserRoutesRepository : IUserRoutesRepository
     {
         SheduleDbContext context = new SheduleDbContext();
+
         public IEnumerable<UserRoute> Routes
         {
-            get { return context.UserRoutes; }
+            get { return context.UserRoutes.Include(x => x.Bus).Include(x => x.City).Include(x => x.Direction).Include(x => x.Stop); }
         }
-
-        //public void AddRoute(string userName, string busNumber, string name, string stop, string endStop, int city)
-        //{
-        //    UserRoute route = new UserRoute
-        //    {
-        //        Name = name,
-        //        UserName = userName,
-        //        Stop = stop,
-        //        EndStop = endStop,
-        //        BusNumber = busNumber,
-        //        CityId = city
-        //    };
-        //    context.UserRoutes.Add(route);
-        //    context.SaveChanges();
-
-        //}
 
         public void AddRoute(UserRoute route)
         {
+            route.Bus = context.Buses.FirstOrDefault(x => x.Id == route.Bus.Id);
+            route.City = context.Cities.FirstOrDefault(x => x.Id == route.City.Id);
+            route.Stop = context.BusStops.FirstOrDefault(x => x.Id == route.Stop.Id);
+            route.Direction = context.Directions.FirstOrDefault(x => x.Id == route.Direction.Id);
             context.UserRoutes.Add(route);
             context.SaveChanges();
 
         }
 
-        //public IEnumerable<UserRoute> GetUserRoutes(string userName, int? city)
-        //{
-        //    return context.UserRoutes.Where(x => x.UserName == userName && x.CityId == city);
-        //}
-
-
-        //public void UpdateRoute(int Id, string Name, string BusNumber, string Stop, string EndStop, int city)
-        //{
-        //    UserRoute route = context.UserRoutes.FirstOrDefault(x => x.Id == Id);
-        //    route.BusNumber = BusNumber;
-        //    route.Name = Name;
-        //    route.Stop = Stop;
-        //    route.EndStop = EndStop;
-        //    route.CityId = city;
-
-        //    context.SaveChanges();
-        //}
-
-
-        public void Delete(int Id)
+        public void UpdateRoute(UserRoute route)
         {
-            UserRoute route = context.UserRoutes.FirstOrDefault(x => x.Id == Id);
+            UserRoute item = context.UserRoutes.FirstOrDefault(x => x.Id == route.Id);
+            item.Bus = context.Buses.FirstOrDefault(x => x.Id == route.Bus.Id);
+            item.Stop = context.BusStops.FirstOrDefault(x => x.Id == route.Stop.Id);
+            item.Direction = context.Directions.FirstOrDefault(x => x.Id == route.Direction.Id);
+            item.City = context.Cities.FirstOrDefault(x => x.Id == route.City.Id);
+            context.SaveChanges();
+        }
+
+        public void DeleteRoute(UserRoute route)
+        {
             context.UserRoutes.Remove(route);
             context.SaveChanges();
         }

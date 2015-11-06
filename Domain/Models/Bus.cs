@@ -10,7 +10,9 @@ namespace Domain.Models
 
         public string Number { get; set; }
 
-        public City City { get; set; }
+        public int CityId { get; set; }
+
+        public virtual City City { get; set; }
 
         public virtual ICollection<Direction> Directions { get; set; }
 

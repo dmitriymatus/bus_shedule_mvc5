@@ -35,7 +35,7 @@ namespace Domain.Concrete
 
         public IEnumerable<Bus> Buses
         {
-            get { return context.Buses; }
+            get { return context.Buses.Include(x => x.City); }
         }
 
         public void AddBus(Bus entity)
@@ -114,14 +114,16 @@ namespace Domain.Concrete
             try
             {
                 var allShedule = Shedule.Where(x => x.City == city);
+
+                context.UserRoutes.RemoveRange(context.UserRoutes.Where(x => x.Bus.CityId == city.Id));
+                context.Buses.RemoveRange(Buses.Where(x => x.City.Id == city.Id));
+                context.BusStops.RemoveRange(BusStops.Where(x => x.City.Id == city.Id));
+                context.Directions.RemoveRange(Shedule.Where(x => x.City.Id == city.Id).Select(x => x.Direction));
                 context.Shedule.RemoveRange(allShedule);
-                context.Buses.RemoveRange(city.Buses);
-                context.BusStops.RemoveRange(city.BusStops);
-                context.Directions.RemoveRange(Directions.Where(x => x.Bus == null));
                 context.SaveChanges();
                 return true;
             }
-            catch 
+            catch(Exception ex)
             {
                 return false;
             }

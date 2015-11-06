@@ -46,8 +46,50 @@ namespace Domain.SheduleParsers.Concrete
                     rows.Add(item);
                 }
             }
-            IEnumerable<Shedule> stops = Parse(rows,city);
+            List<Shedule> stops = Parse(rows,city).ToList();
 
+            var groupByBusNumber = stops.GroupBy(x => x.Bus.Number);
+            foreach (var busNumberGroup in groupByBusNumber)
+            {
+                var bus = busNumberGroup.First().Bus;
+                foreach(var item in busNumberGroup)
+                {
+                   item.Bus = bus;
+                   item.Direction.Bus = bus;
+                }
+            }
+
+            var groupByStopName = stops.GroupBy(x => x.BusStop.Name);
+            foreach (var stopNameGroup in groupByStopName)
+            {
+                var busStop = stopNameGroup.First().BusStop;
+                busStop.Buses = new List<Bus>(stops.Where(x => x.BusStop.Name == busStop.Name).Select(x => x.Bus).Distinct());
+                foreach (var item in stopNameGroup)
+                {
+                    item.BusStop = busStop;
+                }
+            }
+
+            var groupByDirection = stops.GroupBy(x => x.Direction.Name);
+            foreach (var directionGroup in groupByDirection)
+            {
+                var direction = directionGroup.First().Direction;
+                foreach (var item in directionGroup)
+                {
+                    item.Direction = direction;
+                }
+            }
+
+            var groupByDays = stops.GroupBy(x => x.Days.Name);
+            foreach (var daysGroup in groupByDays)
+            {
+                var days = daysGroup.First().Days;
+                days.Buses = new List<Bus>(stops.Where(x => x.Days.Name == days.Name).Select(x => x.Bus).Distinct());
+                foreach (var item in daysGroup)
+                {
+                    item.Days = days;
+                }
+            }
 
 
             stream.Dispose();
@@ -80,7 +122,7 @@ namespace Domain.SheduleParsers.Concrete
                     stops = Convert(cols.Skip(sheduleStartOffset).Take(cols.Count() - endOffset));
                     yield return new Shedule
                     {
-                        Bus = new Bus { Number = busNumber, City = city },
+                        Bus = new Bus { Number = busNumber, CityId = city.Id },
                         BusStop = new BusStop { Name = stopName, City = city },
                         Direction = new Direction { Name = finalStop,  Bus = new Bus { Number = busNumber, City = city } },
                         Days = new Days { Name = days },
