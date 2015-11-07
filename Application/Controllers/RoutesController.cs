@@ -104,7 +104,7 @@ namespace Application.Controllers
         public ActionResult Route(int Id)
         {
             ViewBag.Id = Id;
-            var model = repository.Routes.Where(x => x.Id == Id).FirstOrDefault();
+            var model = repository.Routes.FirstOrDefault(x => x.Id == Id);
             if(model == null)
             {
                 return RedirectToAction("Edit","Routes");

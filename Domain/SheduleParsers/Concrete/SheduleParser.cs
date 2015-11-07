@@ -23,39 +23,41 @@ namespace Domain.SheduleParsers.Concrete
 
         public IEnumerable<Shedule> Parse(string fileName, City city)
         {
-
-            List<StringBuilder> rows = new List<StringBuilder>();
-            FileStream stream = File.Open(fileName, FileMode.Open, FileAccess.Read);
-
-            IExcelDataReader excelReader = ExcelReaderFactory.CreateBinaryReader(stream);
-            DataSet result = excelReader.AsDataSet();
-            DataTable table = result.Tables[0];
-
-            for (int i = dataStart; i < table.Rows.Count; i++)
+            List<List<string>> rows = new List<List<string>>();
+            using (FileStream stream = File.Open(fileName, FileMode.Open, FileAccess.Read))
             {
-                if (table.Rows[i][0].ToString().StartsWith("№") == true)
+                using (IExcelDataReader excelReader = ExcelReaderFactory.CreateBinaryReader(stream))
                 {
-                    StringBuilder item = new StringBuilder();
-                    for (int j = 0; j < table.Columns.Count; j++)
+                    DataSet result = excelReader.AsDataSet();
+                    DataTable table = result.Tables[0];
+
+                    for (int i = dataStart; i < table.Rows.Count; i++)
                     {
-                        if (table.Rows[i][j].ToString() != null && table.Rows[i][0].ToString().StartsWith("№"))
+                        if (table.Rows[i][0].ToString().StartsWith("№") == true)
                         {
-                            item.Append(table.Rows[i][j].ToString() + "|");
+                            List<string> item = new List<string>();
+                            for (int j = 0; j < table.Columns.Count; j++)
+                            {
+                                if (table.Rows[i][j].ToString() != null && table.Rows[i][0].ToString().StartsWith("№"))
+                                {
+                                    item.Add(table.Rows[i][j].ToString());
+                                }
+                            }
+                            rows.Add(item);
                         }
                     }
-                    rows.Add(item);
                 }
             }
-            List<Shedule> stops = Parse(rows,city).ToList();
+            List<Shedule> stops = Parse(rows, city).ToList();
 
             var groupByBusNumber = stops.GroupBy(x => x.Bus.Number);
             foreach (var busNumberGroup in groupByBusNumber)
             {
                 var bus = busNumberGroup.First().Bus;
-                foreach(var item in busNumberGroup)
+                foreach (var item in busNumberGroup)
                 {
-                   item.Bus = bus;
-                   item.Direction.Bus = bus;
+                    item.Bus = bus;
+                    item.Direction.Bus = bus;
                 }
             }
 
@@ -91,40 +93,34 @@ namespace Domain.SheduleParsers.Concrete
                 }
             }
 
-
-            stream.Dispose();
-            excelReader.Dispose();
-
             return stops;
         }
 
 
-        private IEnumerable<Shedule> Parse(List<StringBuilder> rows, City city)
+        private IEnumerable<Shedule> Parse(List<List<string>> rows, City city)
         {
             string busNumber;
             string stopName;
             string finalStop;
             string days;
             string stops;
-            string[] cols;
             char[] separator = new char[1];
             separator[0] = '|';
 
-            foreach (StringBuilder row in rows)
+            foreach (List<string> row in rows)
             {
-                cols = row.ToString().Split(separator, StringSplitOptions.None);
-                if (!String.IsNullOrEmpty(cols[0] as string) && !String.IsNullOrEmpty(cols[1] as string) && !String.IsNullOrEmpty(cols[2] as string) && !String.IsNullOrEmpty(cols[3] as string))
+                if (!String.IsNullOrEmpty(row[0] as string) && !String.IsNullOrEmpty(row[1] as string) && !String.IsNullOrEmpty(row[2] as string) && !String.IsNullOrEmpty(row[3] as string))
                 {
-                    busNumber = cols[busNumberOffset].Remove(0, 1);
-                    stopName = cols[stopNameOffset];
-                    finalStop = cols[finalStopOffset];
-                    days = cols[daysOffset] == "Р" ? "Рабочие" : cols[daysOffset] == "В" ? "Выходные" : cols[daysOffset] == "Р,В" ? "Ежедневно" : cols[daysOffset];
-                    stops = Convert(cols.Skip(sheduleStartOffset).Take(cols.Count() - endOffset));
+                    busNumber = row[busNumberOffset].Remove(0, 1);
+                    stopName = row[stopNameOffset];
+                    finalStop = row[finalStopOffset];
+                    days = row[daysOffset] == "Р" ? "Рабочие" : row[daysOffset] == "В" ? "Выходные" : row[daysOffset] == "Р,В" ? "Ежедневно" : row[daysOffset];
+                    stops = Convert(row.Skip(sheduleStartOffset).Take(row.Count() - endOffset));
                     yield return new Shedule
                     {
                         Bus = new Bus { Number = busNumber, CityId = city.Id },
                         BusStop = new BusStop { Name = stopName, City = city },
-                        Direction = new Direction { Name = finalStop,  Bus = new Bus { Number = busNumber, City = city } },
+                        Direction = new Direction { Name = finalStop, Bus = new Bus { Number = busNumber, City = city } },
                         Days = new Days { Name = days },
                         City = city,
                         Items = stops

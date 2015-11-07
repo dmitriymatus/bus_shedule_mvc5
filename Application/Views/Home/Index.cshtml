@@ -10,7 +10,6 @@
 @if (Request.IsAuthenticated)
 {
     @Html.Partial("_IndexPartial")
-    @*@Html.Action("Index", "Routes")*@
 }
 
 
@@ -62,8 +61,12 @@
         Html.RenderAction("Index", "News");
     }
 
+    @section Socials
+    {
+    <div class="yashare-auto-init" data-yashareL10n="ru" data-yashareType="small" data-yashareQuickServices="vkontakte,facebook,twitter" data-yashareTheme="counter"></div>    
+    }
     @section Scripts
-{
+    {
         @Scripts.Render("~/Scripts/Index.js")
         @Scripts.Render("~/Scripts/RoutesIndex.js")
         @Scripts.Render("~/Scripts/News/Index.js");   
