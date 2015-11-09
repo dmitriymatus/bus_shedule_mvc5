@@ -313,7 +313,6 @@
     <Content Include="Views\News\Index.cshtml" />
     <Content Include="Views\News\Items.cshtml" />
     <Content Include="Views\News\List.cshtml" />
-    <Content Include="Views\News\AdminItems.cshtml" />
     <Content Include="Views\News\Add.cshtml" />
     <Content Include="Views\News\Edit.cshtml" />
   </ItemGroup>

@@ -101,22 +101,21 @@ namespace Application.Controllers
         }
 
 
-        private IQueryable<Application.Models.ApplicationUser> GetItems(int page, string searchValue)
+        private IEnumerable<Application.Models.ApplicationUser> GetItems(int page, string searchValue)
         {
-            if(searchValue == "All" || searchValue == null)
-            { 
-                return UserManager.Users.Where(x=>x.UserName != User.Identity.Name)
-                                        .OrderBy(x => x.UserName)
-                                        .Skip((page * usersOnPage) - usersOnPage)
-                                        .Take(usersOnPage);
+            Func<Models.ApplicationUser, bool> term;
+            if (searchValue == "All" || searchValue == null)
+            {
+                term = x => x.UserName != User.Identity.Name;
             }
             else
             {
-                return UserManager.Users.Where(x => x.UserName.Contains(searchValue) &&  x.UserName != User.Identity.Name)
-                                        .OrderBy(x => x.UserName)
-                                        .Skip((page * usersOnPage) - usersOnPage)
-                                        .Take(usersOnPage);
+                term = x => x.UserName.Contains(searchValue) && x.UserName != User.Identity.Name;
             }
+            return UserManager.Users.Where(term)
+                                    .OrderBy(x => x.UserName)
+                                    .Skip((page * usersOnPage) - usersOnPage)
+                                    .Take(usersOnPage);
         }
 
 

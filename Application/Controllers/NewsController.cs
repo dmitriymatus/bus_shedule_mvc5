@@ -39,21 +39,6 @@ namespace Application.Controllers
                 return PartialView("Items", model);
         }
 
-        [OutputCache(Duration = 3600, VaryByParam = "City ; Page", SqlDependency = "shedule:News")]
-        [Authorize(Roles = "admin")]
-        public ActionResult GetAdminItems(string City, int Page = 1)
-        {
-            int? cityId = (int?)Session["City"];
-            City city = sheduleRepository.Cities.FirstOrDefault(x => x.Id == cityId);
-            var model = city.News
-                .OrderByDescending(x => x.Time)
-                .Skip((Page * ItemsOnPage) - ItemsOnPage)
-                .Take(ItemsOnPage);
-                return PartialView("AdminItems", model);
-        }
-
-
-
         [Authorize(Roles = "admin")]
         public ActionResult List()
         {

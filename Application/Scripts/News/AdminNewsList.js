@@ -14,7 +14,7 @@
 
             $.ajax({
                 type: 'GET',
-                url: '/News/GetAdminItems',
+                url: '/News/GetItems',
                 data: { Page: page, City: $("#city").val() },
                 success: function (data, textstatus) {
                     if (data != '') {
