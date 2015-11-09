@@ -21,9 +21,6 @@
                     @Html.ValidationMessageFor(x => x.file)
                     @Html.TextBoxFor(x => x.file, null, new { type = "file", accept = "application/vnd.ms-excel" })
 
-                    <h4 class="text-muted">Выберите парсер</h4>
-                    @Html.DropDownList("Parser", new SelectList(Model.Parsers), "")
-
                     <hr />
                     <input type="submit" value="Загрузить" class="btn btn-default" />
                 </div>

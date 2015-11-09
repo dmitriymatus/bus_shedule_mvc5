@@ -10,6 +10,7 @@ using Application.Infrastructure;
 using Application.Models;
 using Ninject;
 using System.Data.Entity;
+using Application.Infrastructure.SheduleParserFactory;
 
 namespace Application
 {
@@ -24,9 +25,9 @@ namespace Application
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+            SheduleParsersConfig.RegisterParsers(SheduleParsers.Parsers);
 
             ModelBinders.Binders.Add(typeof(BusStopViewModel), new BusStopBinder());
-           // ValueProviderFactories.Factories.Add(new CityValueProviderFactory());
             DependencyResolver.SetResolver(new NinjectDependencyResolver(new StandardKernel()));
 
             String connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["SheduleDbContext"].ConnectionString;

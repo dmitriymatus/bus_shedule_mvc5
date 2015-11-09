@@ -173,6 +173,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\SheduleParsersConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
@@ -190,6 +191,9 @@
     <Compile Include="Infrastructure\Days.cs" />
     <Compile Include="Infrastructure\FileSizeAttribute.cs" />
     <Compile Include="Infrastructure\NinjectDependencyResolver.cs" />
+    <Compile Include="Infrastructure\SheduleParserFactory\Abstract\ISheduleParserFactory.cs" />
+    <Compile Include="Infrastructure\SheduleParserFactory\Concrete\DefaultSheduleParserFactory.cs" />
+    <Compile Include="Infrastructure\SheduleParserFactory\SheduleParsers.cs" />
     <Compile Include="Infrastructure\Stops.cs" />
     <Compile Include="Infrastructure\StopsFormatAttribute.cs" />
     <Compile Include="Models\Account\ExternalLoginConfirmationViewModel.cs" />

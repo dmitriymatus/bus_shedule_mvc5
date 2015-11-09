@@ -11,6 +11,7 @@ using Application.Models;
 using System.Reflection;
 using Domain.Models;
 using Domain.SheduleParsers.Abstract;
+using Application.Infrastructure.SheduleParserFactory.Abstract;
 
 namespace Application.Controllers
 {
@@ -19,9 +20,11 @@ namespace Application.Controllers
     public class AdminController : Controller
     {
         ISheduleRepository sheduleRepository;
-        public AdminController(ISheduleRepository _sheduleRepository)
+        ISheduleParserFactory factory;
+        public AdminController(ISheduleRepository _sheduleRepository, ISheduleParserFactory _factory)
         {
             sheduleRepository = _sheduleRepository;
+            factory = _factory;
         }
 
         public ActionResult Index()
@@ -32,12 +35,7 @@ namespace Application.Controllers
         [HttpGet]
         public ActionResult Add()
         {
-            var assembly = Assembly.Load("Domain");
-            var parser = assembly.GetType("Domain.SheduleParsers.Abstract.ISheduleParser");
-            var parsers = assembly.GetTypes().Where(x => x.GetInterfaces().Contains(parser)).Select(x => x.Name);
-
-            AddFileViewModel model = new AddFileViewModel { Parsers = parsers };
-
+            AddFileViewModel model = new AddFileViewModel();
             return View(model);
         }
 
@@ -53,12 +51,7 @@ namespace Application.Controllers
                     var fileName = this.HttpContext.Request.MapPath("~/Content/shedule" + cityId + ".xls");
                     model.file.SaveAs(fileName);
 
-                    var assembly = Assembly.Load("Domain");
-                    var parserInterface = assembly.GetType("Domain.SheduleParsers.Abstract.ISheduleParser");
-                    var parserType = assembly.GetTypes().FirstOrDefault(x => x.GetInterfaces().Contains(parserInterface) && x.Name == model.Parser);
-
-                    ISheduleParser parser = Activator.CreateInstance(parserType) as ISheduleParser;
-
+                    ISheduleParser parser = factory.Create(city.Name.ToLower());
                     var shedule = parser.Parse(fileName, city);
 
                     sheduleRepository.AddSheduleRange(shedule);
