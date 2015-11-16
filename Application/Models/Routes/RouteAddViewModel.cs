@@ -16,5 +16,8 @@ namespace Application.Models.Routes
         public string Stop { get; set; }
         [Required]
         public string EndStop { get; set; }
+
+        public IEnumerable<string> Buses { get; set; }
+
     }
 }

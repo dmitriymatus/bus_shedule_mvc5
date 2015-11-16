@@ -10,7 +10,7 @@ using Application.Infrastructure;
 using Application.Models;
 using Ninject;
 using System.Data.Entity;
-using Application.Infrastructure.SheduleParserFactory;
+//using Application.Infrastructure.SheduleParserFactory;
 
 namespace Application
 {
@@ -25,15 +25,15 @@ namespace Application
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-            SheduleParsersConfig.RegisterParsers(SheduleParsers.Parsers);
+           // SheduleParsersConfig.RegisterParsers(SheduleParsers.Parsers);
 
             ModelBinders.Binders.Add(typeof(BusStopViewModel), new BusStopBinder());
             DependencyResolver.SetResolver(new NinjectDependencyResolver(new StandardKernel()));
 
-            String connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["SheduleDbContext"].ConnectionString;
-            System.Web.Caching.SqlCacheDependencyAdmin.EnableNotifications(connectionString);
-            System.Web.Caching.SqlCacheDependencyAdmin.EnableTableForNotifications(connectionString, "Shedules");
-            System.Web.Caching.SqlCacheDependencyAdmin.EnableTableForNotifications(connectionString, "News");
+           // String connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["SheduleDbContext"].ConnectionString;
+           // System.Web.Caching.SqlCacheDependencyAdmin.EnableNotifications(connectionString);
+           // System.Web.Caching.SqlCacheDependencyAdmin.EnableTableForNotifications(connectionString, "Shedules");
+           // System.Web.Caching.SqlCacheDependencyAdmin.EnableTableForNotifications(connectionString, "News");
 
         }
     }

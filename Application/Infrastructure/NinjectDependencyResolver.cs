@@ -4,8 +4,8 @@ using System.Web.Mvc;
 using Ninject;
 using Domain.Abstract;
 using Domain.Concrete;
-using Application.Infrastructure.SheduleParserFactory.Abstract;
-using Application.Infrastructure.SheduleParserFactory.Concrete;
+//using Application.Infrastructure.SheduleParserFactory.Abstract;
+//using Application.Infrastructure.SheduleParserFactory.Concrete;
 
 namespace MvcApplication.Infrastructure
 {
@@ -31,11 +31,11 @@ namespace MvcApplication.Infrastructure
 
         private void AddBindings()
         {
-            kernel.Bind<ISheduleRepository>().To<EFSheduleRepository>();
-            kernel.Bind<IUserRoutesRepository>().To<EFUserRoutesRepository>();
-            kernel.Bind<ICitiesRepository>().To<EFCitiesRepository>();
-            kernel.Bind<INewsRepository>().To<EFNewsRepository>();
-            kernel.Bind<ISheduleParserFactory>().To<DefaultSheduleParserFactory>();
+            var context = new SheduleDbContext();
+            kernel.Bind(typeof(IRepository<>))
+                .To(typeof(GenericRepository<>))
+                .WithConstructorArgument("_context", context);
+           // kernel.Bind<ISheduleParserFactory>().To<DefaultSheduleParserFactory>();
         }
 
     }

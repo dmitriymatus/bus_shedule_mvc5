@@ -1,6 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Collections.Generic;
-using System;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Domain.Models
 {
@@ -9,17 +8,11 @@ namespace Domain.Models
         [Key]
         public int Id { get; set; }
 
-        public Bus Bus { get; set; }
-
-        public BusStop BusStop { get; set; }
-
-        public Direction Direction { get; set; }
-
         public Days Days { get; set; }
 
-        public City City { get; set; }
+        public TimeSpan Time { get; set; }
 
-        public String Items { get; set; }
-
+        public int TimeTableId { get; set; }
+        public TimeTable TimeTable { get; set; }
     }
 }

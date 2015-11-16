@@ -11,13 +11,6 @@ namespace Domain.Models
         public string Number { get; set; }
 
         public int CityId { get; set; }
-
         public virtual City City { get; set; }
-
-        public virtual ICollection<Direction> Directions { get; set; }
-
-        public virtual ICollection<BusStop> BusStops { get; set; }
-
-        public virtual ICollection<Days> Days { get; set; }
     }
 }

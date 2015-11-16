@@ -42,6 +42,7 @@ namespace Application.Infrastructure
                 case DayOfWeek.Wednesday: { return "СР"; }
                 case DayOfWeek.Thursday: { return "ЧТ"; }
                 case DayOfWeek.Friday: { return "ПТ"; }
+                case DayOfWeek.Saturday: { return "СБ"; }
                 case DayOfWeek.Sunday: { return "ВС"; }
             }
             return null;

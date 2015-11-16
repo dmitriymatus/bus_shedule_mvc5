@@ -57,22 +57,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Abstract\ICitiesRepository.cs" />
-    <Compile Include="Abstract\INewsRepository.cs" />
+    <Compile Include="Abstract\IRepository.cs" />
+    <Compile Include="Concrete\GenericRepository.cs" />
     <Compile Include="Models\Bus.cs" />
     <Compile Include="Models\Days.cs" />
-    <Compile Include="Models\Direction.cs" />
     <Compile Include="Models\Shedule.cs" />
+    <Compile Include="Models\TimeTable.cs" />
     <Compile Include="SheduleParsers\Abstract\ISheduleParser.cs" />
-    <Compile Include="Abstract\ISheduleRepository.cs" />
-    <Compile Include="Abstract\IUserRoutesRepository.cs" />
-    <Compile Include="Concrete\EFCitiesRepository.cs" />
-    <Compile Include="Concrete\EFNewsRepository.cs" />
-    <Compile Include="Concrete\EFSheduleRepository.cs" />
-    <Compile Include="Concrete\EFUserRoutesRepository.cs" />
     <Compile Include="SheduleParsers\Concrete\SheduleParser.cs" />
     <Compile Include="Concrete\SheduleDbContext.cs" />
-    <Compile Include="Models\BusStop.cs" />
+    <Compile Include="Models\Stop.cs" />
     <Compile Include="Models\City.cs" />
     <Compile Include="Models\News.cs" />
     <Compile Include="Models\UserRoute.cs" />
