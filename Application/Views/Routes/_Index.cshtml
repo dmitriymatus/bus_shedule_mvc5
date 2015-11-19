@@ -1,10 +1,11 @@
-﻿<blockquote class="blockquote-reverse" id="RoutesContainer">
-    @if (ViewBag.HasUserRoutes)
+﻿@model bool
+<blockquote class="blockquote-reverse" id="RoutesContainer">
+    @if (Model)
     {
         <ul class="list-group" >
             <li class="list-group-item">
                 <div class="row">
-                    <div class="col-lg-4"><h4 class="text-capitalize"> @Html.ActionLink("Мои маршруты:", "Edit", "Routes")</h4></div>
+                    <div class="col-lg-4"><h4 class="text-capitalize"> @Html.ActionLink("Мои маршруты:", "List", "Routes")</h4></div>
                     <div class="col-lg-8">
                         @Html.DropDownList("userRoutes", new SelectList(new List<string>()), "", new { @class = "form-control", onchange = "SelectRoute();" })
                     </div>

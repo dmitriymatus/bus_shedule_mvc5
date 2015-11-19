@@ -8,6 +8,7 @@ namespace Application.Models.Routes
 {
     public class RoutesEditViewModel
     {
+        public int Id { get; set; }
         [Required]
         public string BusNumber { get; set; }
         [Required]

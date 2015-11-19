@@ -9,9 +9,8 @@
 
 @if (Request.IsAuthenticated)
 {
-    @Html.Partial("_IndexPartial")
+    Html.RenderAction("Index", "Routes");
 }
-
 
 <blockquote class="blockquote">
     <div class="row">
@@ -68,6 +67,6 @@
     @section Scripts
     {
         @Scripts.Render("~/Scripts/Index.js")
-        @Scripts.Render("~/Scripts/RoutesIndex.js")
+        @Scripts.Render("~/Scripts/Routes/RoutesIndex.js")
         @Scripts.Render("~/Scripts/News/Index.js");   
     }

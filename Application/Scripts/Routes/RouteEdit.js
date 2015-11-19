@@ -50,7 +50,7 @@ function GetFinalStops(endStops) {
 function startLoadingRouteAnimation() // - функция запуска анимации
 {
     var imgObj = $("#loadImg");
-    var jumbotron = $("#RoutesContainer");
+    var jumbotron = $(".list-group");
     var imgBackground = $("#loadBackground");
 
     var position = jumbotron.position();

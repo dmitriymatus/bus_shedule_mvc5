@@ -32,7 +32,6 @@ namespace Application.Controllers
         // [OutputCache(Duration = 2,NoStore = false)]
         public ActionResult Index()
         {
-            ViewBag.HasUserRoutes = routesRepository.Get(x => x.UserName == User.Identity.Name).Any();
             return View();
         }
 

@@ -1,25 +1,73 @@
-﻿@model IEnumerable<Domain.Models.UserRoute>
+﻿@model Application.Models.Routes.RoutesEditViewModel
 @{
-    ViewBag.Title = "Маршруты";
+    ViewBag.Title = "Изменить маршрут";
 }
 
 <p class="bg-success">@TempData["result"]</p>
-
-<blockquote>
-
+<blockquote class="blockquote">
     <div class="row">
-        <h3 id="News" class="Title text-left col-lg-9">Маршруты</h3>
-        <h5 class="NavigateLink text-right col-lg-3"><a href=@Url.Action("Add","Routes")><span class="glyphicon glyphicon-plus"></span> Добавить</a></h5>
+        <h3 id="News" class="Title text-left col-lg-3">Маршрут</h3>
+        <h5 class="NavigateLink text-right col-lg-9"><a href=@Url.Action("List","Routes")><span class="glyphicon glyphicon-list-alt"></span> Маршруты</a></h5>
     </div>
 
-    <ul class="list-group" id="RoutesContainer">
-        @foreach (var item in Model)
-        {
-            <li class="list-group-item">
-                <h4 class="text-info"><strong>@Html.ActionLink(item.Name, "Route", "Routes", new { id = item.Id }, null)</strong></h4>
-                <h4 class="text-muted"><strong>Номер автобуса:</strong> @item.Bus.Number</h4>
-                <h4 class="text-muted"><strong>Остановка:</strong> @item.Stop.Name</h4>
-            </li>
-        }
-    </ul>
-</blockquote>
+    <div class="list-group">
+        <div class="list-group-item">
+            @using (Html.BeginForm("Edit", "Routes", FormMethod.Post))
+            {
+                @Html.Hidden("Id", Model.Id)
+                <div class="row">
+                    <div class="col-lg-offset-3 col-lg-6">
+                        <h4 class="text-muted text-left">Название</h4>
+                        @Html.TextBoxFor(x => x.Name, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-offset-3 col-lg-6">
+                        <h4 class="text-muted text-left">Номер</h4>
+                        @Html.DropDownListFor(x => x.BusNumber, new SelectList(Model.Buses), Model.BusNumber, new { @class = "form-control", onchange = "selectNumber();" })
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-offset-3 col-lg-6">
+                        <h4 class="text-muted text-left">Остановка</h4>
+                        @Html.DropDownListFor(x => x.Stop, new SelectList(Model.Stops), Model.Stop, new { @class = "form-control", onchange = "selectStop();" })
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-offset-3 col-lg-6">
+                        <h4 class="text-muted text-left">Направление</h4>
+                        @Html.DropDownListFor(x => x.EndStop, new SelectList(Model.EndStops), Model.EndStop, new { @class = "form-control" })
+                    </div>
+                </div>
+                <hr />
+                <div class="row">
+                    <div class="col-lg-offset-3 col-lg-6">
+                        <button type="submit" class="btn btn-primary form-control">Сохранить</button>
+                    </div>
+                </div>
+            }
+            <hr />
+            <div class="row">
+                <div class="col-lg-offset-3 col-lg-6">
+                    @using (Html.BeginForm("Delete", "Routes", FormMethod.Post))
+            {
+                        @Html.AntiForgeryToken()
+                        @Html.Hidden("Id", (object)ViewBag.Id)
+                        <button type="submit" class="btn btn-default form-control">Удалить</button>
+                    }
+                </div>
+            </div>
+
+            <br />
+        </div>
+    </div>
+    </blockquote>
+
+@section Scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Scripts/Routes/RouteEdit.js")
+}
+
+
+

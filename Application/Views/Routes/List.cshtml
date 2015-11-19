@@ -1,0 +1,25 @@
+﻿@model IEnumerable<Domain.Models.UserRoute>
+@{
+    ViewBag.Title = "Маршруты";
+}
+
+<p class="bg-success">@TempData["result"]</p>
+
+<blockquote>
+
+    <div class="row">
+        <h3 id="News" class="Title text-left col-lg-9">Маршруты</h3>
+        <h5 class="NavigateLink text-right col-lg-3"><a href=@Url.Action("Add","Routes")><span class="glyphicon glyphicon-plus"></span> Добавить</a></h5>
+    </div>
+
+    <ul class="list-group" id="RoutesContainer">
+        @foreach (var item in Model)
+        {
+            <li class="list-group-item">
+                <h4 class="text-info"><strong>@Html.ActionLink(item.Name, "Edit", "Routes", new { id = item.Id }, null)</strong></h4>
+                <h4 class="text-muted"><strong>Номер автобуса:</strong> @item.TimeTable.Bus.Number</h4>
+                <h4 class="text-muted"><strong>Остановка:</strong> @item.TimeTable.Stop.Name</h4>
+            </li>
+        }
+    </ul>
+</blockquote>

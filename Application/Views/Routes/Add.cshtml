@@ -4,15 +4,15 @@
     }
 
 <p class="bg-success">@TempData["Message"]</p>
+<p class="bg-warning">@Html.ValidationSummary()</p>
 
 @using (Html.BeginForm("Add","Routes",FormMethod.Post,new {id = "RoutesContainer" }))
 {
-
     <blockquote class="blockquote">
 
         <div class="row">
             <h3 class="Title text-left col-lg-9">Новый маршрут</h3>
-            <h5 class="NavigateLink text-right col-lg-3"><a href=@Url.Action("Edit","Routes")><span class="glyphicon glyphicon-list-alt"></span> Маршруты</a></h5>
+            <h5 class="NavigateLink text-right col-lg-3"><a href=@Url.Action("List","Routes")><span class="glyphicon glyphicon-list-alt"></span> Маршруты</a></h5>
         </div>
 
         <div class="list-group">
@@ -32,13 +32,13 @@
                 <div class="row">
                     <div class="col-lg-offset-3 col-lg-6">
                         <h4 class="text-muted">Остановка</h4>
-                        @Html.DropDownListFor(x => x.Stop, new SelectList(new List<string>()), "", new { @class = "form-control", onchange = "selectStop();" })
+                        @Html.DropDownListFor(x => x.Stop, new SelectList(Model.Stops), "", new { @class = "form-control", onchange = "selectStop();" })
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-lg-offset-3 col-lg-6">
                         <h4 class="text-muted">Направление</h4>
-                        @Html.DropDownListFor(x => x.EndStop, new SelectList(new List<string>()), "", new { @class = "form-control" })
+                        @Html.DropDownListFor(x => x.EndStop, new SelectList(Model.FinalStops), "", new { @class = "form-control" })
                     </div>
                 </div>
                 <br />
@@ -52,5 +52,5 @@
 @section Scripts
 {
     @Scripts.Render("~/bundles/jqueryval")
-    @Scripts.Render("~/Scripts/RouteAdd.js")
+    @Scripts.Render("~/Scripts/Routes/RouteAdd.js")
 }

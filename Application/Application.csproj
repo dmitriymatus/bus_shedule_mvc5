@@ -268,9 +268,9 @@
     <Content Include="Scripts\News\Index.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
-    <Content Include="Scripts\RouteAdd.js" />
-    <Content Include="Scripts\RouteEdit.js" />
-    <Content Include="Scripts\RoutesIndex.js" />
+    <Content Include="Scripts\Routes\RouteAdd.js" />
+    <Content Include="Scripts\Routes\RouteEdit.js" />
+    <Content Include="Scripts\Routes\RoutesIndex.js" />
     <Content Include="Scripts\Users.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config">
@@ -300,11 +300,11 @@
     <Content Include="Views\AdminManage\Users.cshtml" />
     <Content Include="Views\AdminManage\_Items.cshtml" />
     <Content Include="Views\AdminManage\User.cshtml" />
-    <Content Include="Views\Shared\_IndexPartial.cshtml" />
-    <Content Include="Views\Routes\Edit.cshtml" />
+    <Content Include="Views\Routes\_Index.cshtml" />
+    <Content Include="Views\Routes\List.cshtml" />
     <Content Include="Views\Routes\_SelectRoutes.cshtml" />
     <Content Include="Views\Routes\Add.cshtml" />
-    <Content Include="Views\Routes\Route.cshtml" />
+    <Content Include="Views\Routes\Edit.cshtml" />
     <Content Include="Views\Manage\Index.cshtml" />
     <Content Include="Views\Manage\ChangePassword.cshtml" />
     <Content Include="Views\Account\ExternalLoginConfirmation.cshtml" />

@@ -23,9 +23,9 @@ namespace Domain.Models
         Saturday = 32,
         [Description("Вс")]
         Sunday = 64,
-        [Description("Рабочие")]
-        Weekend = Saturday | Sunday,
         [Description("Выходные")]
+        Weekend = Saturday | Sunday,
+        [Description("Рабочие")]
         Working = Monday | Tuesday | Wednesday | Thursday | Friday,
         [Description("Ежедневно")]
         Daily = Monday | Tuesday | Wednesday | Thursday | Friday | Saturday | Sunday

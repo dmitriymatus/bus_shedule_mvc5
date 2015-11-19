@@ -18,6 +18,8 @@ namespace Application.Models.Routes
         public string EndStop { get; set; }
 
         public IEnumerable<string> Buses { get; set; }
+        public IEnumerable<string> Stops { get; set; }
+        public IEnumerable<string> FinalStops { get; set; }
 
     }
 }

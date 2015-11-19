@@ -13,6 +13,8 @@ namespace Domain.Models
 
         public virtual Stop Stop { get; set; }
 
+        public virtual Stop PreviousStop { get; set; }
+
         public virtual Stop NextStop { get; set; }
 
         public virtual Stop FinalStop { get; set; }

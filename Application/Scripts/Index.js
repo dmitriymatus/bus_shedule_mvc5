@@ -1,7 +1,10 @@
 ﻿$(function ()
 {
     startLoadingAnimation();
-    $.getJSON("/Routes/Index", null, GetRoutes);
+    if ($("#userRoutes"))
+    {
+        $.getJSON("/Routes/GetRoutes", null, GetRoutes);
+    }
     var city = $("#city").val();
     $.getJSON("/Home/GetBuses", { city: city }, GetBuses);
     stopLoadingAnimation();
