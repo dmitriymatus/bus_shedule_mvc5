@@ -116,7 +116,7 @@ namespace Application.Controllers
             catch (Exception ex)
             {
                 //Log the error
-                ModelState.AddModelError("", "Невозможно добавить запись. Попробуйте повторить попытку позже");
+                ModelState.AddModelError("", "Ошибка при добавлении записи. Повторите попытку позже");
                 return View(userRoute);
             }
 
@@ -177,7 +177,7 @@ namespace Application.Controllers
                 model.Buses = city.Buses.Select(x => x.Number);
                 model.Stops = timeTablesRepository.Get(x => x.BusId == route.TimeTable.BusId).Select(x => x.Stop.Name).Distinct();
                 model.EndStops = timeTablesRepository.Get(x => x.BusId == route.TimeTable.BusId && x.Stop.Id == route.TimeTable.Stop.Id).Select(x => x.FinalStop.Name);
-                ModelState.AddModelError("", "Невозможно обновить запись. Попробуйте повторить попытку позже");
+                ModelState.AddModelError("", "Ошибка при обновлении записи. Повторите попытку позже");
                 return View("Route", model);
             }
 

@@ -3,7 +3,8 @@
     ViewBag.Title = "Edit";
 }
 
-<p class="bg-danger">@TempData["Errors"]</p>
+<p class="bg-success">@TempData["Success"]</p>
+<p class="bg-danger">@Html.ValidationSummary()</p>
 
 
 <blockquote>

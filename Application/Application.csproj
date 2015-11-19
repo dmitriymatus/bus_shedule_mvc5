@@ -314,7 +314,7 @@
     <Content Include="Views\Cities\List.cshtml" />
     <Content Include="Views\Cities\Edit.cshtml" />
     <Content Include="Views\Cities\Add.cshtml" />
-    <Content Include="Views\News\Index.cshtml" />
+    <Content Include="Views\News\_Index.cshtml" />
     <Content Include="Views\News\Items.cshtml" />
     <Content Include="Views\News\List.cshtml" />
     <Content Include="Views\News\Add.cshtml" />
