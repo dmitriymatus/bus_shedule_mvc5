@@ -4,8 +4,8 @@ using System.Web.Mvc;
 using Ninject;
 using Domain.Abstract;
 using Domain.Concrete;
-//using Application.Infrastructure.SheduleParserFactory.Abstract;
-//using Application.Infrastructure.SheduleParserFactory.Concrete;
+using Application.Infrastructure.SheduleParserFactory.Abstract;
+using Application.Infrastructure.SheduleParserFactory.Concrete;
 
 namespace MvcApplication.Infrastructure
 {
@@ -35,7 +35,7 @@ namespace MvcApplication.Infrastructure
             kernel.Bind(typeof(IRepository<>))
                 .To(typeof(GenericRepository<>))
                 .WithConstructorArgument("_context", context);
-           // kernel.Bind<ISheduleParserFactory>().To<DefaultSheduleParserFactory>();
+            kernel.Bind<ISheduleParserFactory>().To<DefaultSheduleParserFactory>();
         }
 
     }

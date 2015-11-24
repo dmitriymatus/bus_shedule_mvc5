@@ -12,7 +12,7 @@ using Ninject;
 using Application.Models.Admin;
 using System.Data.Entity;
 using System.Globalization;
-//using Application.Infrastructure.SheduleParserFactory;
+using Application.Infrastructure.SheduleParserFactory;
 
 namespace Application
 {
@@ -27,7 +27,7 @@ namespace Application
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-           // SheduleParsersConfig.RegisterParsers(SheduleParsers.Parsers);
+            SheduleParsersConfig.RegisterParsers(SheduleParsers.Parsers);
 
             ModelBinders.Binders.Add(typeof(AddSheduleViewModel), new SheduleBinder());
             DependencyResolver.SetResolver(new NinjectDependencyResolver(new StandardKernel()));

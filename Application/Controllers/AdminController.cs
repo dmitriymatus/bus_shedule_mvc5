@@ -10,8 +10,8 @@ using System.Text.RegularExpressions;
 using Application.Models;
 using System.Reflection;
 using Domain.Models;
-//using Domain.SheduleParsers.Abstract;
-//using Application.Infrastructure.SheduleParserFactory.Abstract;
+using Domain.SheduleParsers.Abstract;
+using Application.Infrastructure.SheduleParserFactory.Abstract;
 
 namespace Application.Controllers
 {
@@ -19,27 +19,26 @@ namespace Application.Controllers
     //[OutputCache(Duration = 3600, SqlDependency = "shedule:Shedules")]
     public class AdminController : Controller
     {
-        //ISheduleRepository sheduleRepository;
-        //ISheduleParserFactory factory;
-        //public AdminController(ISheduleRepository _sheduleRepository, ISheduleParserFactory _factory)
-        //{
-        //    sheduleRepository = _sheduleRepository;
-        //    factory = _factory;
-        //}
+        private ISheduleParserFactory factory;
         private IRepository<Bus> busRepository;
         private IRepository<Stop> stopsRepository;
         private IRepository<TimeTable> timeTablesRepository;
         private IRepository<Shedule> shedulesRepository;
+        private IRepository<City> citiesRepository;
 
         public AdminController(IRepository<Bus> _busRepository,
                                IRepository<Stop> _stopsRepository,
                                IRepository<TimeTable> _timeTablesRepository,
-                               IRepository<Shedule> _shedulesRepository)
+                               IRepository<Shedule> _shedulesRepository,
+                               IRepository<City> _citiesRepository,
+                               ISheduleParserFactory _factory)
         {
             busRepository = _busRepository;
             stopsRepository = _stopsRepository;
             timeTablesRepository = _timeTablesRepository;
             shedulesRepository = _shedulesRepository;
+            citiesRepository = _citiesRepository;
+            factory = _factory;
         }
 
         public ActionResult Index()
@@ -61,18 +60,19 @@ namespace Application.Controllers
             {
                 try
                 {
-                    int? cityId = (int?)Session["City"];
+                    int cityId = (int)Session["City"];
+                    var city = citiesRepository.GetByID(cityId);
                     var fileName = this.HttpContext.Request.MapPath("~/Content/shedule" + cityId + ".xls");
                     model.file.SaveAs(fileName);
 
                     ISheduleParser parser = factory.Create(city.Name.ToLower());
                     var shedule = parser.Parse(fileName, city);
 
-                    sheduleRepository.AddSheduleRange(shedule);
 
+                    timeTablesRepository.InsertRange(shedule);
                     TempData["Success"] = "Расписание добавлено";
                 }
-                catch
+                catch(Exception ex)
                 {
                     TempData["Erors"] = "Ошибка при обработке файла, проверьте правильность файла";
                 }

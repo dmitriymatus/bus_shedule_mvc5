@@ -84,10 +84,10 @@ namespace Application.Controllers
             var bus = city.Buses.FirstOrDefault(x => x.Number == busNumber);
             var stop = city.Stops.FirstOrDefault(x => x.Name == stopName);
             var finalStop = city.Stops.FirstOrDefault(x => x.Name == endStop);
-            var result = timeTablesRepository
+            var temp = timeTablesRepository
                         .Get(x => x.Bus.Id == bus.Id && x.Stop.Id == stop.Id && x.FinalStop.Id == finalStop.Id)
-                        .FirstOrDefault()
-                        .Shedules
+                        .FirstOrDefault();
+            var result = temp.Shedules
                         .Select(x => x.Days.ToDescription())
                         .Distinct();
 
@@ -129,11 +129,8 @@ namespace Application.Controllers
         {
             int cityId = (int)Session["City"];
             City city = citiesRepository.GetByID(cityId);
-            var result = city
-                        .Stops
-                        .First(x => x.Name == stopName)
-                        .TimeTables
-                        .Where(x => x.Bus.Number != busNumber)
+            var stop = city.Stops.First(x => x.Name == stopName);
+            var result = timeTablesRepository.Get(x => x.Bus.Number != busNumber && x.Stop.Id == stop.Id)
                         .Select(x => x.Bus.Number)
                         .Distinct();
             return Json(result, JsonRequestBehavior.AllowGet);
