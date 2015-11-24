@@ -1,7 +1,7 @@
-﻿@model Application.Models.Admin.AddStopViewModel
+﻿@model Application.Models.Admin.AddBusViewModel
 
 @{
-    ViewBag.Title = "Добавить остановку";
+    ViewBag.Title = "Добавить автобус";
 }
 
 <p class="bg-success">@TempData["Success"]</p>
@@ -9,12 +9,12 @@
 
 <blockquote>
     <div class="row">
-        <h3 id="News" class="Title text-left col-lg-9">Добавить остановку</h3>
+        <h3 id="News" class="Title text-left col-lg-9">Добавить автобус</h3>
     </div>
-    @using (Html.BeginForm("AddStop", "Admin", FormMethod.Post))
+    @using (Html.BeginForm("AddBus", "Admin", FormMethod.Post))
     {
         <div class="input-group">
-            @Html.TextBoxFor(x => x.Name, new { @class = "form-control" })
+            @Html.TextBoxFor(x => x.Number, new { @class = "form-control" })
             <button type="submit" class="btn btn-success input-group-addon">Добавить</button>
         </div>
     }

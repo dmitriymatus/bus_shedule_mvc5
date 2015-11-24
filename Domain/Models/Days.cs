@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Collections.Generic;
 using System;
 using System.Reflection;
+using System.Text;
 
 namespace Domain.Models
 {
@@ -35,13 +36,18 @@ namespace Domain.Models
     {
         public static string ToDescription(this Days days)
         {
-            FieldInfo fi = days.GetType().GetField(days.ToString());
+            var daysString = days.ToString().Split(',');
+            StringBuilder result = new StringBuilder();
+            foreach(var day in daysString)
+            { 
+                FieldInfo fi = days.GetType().GetField(day.TrimStart(' '));
+                DescriptionAttribute[] attributes = (DescriptionAttribute[])fi.GetCustomAttributes(
+                    typeof(DescriptionAttribute), false);
 
-            DescriptionAttribute[] attributes = (DescriptionAttribute[])fi.GetCustomAttributes(
-                typeof(DescriptionAttribute), false);
-
-            if (attributes != null && attributes.Length > 0) return attributes[0].Description;
-            else return days.ToString();
+                if (attributes != null && attributes.Length > 0) result.Append( attributes[0].Description + ",");
+                else result.Append(days.ToString() + ",");
+            }
+            return result.ToString().TrimEnd(',');
         }
     }
 }

@@ -186,7 +186,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Infrastructure\BusStopBinder.cs" />
+    <Compile Include="Infrastructure\SheduleBinder.cs" />
     <Compile Include="Infrastructure\CityValueProvider.cs" />
     <Compile Include="Infrastructure\Days.cs" />
     <Compile Include="Infrastructure\FileSizeAttribute.cs" />
@@ -200,8 +200,16 @@
     <Compile Include="Models\Account\LoginModel.cs" />
     <Compile Include="Models\Account\RegisterModel.cs" />
     <Compile Include="Models\AdminManage\UserViewModel.cs" />
+    <Compile Include="Models\Admin\AddBusRouteViewModel.cs" />
+    <Compile Include="Models\Admin\AddBusViewModel.cs" />
     <Compile Include="Models\Admin\AddFileViewModel.cs" />
+    <Compile Include="Models\Admin\AddSheduleViewModel.cs" />
+    <Compile Include="Models\Admin\AddStopViewModel.cs" />
     <Compile Include="Models\Admin\AdminAddViewModel.cs" />
+    <Compile Include="Models\Admin\DeleteBusRouteViewModel.cs" />
+    <Compile Include="Models\Admin\DeleteBusViewModel.cs" />
+    <Compile Include="Models\Admin\DeleteSheduleViewModel.cs" />
+    <Compile Include="Models\Admin\DeleteStopViewModel.cs" />
     <Compile Include="Models\AppDbInitializer.cs" />
     <Compile Include="Models\BusStopViewModel.cs" />
     <Compile Include="Models\Cities\CitiesIndexViewModel.cs" />
@@ -240,8 +248,9 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
-    <Content Include="Scripts\AddStop.js" />
-    <Content Include="Scripts\AdminEdit.js" />
+    <Content Include="Scripts\Admin\AddBusRoute.js" />
+    <Content Include="Scripts\Admin\AddShedule.js" />
+    <Content Include="Scripts\Admin\DeleteShedule.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\Cities\CitiesIndex.js" />
@@ -293,10 +302,8 @@
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Admin\Index.cshtml" />
-    <Content Include="Views\Admin\Add.cshtml" />
+    <Content Include="Views\Admin\AddFromFile.cshtml" />
     <Content Include="Views\Admin\AddStop.cshtml" />
-    <Content Include="Views\Admin\Delete.cshtml" />
-    <Content Include="Views\Admin\Edit.cshtml" />
     <Content Include="Views\AdminManage\Users.cshtml" />
     <Content Include="Views\AdminManage\_Items.cshtml" />
     <Content Include="Views\AdminManage\User.cshtml" />
@@ -319,6 +326,13 @@
     <Content Include="Views\News\List.cshtml" />
     <Content Include="Views\News\Add.cshtml" />
     <Content Include="Views\News\Edit.cshtml" />
+    <Content Include="Views\Admin\AddBus.cshtml" />
+    <Content Include="Views\Admin\DeleteBus.cshtml" />
+    <Content Include="Views\Admin\DeleteStop.cshtml" />
+    <Content Include="Views\Admin\AddBusRoute.cshtml" />
+    <Content Include="Views\Admin\DeleteBusRoute.cshtml" />
+    <Content Include="Views\Admin\AddShedule.cshtml" />
+    <Content Include="Views\Admin\DeleteShedule.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

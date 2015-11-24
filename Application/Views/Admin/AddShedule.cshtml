@@ -1,0 +1,48 @@
+﻿@model Application.Models.Admin.AddSheduleViewModel
+
+@{
+    ViewBag.Title = "Добавить расписание";
+}
+
+<p class="bg-success">@TempData["Success"]</p>
+<p class="bg-danger">@Html.ValidationSummary()</p>
+
+<blockquote class="blockquote">
+@using (Html.BeginForm("AddShedule", "Admin", FormMethod.Post))
+{
+    <div class="row">
+
+        <div class="col-sm-3">
+            <h4 class="text-muted">Номер</h4>
+            @Html.DropDownListFor(x => x.Bus, Model.Buses, "", new { @class = "form-control", onchange = "SelectNumber();" })
+        </div>
+        <div class="col-sm-3">
+            <h4 class="text-muted">Остановка</h4>
+            @Html.DropDownListFor(x => x.Stop, new SelectList(new List<string>()), "", new { @class = "form-control", onchange = " SelectStop();" })
+        </div>
+        <div class="col-sm-3">
+            <h4 class="text-muted">Направление</h4>
+            @Html.DropDownListFor(x => x.EndStop, new SelectList(new List<string>()), "", new { @class = "form-control" })
+        </div>
+        <div class="col-sm-3">
+            <h4 class="text-muted">Дни</h4>
+            @Html.ListBox("SelectedDays", new MultiSelectList(Model.Days), new { size = 10 })
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-sm-12">
+            @Html.TextAreaFor(x => x.Shedule, new { @class = "form-control", rows = 10 })
+        </div>
+    </div>
+
+    <hr/>
+    <button type="submit" class="btn btn-success">Добавить</button>
+}
+</blockquote>
+
+@section scripts
+{
+    @Scripts.Render("~/Scripts/Admin/AddShedule.js")
+    @Scripts.Render("~/bundles/jqueryval")
+}

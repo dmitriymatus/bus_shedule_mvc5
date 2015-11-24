@@ -1,0 +1,69 @@
+﻿@model Application.Models.Admin.AddBusRouteViewModel
+
+@{
+    ViewBag.Title = "Добавить маршрут";
+}
+
+<p class="bg-success">@TempData["Success"]</p>
+<p class="bg-danger">@Html.ValidationSummary()</p>
+
+<blockquote>
+    <div class="row">
+        <h3 id="News" class="Title text-left col-lg-9">Добавить маршрут</h3>
+    </div>
+    @using (Html.BeginForm("AddBusRoute", "Admin", FormMethod.Post))
+    {
+        <div class="input-group">
+            <span class="input-group-addon">Выберите автобус</span>
+            @Html.DropDownListFor(x => x.Bus, Model.Buses, new { @class = "form-control" })
+        </div>
+
+        <hr/>
+        <div class="panel panel-default">
+            <div class="panel-heading">Первый маршрут</div>
+            <div class="panel-body">
+                <ul class="list-group" id="FirstRouteTable">
+                    @if(Model.First != null)
+                    {
+                        foreach (var stop in Model.First)
+                        {
+                            <li class="list-group-item"><input type="hidden" name="first" value= @stop >@Model.Stops.Where(x => x.Value == stop).First().Text</li>
+                        }
+                    }
+                </ul>
+                <div class="input-group">
+                    @Html.DropDownList("SelectedStop", Model.Stops, new {id = "SelectedStop", @class = "form-control" })
+                    <button class="btn btn-success input-group-addon" onclick="AddStopToRoute(event,'SelectedStop','FirstRouteTable','first')">Добавить</button>
+                </div>
+            </div>
+        </div>
+        <hr />
+        <div class="panel panel-default">
+            <div class="panel-heading">Второй маршрут</div>
+            <div class="panel-body">
+                <ul class="list-group" id="SecondRouteTable">
+                    @if (Model.Second != null)
+                    {
+                        foreach (var stop in Model.Second)
+                        {
+                            <li class="list-group-item"><input type="hidden" name="second" value = @stop>@Model.Stops.Where(x => x.Value == stop).First().Text</li>
+                        }
+                    }
+                </ul>
+                <div class="input-group">
+                    @Html.DropDownList("Stop", Model.Stops, new { id = "Stop", @class = "form-control" })
+                    <button class="btn btn-success input-group-addon" onclick="AddStopToRoute(event,'Stop','SecondRouteTable','second')">Добавить</button>
+                </div>
+            </div>
+        </div>
+        <hr />
+        <button type="submit" class="btn btn-primary">Сохранить</button>
+    }
+</blockquote>
+
+@section scripts
+{
+    @Scripts.Render("~/Scripts/Admin/AddBusRoute.js")
+    @Scripts.Render("~/bundles/jqueryval")
+}
+

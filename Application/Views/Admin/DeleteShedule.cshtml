@@ -1,0 +1,51 @@
+﻿@model Application.Models.Admin.DeleteSheduleViewModel
+
+@{
+    ViewBag.Title = "Удалить расписание";
+}
+<p class="bg-success">@TempData["Success"]</p>
+<p class="bg-danger">@Html.ValidationSummary()</p>
+
+@section styles
+{
+    @Styles.Render("~/Content/Index.css")
+}
+
+@using (Html.BeginForm("DeleteShedule", "Admin", FormMethod.Post))
+{
+<blockquote class="blockquote">
+    <div class="row">
+        <div class="col-sm-3">
+            <h4 class="text-muted">Номер</h4>
+            @Html.DropDownListFor(x => x.Bus, new SelectList(Model.Buses), "", new { @class = "form-control", onchange = "SelectNumber()" })
+        </div>
+        <div class="col-sm-3">
+            <h4 class="text-muted">Остановка</h4>
+            @Html.DropDownListFor(x => x.Stop, new SelectList(new List<string>()), "", new { @class = "form-control", onchange = " SelectStop(); SelectAll(); " })
+        </div>
+        <div class="col-sm-3">
+            <h4 class="text-muted">Направление</h4>
+            @Html.DropDownListFor(x => x.EndStop, new SelectList(new List<string>()), "", new { @class = "form-control", onchange = "SelectEndStop(); SelectAll(); " })
+        </div>
+        <div class="col-sm-3">
+            <h4 class="text-muted">Дни</h4>
+            @Html.DropDownListFor(x => x.Days, new SelectList(new List<string>()), "", new { @class = "form-control", onchange = "SelectAll();" })
+        </div>
+    </div>
+</blockquote>
+<hr />
+<blockquote class="blockquote-reverse" id="stopsContainer" hidden>
+    <div class="row">
+        <h3 class="text-right Title">Расписание</h3>
+        <h3 id="nodes"></h3>
+    </div>
+</blockquote>
+    <hr />   
+        <button type="submit" class="btn btn-success">Удалить</button>
+}
+@section Scripts
+{
+    @Scripts.Render("~/Scripts/Admin/DeleteShedule.js")
+    @Scripts.Render("~/bundles/jqueryval")
+}
+

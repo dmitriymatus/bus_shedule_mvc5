@@ -101,6 +101,14 @@ namespace Application.Controllers
         {
             int cityId = (int)Session["City"];
             City city = citiesRepository.GetByID(cityId);
+
+            var separatedDays = days.Split(',');
+            Domain.Models.Days EnumDays = new Domain.Models.Days();
+            foreach (var day in separatedDays)
+            {
+                EnumDays |= ((Domain.Models.Days[])Enum.GetValues(typeof(Domain.Models.Days))).Where(x => x.ToDescription() == day.TrimStart(' ')).First();
+            }
+
             var bus = city.Buses.FirstOrDefault(x => x.Number == busNumber);
             var stop = city.Stops.FirstOrDefault(x => x.Name == stopName);
             var finalStop = city.Stops.FirstOrDefault(x => x.Name == endStopName);
@@ -108,7 +116,7 @@ namespace Application.Controllers
                         .Get(x => x.Bus.Id == bus.Id && x.Stop.Id == stop.Id && x.FinalStop.Id == finalStop.Id)
                         .FirstOrDefault()
                         .Shedules
-                        .Where(x => x.Days.ToDescription() == days)
+                        .Where(x => x.Days == EnumDays)
                         .Select(x => x.Time);
 
             var nearestTime = Stops.GetNearestTime(result);

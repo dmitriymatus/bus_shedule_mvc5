@@ -1,0 +1,27 @@
+﻿@model Application.Models.Admin.DeleteBusViewModel
+@{
+    ViewBag.Title = "Удалить автобус";
+}
+
+<p class="bg-success">@TempData["Success"]</p>
+<p class="bg-danger">@Html.ValidationSummary()</p>
+
+<blockquote>
+    <div class="row">
+        <h3 id="News" class="Title text-left col-lg-9">Удалить автобус</h3>
+    </div>
+    @using (Html.BeginForm("DeleteBus", "Admin", FormMethod.Post))
+    {
+        <div class="input-group">
+            @Html.DropDownListFor(x => x.Bus ,Model.Buses, new { @class = "form-control" })
+            <button type="submit" class="btn btn-success input-group-addon">Удалить</button>
+        </div>
+        @Html.HttpMethodOverride(HttpVerbs.Delete)
+    }
+</blockquote>
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+}
+

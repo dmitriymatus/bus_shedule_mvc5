@@ -40,6 +40,12 @@ namespace Domain.Concrete
             context.SaveChanges();
         }
 
+        public void InsertRange(IEnumerable<TEntity> entities)
+        {
+            dbSet.AddRange(entities);
+            context.SaveChanges();
+        }
+
         public void Update(TEntity entity)
         {
             context.Entry(entity).State = EntityState.Modified;
@@ -60,6 +66,12 @@ namespace Domain.Concrete
                 dbSet.Remove(entity);
                 context.SaveChanges();
             }
+        }
+
+        public void DeleteRange(IEnumerable<TEntity> entities)
+        {
+            dbSet.RemoveRange(entities);
+            context.SaveChanges();
         }
     }
 }

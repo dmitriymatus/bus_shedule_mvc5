@@ -9,7 +9,9 @@ using MvcApplication.Infrastructure;
 using Application.Infrastructure;
 using Application.Models;
 using Ninject;
+using Application.Models.Admin;
 using System.Data.Entity;
+using System.Globalization;
 //using Application.Infrastructure.SheduleParserFactory;
 
 namespace Application
@@ -27,13 +29,13 @@ namespace Application
             BundleConfig.RegisterBundles(BundleTable.Bundles);
            // SheduleParsersConfig.RegisterParsers(SheduleParsers.Parsers);
 
-            ModelBinders.Binders.Add(typeof(BusStopViewModel), new BusStopBinder());
+            ModelBinders.Binders.Add(typeof(AddSheduleViewModel), new SheduleBinder());
             DependencyResolver.SetResolver(new NinjectDependencyResolver(new StandardKernel()));
 
-           // String connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["SheduleDbContext"].ConnectionString;
-           // System.Web.Caching.SqlCacheDependencyAdmin.EnableNotifications(connectionString);
-           // System.Web.Caching.SqlCacheDependencyAdmin.EnableTableForNotifications(connectionString, "Shedules");
-           // System.Web.Caching.SqlCacheDependencyAdmin.EnableTableForNotifications(connectionString, "News");
+            // String connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["SheduleDbContext"].ConnectionString;
+            // System.Web.Caching.SqlCacheDependencyAdmin.EnableNotifications(connectionString);
+            // System.Web.Caching.SqlCacheDependencyAdmin.EnableTableForNotifications(connectionString, "Shedules");
+            // System.Web.Caching.SqlCacheDependencyAdmin.EnableTableForNotifications(connectionString, "News");
 
         }
     }
