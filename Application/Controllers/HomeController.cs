@@ -68,7 +68,6 @@ namespace Application.Controllers
             City city = citiesRepository.GetByID(cityId);
             var bus = city.Buses.FirstOrDefault(x => x.Number == busNumber);
             var stop = city.Stops.FirstOrDefault(x => x.Name == stopName);
-
             var result = timeTablesRepository
                         .Get(x => x.Bus.Id == bus.Id && x.Stop.Id == stop.Id)
                         .Select(x => x.FinalStop.Name)
@@ -84,6 +83,7 @@ namespace Application.Controllers
             var bus = city.Buses.FirstOrDefault(x => x.Number == busNumber);
             var stop = city.Stops.FirstOrDefault(x => x.Name == stopName);
             var finalStop = city.Stops.FirstOrDefault(x => x.Name == endStop);
+
             var temp = timeTablesRepository
                         .Get(x => x.Bus.Id == bus.Id && x.Stop.Id == stop.Id && x.FinalStop.Id == finalStop.Id)
                         .FirstOrDefault();

@@ -70,11 +70,11 @@ namespace Domain.SheduleParsers.Concrete
                 }
 
                 var groupByFinalStops = busNumberGroup.GroupBy(x => x.FinalStop.Name);
-                foreach(var item in groupByFinalStops)
+                foreach (var item in groupByFinalStops)
                 {
                     var finalStop = item.Last().Stop;
                     var count = item.Count();
-                    for(int i = 0 ; i < count ; i++)
+                    for (int i = 0; i < count; i++)
                     {
                         item.ElementAt(i).PreviousStop = i > 0 ? item.ElementAt(i - 1).Stop : null;
                         item.ElementAt(i).NextStop = i < (count - 1) ? item.ElementAt(i + 1).Stop : null;
@@ -82,6 +82,7 @@ namespace Domain.SheduleParsers.Concrete
                     }
                 }
             }
+
             return stops;
         }
 
@@ -94,19 +95,22 @@ namespace Domain.SheduleParsers.Concrete
             Days days = new Days();
             IEnumerable<Shedule> stops;
 
+            List<TimeTable> Result = new List<TimeTable>();
+
             foreach (List<string> row in rows)
             {
                 if (!String.IsNullOrEmpty(row[0] as string) && !String.IsNullOrEmpty(row[1] as string) && !String.IsNullOrEmpty(row[2] as string) && !String.IsNullOrEmpty(row[3] as string))
                 {
                     busNumber = row[busNumberOffset].Remove(0, 1);
-                    stopName = row[stopNameOffset];
-                    finalStop = row[finalStopOffset];
+                    stopName = row[stopNameOffset].Trim(' ');
+                    finalStop = row[finalStopOffset].Trim(' ');
                     var daysList = row[daysOffset].Split(',');
-                    foreach(var item in daysList)
+                    days = new Days();
+                    foreach (var item in daysList)
                     {
-                        switch(item.Trim(' '))
+                        switch (item.Trim(' '))
                         {
-                            case "ПН": { days |= Days.Monday ; break; }
+                            case "ПН": { days |= Days.Monday; break; }
                             case "ВТ": { days |= Days.Tuesday; break; }
                             case "СР": { days |= Days.Wednesday; break; }
                             case "ЧТ": { days |= Days.Thursday; break; }
@@ -119,15 +123,28 @@ namespace Domain.SheduleParsers.Concrete
 
                     }
                     stops = Convert(row.Skip(sheduleStartOffset).Take(row.Count() - endOffset), days);
-                    yield return new TimeTable
+
+                    if (!Result.Where(x => x.Stop.Name == stopName && x.Bus.Number == busNumber && x.FinalStop.Name == finalStop).Any())
                     {
-                        Bus = new Bus { Number = busNumber, CityId = city.Id },
-                        Stop = new Stop { Name = stopName, CityId = city.Id },
-                        FinalStop = new Stop { Name = finalStop, CityId = city.Id },
-                        Shedules = stops.ToList() 
-                    };
+                        Result.Add(new TimeTable
+                        {
+                            Bus = new Bus { Number = busNumber, CityId = city.Id },
+                            Stop = new Stop { Name = stopName, CityId = city.Id },
+                            FinalStop = new Stop { Name = finalStop, CityId = city.Id },
+                            Shedules = stops.ToList()
+                        });
+                    }
+                    else
+                    {
+                        var shedules = Result.Where(x => x.Stop.Name == stopName && x.Bus.Number == busNumber && x.FinalStop.Name == finalStop).First().Shedules;
+                        foreach (var temp in stops)
+                        {
+                            shedules.Add(temp);
+                        }
+                    }
                 }
             }
+            return Result;
         }
 
         //======================================================//
@@ -162,7 +179,7 @@ namespace Domain.SheduleParsers.Concrete
                     }
                     return TimeSpan.Parse(string.Format("{0:00}:{1:00}", hours, minutes));
                 }
-                return new TimeSpan(0,0,0);
+                return new TimeSpan(0, 0, 0);
             }
         }
         //========================================================//

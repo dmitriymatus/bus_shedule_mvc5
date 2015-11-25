@@ -406,11 +406,6 @@ namespace Application.Controllers
                 var buses = busRepository.Get(x => x.CityId == cityId);
                 var stops = stopsRepository.Get(x => x.CityId == cityId);
                 var timeTables = timeTablesRepository.Get(x => x.Bus.CityId == cityId);
-                var shedules = timeTables.Select(x => x.Shedules);
-                foreach(var items in shedules)
-                {
-                    shedulesRepository.DeleteRange(items);
-                }
                 timeTablesRepository.DeleteRange(timeTables);
                 stopsRepository.DeleteRange(stops);
                 busRepository.DeleteRange(buses);
