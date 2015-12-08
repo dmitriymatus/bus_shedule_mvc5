@@ -89,7 +89,7 @@ namespace Application.Controllers
             }
             catch(Exception ex)
             {
-                //log error
+                NLog.LogManager.GetCurrentClassLogger().Error(ex);
                 ModelState.AddModelError("", "Ошибка при добавлении записи. Повторите попытку позже");
                 return View(model);
             }
@@ -120,7 +120,7 @@ namespace Application.Controllers
             }
             catch (Exception ex)
             {
-                //log error
+                NLog.LogManager.GetCurrentClassLogger().Error(ex);
                 ModelState.AddModelError("", "Ошибка при обновлении записи. Повторите попытку позже");
             }
             return View(model);
@@ -143,7 +143,7 @@ namespace Application.Controllers
             }
             catch(Exception ex)
             {
-                //log
+                NLog.LogManager.GetCurrentClassLogger().Error(ex);
                 TempData["Errors"] = "Ошибка при удалении записи. Повторите попытку позже";
             }
             return RedirectToAction("List", "Cities");

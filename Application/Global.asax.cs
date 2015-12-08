@@ -20,22 +20,20 @@ namespace Application
     {
         protected void Application_Start()
         {
-
-            //Database.SetInitializer<ApplicationDbContext>(new AppDbInitializer());
-            // закоментировано для удобства отладки... при развёртывании раскоментировать
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             SheduleParsersConfig.RegisterParsers(SheduleParsers.Parsers);
+            //ValueProviderFactories.Factories.Insert(0, new CityValueProviderFactory());
 
             ModelBinders.Binders.Add(typeof(AddSheduleViewModel), new SheduleBinder());
             DependencyResolver.SetResolver(new NinjectDependencyResolver(new StandardKernel()));
 
-            // String connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["SheduleDbContext"].ConnectionString;
-            // System.Web.Caching.SqlCacheDependencyAdmin.EnableNotifications(connectionString);
-            // System.Web.Caching.SqlCacheDependencyAdmin.EnableTableForNotifications(connectionString, "Shedules");
-            // System.Web.Caching.SqlCacheDependencyAdmin.EnableTableForNotifications(connectionString, "News");
+             String connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["SheduleDbContext"].ConnectionString;
+             System.Web.Caching.SqlCacheDependencyAdmin.EnableNotifications(connectionString);
+             System.Web.Caching.SqlCacheDependencyAdmin.EnableTableForNotifications(connectionString, "Shedules");
+             System.Web.Caching.SqlCacheDependencyAdmin.EnableTableForNotifications(connectionString, "News");
 
         }
     }

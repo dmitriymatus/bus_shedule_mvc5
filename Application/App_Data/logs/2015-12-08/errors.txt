@@ -1,0 +1,2 @@
+2015-12-08 10:18:22.6407|ERROR|Application.Controllers.RoutesController|System.Exception: Example
+   в Application.Controllers.RoutesController.Add(RouteAddViewModel userRoute) в F:\GitHub\bus_shedule_mvc5\Application\Controllers\RoutesController.cs:строка 113

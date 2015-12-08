@@ -32,7 +32,8 @@ namespace Application.Infrastructure
                 }
                 catch(Exception ex)
                 {
-                    bindingContext.ModelState.AddModelError("", "Неверно заполнено расписание");
+                        NLog.LogManager.GetCurrentClassLogger().Error(ex);
+                        bindingContext.ModelState.AddModelError("", "Неверно заполнено расписание");
                 }
                 }
                 return model;

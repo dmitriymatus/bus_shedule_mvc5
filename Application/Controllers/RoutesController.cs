@@ -115,7 +115,7 @@ namespace Application.Controllers
             }
             catch (Exception ex)
             {
-                //Log the error
+                NLog.LogManager.GetCurrentClassLogger().Error(ex);
                 ModelState.AddModelError("", "Ошибка при добавлении записи. Повторите попытку позже");
                 return View(userRoute);
             }
@@ -173,7 +173,7 @@ namespace Application.Controllers
             }
             catch(Exception ex)
             {
-                //log
+                NLog.LogManager.GetCurrentClassLogger().Error(ex);
                 model.Buses = city.Buses.Select(x => x.Number);
                 model.Stops = timeTablesRepository.Get(x => x.BusId == route.TimeTable.BusId).Select(x => x.Stop.Name).Distinct();
                 model.EndStops = timeTablesRepository.Get(x => x.BusId == route.TimeTable.BusId && x.Stop.Id == route.TimeTable.Stop.Id).Select(x => x.FinalStop.Name);

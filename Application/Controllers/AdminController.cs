@@ -68,12 +68,12 @@ namespace Application.Controllers
                     ISheduleParser parser = factory.Create(city.Name.ToLower());
                     var shedule = parser.Parse(fileName, city);
 
-
                     timeTablesRepository.InsertRange(shedule);
                     TempData["Success"] = "Расписание добавлено";
                 }
                 catch(Exception ex)
                 {
+                    NLog.LogManager.GetCurrentClassLogger().Error(ex);
                     TempData["Erors"] = "Ошибка при обработке файла, проверьте правильность файла";
                 }
                 return RedirectToAction("AddFromFile");
@@ -105,7 +105,7 @@ namespace Application.Controllers
                 }
                 catch(Exception ex)
                 {
-                    //log
+                    NLog.LogManager.GetCurrentClassLogger().Error(ex);
                     ModelState.AddModelError("", "Ошибка при добавлении записи. Повторите попытку позже");
                 }
             }
@@ -138,7 +138,7 @@ namespace Application.Controllers
                 }
                 catch(Exception ex)
                 {
-                    //log
+                    NLog.LogManager.GetCurrentClassLogger().Error(ex);
                     ModelState.AddModelError("", "Ошибка при удалении записи. Повторите попытку позже");
                 }
             }
@@ -171,7 +171,7 @@ namespace Application.Controllers
                 }
                 catch (Exception ex)
                 {
-                    //log
+                    NLog.LogManager.GetCurrentClassLogger().Error(ex);
                     ModelState.AddModelError("", "Ошибка при добавлении записи. Повторите попытку позже");
                 }
             }
@@ -182,7 +182,6 @@ namespace Application.Controllers
         public ActionResult DeleteStop()
         {
             int cityId = (int)Session["City"];
-
 
             DeleteStopViewModel model = new DeleteStopViewModel
             {
@@ -205,7 +204,7 @@ namespace Application.Controllers
                 }
                 catch (Exception ex)
                 {
-                    //log
+                    NLog.LogManager.GetCurrentClassLogger().Error(ex);
                     ModelState.AddModelError("", "Ошибка при удалении записи. Повторите попытку позже");
                 }
             }
@@ -243,7 +242,7 @@ namespace Application.Controllers
                 }
                 catch(Exception ex)
                 {
-                    //log
+                    NLog.LogManager.GetCurrentClassLogger().Error(ex);
                     ModelState.AddModelError("", "Ошибка при добавлении записи. Повторите попытку позже");
                 }
             }
@@ -283,7 +282,7 @@ namespace Application.Controllers
                 }
                 catch (Exception ex)
                 {
-                    //log
+                    NLog.LogManager.GetCurrentClassLogger().Error(ex);
                     ModelState.AddModelError("", "Ошибка при удалении записи. Повторите попытку позже");
                 }
             }
@@ -339,7 +338,7 @@ namespace Application.Controllers
                 }
                 catch (Exception ex)
                 {
-                    //log
+                    NLog.LogManager.GetCurrentClassLogger().Error(ex);
                     ModelState.AddModelError("", "Ошибка при добавлении записи. Повторите попытку позже");
                 }
             }
@@ -378,9 +377,9 @@ namespace Application.Controllers
                     shedulesRepository.DeleteRange(shedules);
                     TempData["Success"] = "Запись удалена";
                 }
-                catch
+                catch(Exception ex)
                 {
-                    //log
+                    NLog.LogManager.GetCurrentClassLogger().Error(ex);
                     ModelState.AddModelError("", "Ошибка при удалении записи. Повторите попытку позже");
                 }
             }
@@ -413,7 +412,7 @@ namespace Application.Controllers
             }
             catch(Exception ex)
             {
-                //log
+                NLog.LogManager.GetCurrentClassLogger().Error(ex);
                 TempData["Erors"] = "Ошибка при удалении записей. Повторите попытку позже";
             }
             return RedirectToAction("Index", "Admin");

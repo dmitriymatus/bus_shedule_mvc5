@@ -32,7 +32,7 @@ namespace Application.Controllers
             return PartialView("_Index",model);
         }
 
-        //[OutputCache(Duration = 3600, VaryByParam = "City ; Page", SqlDependency = "shedule:News")]
+        [OutputCache(Duration = 3600, VaryByParam = "City ; Page", SqlDependency = "shedule:News")]
         public ActionResult GetItems(string City, int Page = 1)
         {
             int? cityId = (int?)Session["City"];
@@ -81,7 +81,7 @@ namespace Application.Controllers
             }
             catch(Exception ex)
             {
-                //log error
+                NLog.LogManager.GetCurrentClassLogger().Error(ex);
                 ModelState.AddModelError("", "Ошибка при добавлении записи. Повторите попытку позже");
                 return View(model);
             }
@@ -130,7 +130,7 @@ namespace Application.Controllers
             }
             catch(Exception ex)
             {
-                //log error
+                NLog.LogManager.GetCurrentClassLogger().Error(ex);
                 ModelState.AddModelError("", "Ошибка при обновлении записи. Повторите попытку позже");
             }
             return View(model);

@@ -10,7 +10,7 @@ using Application.Infrastructure;
 
 namespace Application.Controllers
 {
-    // [OutputCache(Duration = 3600, SqlDependency = "shedule:Shedules")]
+    [OutputCache(Duration = 3600, SqlDependency = "shedule:Shedules")]
     public class HomeController : Controller
     {
         IRepository<UserRoute> routesRepository;
@@ -29,7 +29,7 @@ namespace Application.Controllers
             shedulesRepository = _shedulesRepository;
         }
 
-        // [OutputCache(Duration = 2,NoStore = false)]
+        [OutputCache(Duration = 2,NoStore = false)]
         public ActionResult Index()
         {
             return View();
@@ -37,7 +37,7 @@ namespace Application.Controllers
 
         //----------------------------------------------------------------------------------------
 
-        //  [OutputCache(Duration = 60, VaryByParam = "city")]
+        [OutputCache(Duration = 60, VaryByParam = "city")]
         public JsonResult GetBuses(string city)
         {
             int? cityId = (int?)Session["City"];
@@ -46,7 +46,7 @@ namespace Application.Controllers
             return Json(buses, JsonRequestBehavior.AllowGet);
         }
 
-        //  [OutputCache(Duration = 60, VaryByParam = "busNumber")]
+        [OutputCache(Duration = 60, VaryByParam = "busNumber")]
         public JsonResult GetStopsNames(string busNumber)
         {
             int cityId = (int)Session["City"];
@@ -61,7 +61,7 @@ namespace Application.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
-        //  [OutputCache(Duration = 60, VaryByParam = "stopName ; busNumber")]
+        [OutputCache(Duration = 60, VaryByParam = "stopName ; busNumber")]
         public JsonResult GetFinalStops(string stopName, string busNumber)
         {
             int cityId = (int)Session["City"];
@@ -75,7 +75,7 @@ namespace Application.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
-        //   [OutputCache(Duration = 60, VaryByParam = "stopName ; busNumber ; endStop")]
+        [OutputCache(Duration = 60, VaryByParam = "stopName ; busNumber ; endStop")]
         public JsonResult GetDays(string stopName, string busNumber, string endStop)
         {
             int cityId = (int)Session["City"];
@@ -96,7 +96,7 @@ namespace Application.Controllers
             return Json(model, JsonRequestBehavior.AllowGet);
         }
 
-        //    [OutputCache(Duration = 60, VaryByParam = "busNumber ; stopName ; endStopName; days")]
+        [OutputCache(Duration = 60, VaryByParam = "busNumber ; stopName ; endStopName; days")]
         public JsonResult GetStops(string busNumber, string stopName, string endStopName, string days)
         {
             int cityId = (int)Session["City"];
@@ -124,7 +124,7 @@ namespace Application.Controllers
             return Json(model, JsonRequestBehavior.AllowGet);
         }
 
-        //    [OutputCache(Duration = 60, VaryByParam = "stopName ; busNumber")]
+        [OutputCache(Duration = 60, VaryByParam = "stopName ; busNumber")]
         public JsonResult GetOtherBuses(string stopName, string busNumber)
         {
             int cityId = (int)Session["City"];
